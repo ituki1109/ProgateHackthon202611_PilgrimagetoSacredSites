@@ -1,7 +1,17 @@
 import * as THREE from 'three';
 
 // マーカーに重ねる「憑依」の演出。
-// 座標の単位はマーカーの幅（= 1）。マーカーはぬいの名札なので、演出はその少し上（ぬいの体のあたり）に置く。
+// 座標の単位はマーカーの幅（= 1）。マーカーはぬいの名札なので、演出はぬいの体の中心に合わせて置く。
+
+// 実物の大きさ。名札やぬいを変えたらここを直す
+const MARKER_CM = 3;
+const NUI_CM = 11;
+// 名札がぬいの下から何割の高さに付いているか（お腹なら 0.4 くらい）
+const TAG_HEIGHT_RATIO = 0.4;
+
+// 演出の各部品は、高さ 1.5 くらいのぬいを想定した寸法で作ってあるので、実物に合わせて拡大する
+const NUI_HEIGHT = NUI_CM / MARKER_CM;
+const EFFECT_SCALE = NUI_HEIGHT / 1.5;
 
 const LINES = ['ずっと放置してたよね…', 'やっと連れ出してくれた', 'ゆるさない…', 'もっと構って'];
 
@@ -49,9 +59,12 @@ function createBubble() {
 }
 
 export function createHauntEffect() {
+  // root はぬいの体の中心に置き、body を揺らす
   const root = new THREE.Group();
-  const baseY = 0.6;
-  root.position.set(0, baseY, 0.05);
+  root.position.set(0, (0.5 - TAG_HEIGHT_RATIO) * NUI_HEIGHT, 0.05);
+  const body = new THREE.Group();
+  body.scale.setScalar(EFFECT_SCALE);
+  root.add(body);
 
   const aura = new THREE.Mesh(
     new THREE.PlaneGeometry(1.9, 1.9),
@@ -62,7 +75,7 @@ export function createHauntEffect() {
       depthWrite: false,
     }),
   );
-  root.add(aura);
+  body.add(aura);
 
   // ぬいのまわりを回る人魂
   const wispTexture = glowTexture('rgba(110, 200, 255, 1)');
@@ -72,13 +85,13 @@ export function createHauntEffect() {
     );
     sprite.scale.setScalar(0.32);
     sprite.userData.phase = (i / 3) * Math.PI * 2;
-    root.add(sprite);
+    body.add(sprite);
     return sprite;
   });
 
   const bubble = createBubble();
   bubble.sprite.position.set(0, 0.95, 0.1);
-  root.add(bubble.sprite);
+  body.add(bubble.sprite);
   let lineIndex = 0;
   let lineTimer = 0;
   bubble.draw(LINES[lineIndex]);
@@ -106,8 +119,8 @@ export function createHauntEffect() {
       for (const m of materials) m.opacity = strength;
 
       // 怒りで小刻みに震えながら、ゆっくり上下する
-      root.position.y = baseY + Math.sin(time * 2) * 0.05;
-      root.rotation.z = Math.sin(time * 9) * 0.035;
+      body.position.y = Math.sin(time * 2) * 0.05 * EFFECT_SCALE;
+      body.rotation.z = Math.sin(time * 9) * 0.035;
       aura.scale.setScalar(1 + Math.sin(time * 3) * 0.08);
 
       wisps.forEach((w) => {
