@@ -1,0 +1,121 @@
+:root {
+  --bg: #120a1c;
+  --fg: #f3e8ff;
+  --accent: #a855f7;
+  --muted: #b9a7cc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+  overflow: hidden;
+}
+
+#ar {
+  position: fixed;
+  inset: 0;
+}
+
+#start {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+  overflow-y: auto;
+}
+
+#start[hidden] {
+  display: none;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.4rem;
+  letter-spacing: 0.1em;
+}
+
+a {
+  color: var(--accent);
+}
+
+.marker-choice {
+  padding: 12px 16px;
+  border: 1px solid #3b2a52;
+  border-radius: 12px;
+}
+
+.marker-choice p {
+  margin: 0 0 8px;
+}
+
+.file input {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+}
+
+#marker-preview[hidden] {
+  display: none;
+}
+
+#marker-preview {
+  display: block;
+  max-width: 120px;
+  margin-top: 8px;
+  border-radius: 8px;
+}
+
+button {
+  font: inherit;
+  font-weight: bold;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 24px;
+  background: var(--accent);
+  color: #fff;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+.note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+#stop-button {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 12px);
+  right: 12px;
+  z-index: 10;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#status {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: calc(env(safe-area-inset-bottom) + 24px);
+  z-index: 10;
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
