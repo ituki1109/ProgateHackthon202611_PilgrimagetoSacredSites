@@ -3,6 +3,7 @@ import { MindARThree } from 'mindar-image-three';
 import { Compiler } from 'mindar-image';
 import { createMarkerImage, loadImage } from './marker.js';
 import { createHauntEffect } from './effects.js';
+import { createPuppet } from './puppet.js';
 
 const startScreen = document.getElementById('start');
 const startButton = document.getElementById('start-button');
@@ -59,20 +60,24 @@ async function start() {
     });
     const { renderer, scene, camera } = mindar;
 
-    const effect = createHauntEffect();
+    // マーカーに重ねるもの。動くぬいはカメラ映像が要るので、起動後に足す
+    const parts = [createHauntEffect()];
     const anchor = mindar.addAnchor(0);
-    anchor.group.add(effect.object);
+    anchor.group.add(parts[0].object);
     anchor.onTargetFound = () => {
-      effect.setActive(true);
+      parts.forEach((p) => p.setActive(true));
       setStatus('');
       navigator.vibrate?.(80);
     };
     anchor.onTargetLost = () => {
-      effect.setActive(false);
+      parts.forEach((p) => p.setActive(false));
       setStatus('ぬいの名札（マーカー）を映してください');
     };
 
     await mindar.start();
+    const puppet = createPuppet({ video: mindar.video, container });
+    anchor.group.add(puppet.object);
+    parts.push(puppet);
     startScreen.hidden = true;
     stopButton.hidden = false;
     setStatus('ぬいの名札（マーカー）を映してください');
@@ -80,7 +85,7 @@ async function start() {
     const clock = new THREE.Clock();
     renderer.setAnimationLoop(() => {
       const delta = clock.getDelta();
-      effect.update(clock.elapsedTime, delta);
+      parts.forEach((p) => p.update(clock.elapsedTime, delta));
       renderer.render(scene, camera);
     });
     session = { mindar, renderer };

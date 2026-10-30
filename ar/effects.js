@@ -1,16 +1,10 @@
 import * as THREE from 'three';
+import { NUI_HEIGHT, NUI_CENTER_Y } from './config.js';
 
 // マーカーに重ねる「憑依」の演出。
 // 座標の単位はマーカーの幅（= 1）。マーカーはぬいの名札なので、演出はぬいの体の中心に合わせて置く。
 
-// 実物の大きさ。名札やぬいを変えたらここを直す
-const MARKER_CM = 3;
-const NUI_CM = 11;
-// 名札がぬいの下から何割の高さに付いているか（お腹なら 0.4 くらい）
-const TAG_HEIGHT_RATIO = 0.4;
-
 // 演出の各部品は、高さ 1.5 くらいのぬいを想定した寸法で作ってあるので、実物に合わせて拡大する
-const NUI_HEIGHT = NUI_CM / MARKER_CM;
 const EFFECT_SCALE = NUI_HEIGHT / 1.5;
 
 const LINES = ['ずっと放置してたよね…', 'やっと連れ出してくれた', 'ゆるさない…', 'もっと構って'];
@@ -61,7 +55,7 @@ function createBubble() {
 export function createHauntEffect() {
   // root はぬいの体の中心に置き、body を揺らす
   const root = new THREE.Group();
-  root.position.set(0, (0.5 - TAG_HEIGHT_RATIO) * NUI_HEIGHT, 0.05);
+  root.position.set(0, NUI_CENTER_Y, 0.05);
   const body = new THREE.Group();
   body.scale.setScalar(EFFECT_SCALE);
   root.add(body);
@@ -95,6 +89,11 @@ export function createHauntEffect() {
   let lineIndex = 0;
   let lineTimer = 0;
   bubble.draw(LINES[lineIndex]);
+
+  // 動くぬい（puppet.js）より手前に描く
+  root.traverse((o) => {
+    o.renderOrder = 3;
+  });
 
   const materials = [aura.material, bubble.sprite.material, ...wisps.map((w) => w.material)];
   let strength = 0;
