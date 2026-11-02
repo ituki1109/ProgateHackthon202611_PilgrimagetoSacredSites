@@ -13,11 +13,11 @@
 
 ### 1. データを読む（最初に）
 
-使うデータと対象地域（富山県高岡市）は決まっています。まず [data/README.md](../../data/README.md) を読み、3つのファイルをダウンロードして `data/raw/` に置きます。
+使うデータと対象地域（神奈川県川崎市）は決まっています。まず [data/README.md](../../data/README.md) を読み、3つのファイルをダウンロードして `data/raw/` に置きます。
 
-- 高岡市施設一覧（`20260401_sisetu.csv`）
+- PLATEAU 川崎市の関連データセット（`14130_kawasaki-shi_2022_related.zip`）
 - 国土数値情報 駅別乗降客数（`S12-25_GML.zip`）
-- Project LINKS 空き家・空き地バンク登録物件データ（`01_tourokubukken.csv`）
+- 川崎市 公共施設一覧（`141305_public_facility.csv`）
 
 **できあがり:** 3つのファイルを読み込み、`data/README.md` に書いた列があることを確かめた。
 
@@ -27,7 +27,7 @@
 
 - 元のデータは `data/raw/` に置き、git には入れない
 - 座標は緯度と経度（WGS84）にそろえる
-- 施設一覧は Shift_JIS、空き家バンクは UTF-8（BOM つき）で読む
+- 公共施設一覧は Shift_JIS で読む
 
 **できあがり:** `python data/prepare.py` で `backend/data/spots.json` ができる。
 
@@ -52,7 +52,6 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
 `reason` には、データから分かる事実だけを書きます。[data/README.md](../../data/README.md) の推薦理由の例のように、決まった文の型に値を差し込めば十分です。
 
 - データから分からないこと（混雑、撮影のしやすさ、安全さ）は書かない
-- 空き家バンクの登録物件の数を「空き家が多い」「人が少ない」と言い換えない
 - 「怨念が強い場所」のように、データにない意味を付けない
 
 ## should

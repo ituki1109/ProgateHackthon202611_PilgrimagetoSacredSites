@@ -2,10 +2,10 @@
   {
     "id": 3,
     "nui_id": 3,
-    "spot_id": "takaoka_419",
-    "spot_name": "駅南緑道",
-    "lat": 36.740445,
-    "lng": 137.016168,
+    "spot_id": "facility_141305000015",
+    "spot_name": "ミューザ川崎シンフォニーホール",
+    "lat": 35.530981,
+    "lng": 139.694692,
     "photo_url": null,
     "recommended": true,
     "created_at": "2026-11-01T15:20:00"
@@ -15,8 +15,8 @@
     "nui_id": 1,
     "spot_id": null,
     "spot_name": "近所のカフェ",
-    "lat": 36.7425,
-    "lng": 137.0135,
+    "lat": 35.5325,
+    "lng": 139.699,
     "photo_url": null,
     "recommended": false,
     "created_at": "2026-10-28T12:05:00"
@@ -24,10 +24,10 @@
   {
     "id": 1,
     "nui_id": 1,
-    "spot_id": "takaoka_113",
-    "spot_name": "高岡御車山会館",
-    "lat": 36.746688,
-    "lng": 137.009798,
+    "spot_id": "park_0798",
+    "spot_name": "富士見公園",
+    "lat": 35.529843,
+    "lng": 139.710875,
     "photo_url": null,
     "recommended": true,
     "created_at": "2026-10-20T10:40:00"
