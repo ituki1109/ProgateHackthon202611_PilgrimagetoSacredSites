@@ -2,7 +2,7 @@
 // ほかの JS は fetch を直接書かず、ここの関数を使ってください。
 // 項目名と形は docs/api.md のとおりです。変えたいときは先に api.md を直します。
 
-export const USE_MOCK = true; // API ができたら false にする
+export const USE_MOCK = false; // 仮の JSON で画面を作るときだけ true にする
 
 // API のアドレス。API のサーバーが画面も配るので、本番は空のままでよい。
 // 静的サーバー（ポート 5500）から API（ポート 8000）を呼ぶときだけ

@@ -23,6 +23,18 @@ PythonとpandasでProject LINKSなどのオープンデータを整え、地点�
 | 画面 | HTML、CSS、JavaScript、Leaflet |
 | AR | MindAR、Three.js |
 
+## デモの動かし方
+
+`backend` で次を実行し、`http://localhost:8000/` を開きます。`seed.py` は、デモ用のぬい3体と訪問の記録を入れ直します。
+
+```bash
+pip install -r requirements.txt
+python scripts/seed.py
+uvicorn app.main:app --port 8000
+```
+
+現在地は川崎駅から始まります。地図を押すと、その場所を現在地にして推薦地点を取り直します。
+
 ## 開発の資料
 
 設計と分担は [docs/](docs/) にまとめています。AI に実装を頼むときは、[AGENTS.md](AGENTS.md) の手順で文書を読ませてください。
