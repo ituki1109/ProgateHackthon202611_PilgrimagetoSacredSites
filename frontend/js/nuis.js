@@ -3,7 +3,7 @@
 // 画面の切り替え（どの # を表示するか）は main.js が行います。
 
 import { getNuis, getVisits } from './api.js';
-import { clampGrudge, grudgeGauge, grudgeStage, nuiFace, seal } from './ui.js';
+import { clampGrudge, grudgeGauge, grudgeStage, nuiFace, openPhoto, seal } from './ui.js';
 
 // 画面の中に、中身を入れる箱を1つ用意します。
 // すでにあるときは中身だけ空にして、作り直せるようにします。
@@ -181,11 +181,24 @@ function createVisitCard(visit) {
   const frame = document.createElement('div');
   frame.className = 'visit-photo-frame';
   if (visit.photo_url) {
+    // 押すと写真を大きく見られるよう、ボタンの中に入れます。
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'visit-photo-button';
+    button.setAttribute('aria-label', `${visit.spot_name || '訪問先'}の写真を大きく見る`);
     const photo = document.createElement('img');
     photo.className = 'visit-photo';
     photo.src = visit.photo_url;
     photo.alt = `${visit.spot_name || '訪問先'}の写真`;
-    frame.appendChild(photo);
+    button.appendChild(photo);
+    button.addEventListener('click', () => {
+      openPhoto(visit.photo_url, photo.alt, {
+        title: visit.spot_name || '場所の記録',
+        sub: formatDate(visit.created_at),
+        recommended: Boolean(visit.recommended),
+      });
+    });
+    frame.appendChild(button);
   } else {
     const blank = document.createElement('p');
     blank.className = 'visit-photo-blank';

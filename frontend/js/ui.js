@@ -80,3 +80,41 @@ export function seal(text, recommended) {
   mark.textContent = text;
   return mark;
 }
+
+// 写真を画面いっぱいに出します。どこかを押すか、Esc キーで閉じます。
+// caption は { title, sub, recommended }。
+export function openPhoto(src, alt, caption) {
+  let dialog = document.getElementById('photo-viewer');
+  if (!dialog) {
+    dialog = document.createElement('dialog');
+    dialog.id = 'photo-viewer';
+    dialog.className = 'photo-viewer';
+    dialog.addEventListener('click', () => dialog.close());
+    document.body.appendChild(dialog);
+  }
+
+  const figure = document.createElement('figure');
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = alt;
+
+  const text = document.createElement('figcaption');
+  const title = document.createElement('strong');
+  title.textContent = caption.title;
+  const sub = document.createElement('span');
+  sub.textContent = caption.sub || '';
+  text.append(title, sub);
+  if (caption.recommended !== undefined) {
+    text.appendChild(seal(caption.recommended ? '鎮' : '記', caption.recommended));
+  }
+  figure.append(img, text);
+
+  const close = document.createElement('button');
+  close.type = 'button';
+  close.className = 'photo-viewer-close';
+  close.textContent = '閉じる';
+
+  dialog.replaceChildren(figure, close);
+  dialog.showModal();
+  close.focus();
+}

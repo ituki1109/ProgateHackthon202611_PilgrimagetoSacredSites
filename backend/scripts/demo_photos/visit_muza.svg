@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#1b1430" stop-opacity=".35"/>
+    </radialGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFC4EA"/><stop offset="1" stop-color="#F3EFF8"/></linearGradient>
+  </defs>
+
+  <rect width="800" height="600" fill="#3A2E55"/>
+  <g fill="#C9A85C"><rect x="150" y="69" width="16" height="311" rx="8"/><rect x="178" y="78" width="16" height="302" rx="8"/><rect x="206" y="87" width="16" height="293" rx="8"/><rect x="234" y="96" width="16" height="284" rx="8"/><rect x="262" y="105" width="16" height="275" rx="8"/><rect x="290" y="114" width="16" height="266" rx="8"/><rect x="318" y="123" width="16" height="257" rx="8"/><rect x="346" y="132" width="16" height="248" rx="8"/><rect x="374" y="141" width="16" height="239" rx="8"/><rect x="402" y="150" width="16" height="230" rx="8"/><rect x="430" y="141" width="16" height="239" rx="8"/><rect x="458" y="132" width="16" height="248" rx="8"/><rect x="486" y="123" width="16" height="257" rx="8"/><rect x="514" y="114" width="16" height="266" rx="8"/><rect x="542" y="105" width="16" height="275" rx="8"/><rect x="570" y="96" width="16" height="284" rx="8"/><rect x="598" y="87" width="16" height="293" rx="8"/><rect x="626" y="78" width="16" height="302" rx="8"/><rect x="654" y="69" width="16" height="311" rx="8"/></g>
+  <g fill="#9E8244"><rect x="150" y="370" width="16" height="10"/><rect x="178" y="370" width="16" height="10"/><rect x="206" y="370" width="16" height="10"/><rect x="234" y="370" width="16" height="10"/><rect x="262" y="370" width="16" height="10"/><rect x="290" y="370" width="16" height="10"/><rect x="318" y="370" width="16" height="10"/><rect x="346" y="370" width="16" height="10"/><rect x="374" y="370" width="16" height="10"/><rect x="402" y="370" width="16" height="10"/><rect x="430" y="370" width="16" height="10"/><rect x="458" y="370" width="16" height="10"/><rect x="486" y="370" width="16" height="10"/><rect x="514" y="370" width="16" height="10"/><rect x="542" y="370" width="16" height="10"/><rect x="570" y="370" width="16" height="10"/><rect x="598" y="370" width="16" height="10"/><rect x="626" y="370" width="16" height="10"/><rect x="654" y="370" width="16" height="10"/></g>
+  <path d="M0 470 Q400 400 800 470 V600 H0 Z" fill="#7C5A3E"/>
+  <ellipse cx="400" cy="500" rx="260" ry="60" fill="#FFF3D6" opacity=".35"/>
+  <path d="M300 0 L230 520 H570 L500 0 Z" fill="#FFF3D6" opacity=".12"/>
+  <g transform="translate(400 360) scale(0.9)">
+      <ellipse cx="0" cy="112" rx="96" ry="12" fill="#000" opacity=".16"/>
+      <ellipse cx="-66" cy="52" rx="22" ry="34" transform="rotate(28 -66 52)" fill="#B9A8E4"/>
+      <ellipse cx="66" cy="52" rx="22" ry="34" transform="rotate(-28 66 52)" fill="#B9A8E4"/>
+      <ellipse cx="0" cy="60" rx="66" ry="56" fill="#DCD0F4"/>
+      <ellipse cx="-34" cy="106" rx="30" ry="16" fill="#DCD0F4"/><ellipse cx="34" cy="106" rx="30" ry="16" fill="#DCD0F4"/>
+      <ellipse cx="-34" cy="108" rx="16" ry="8" fill="#B9A8E4"/><ellipse cx="34" cy="108" rx="16" ry="8" fill="#B9A8E4"/>
+      <circle cx="-62" cy="-96" r="30" fill="#DCD0F4"/><circle cx="62" cy="-96" r="30" fill="#DCD0F4"/>
+      <circle cx="-62" cy="-94" r="15" fill="#B9A8E4"/><circle cx="62" cy="-94" r="15" fill="#B9A8E4"/>
+      <ellipse cx="0" cy="-36" rx="100" ry="82" fill="#DCD0F4"/>
+      <path d="M0 -116 v24" stroke="#B9A8E4" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round"/>
+      <path d="M-42 -38 q14 -16 28 0 M14 -38 q14 -16 28 0" fill="none" stroke="#2A2140" stroke-width="7" stroke-linecap="round"/>
+        <ellipse cx="-58" cy="-14" rx="14" ry="8" fill="#E99AA6" opacity=".55"/><ellipse cx="58" cy="-14" rx="14" ry="8" fill="#E99AA6" opacity=".55"/>
+        <path d="M-12 -12 q12 12 24 0" fill="none" stroke="#2A2140" stroke-width="6" stroke-linecap="round"/>
+    </g>
+
+  <rect width="800" height="600" fill="url(#vignette)"/>
+</svg>

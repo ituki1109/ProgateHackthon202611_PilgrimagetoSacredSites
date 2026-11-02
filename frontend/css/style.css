@@ -595,6 +595,64 @@ a { color: inherit; }
 }
 
 .visit-photo { width: 100%; height: 100%; object-fit: cover; }
+
+.visit-photo-button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+/* 写真を大きく見る画面 */
+.photo-viewer {
+  width: min(100vw - 24px, 760px);
+  max-width: none;
+  max-height: calc(100vh - 24px);
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: var(--surface);
+  cursor: zoom-out;
+}
+
+.photo-viewer::backdrop { background: rgba(26, 20, 42, 0.78); }
+
+.photo-viewer figure { margin: 0; }
+
+.photo-viewer img {
+  width: 100%;
+  max-height: calc(100vh - 140px);
+  object-fit: contain;
+  background: var(--ink);
+}
+
+.photo-viewer figcaption {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0 14px;
+  padding: 14px 18px 16px;
+}
+
+.photo-viewer figcaption strong { font: 700 18px/1.4 var(--serif); }
+.photo-viewer figcaption span:not(.seal) { grid-column: 1; color: var(--ink-soft); font: 600 14px/1.5 var(--serif); }
+.photo-viewer figcaption .seal { grid-column: 2; grid-row: 1 / span 2; }
+
+.photo-viewer-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--surface);
+  background: rgba(42, 33, 64, 0.72);
+  font: 700 13px var(--sans);
+  cursor: pointer;
+}
 .visit-photo-blank { color: var(--ink-faint); font-size: 12px; }
 
 .visit-place { font: 700 16.5px/1.45 var(--serif); }
