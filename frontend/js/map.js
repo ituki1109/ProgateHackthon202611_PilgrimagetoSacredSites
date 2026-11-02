@@ -138,7 +138,8 @@ function listItemFor(spot) {
   name.textContent = spot.name;
 
   const reason = document.createElement('span');
-  reason.textContent = ` — ${spot.reason}（約 ${distanceText(spot)}）`;
+  // 現在地からの距離は推薦理由（API）に入っている
+  reason.textContent = ` — ${spot.reason}`;
 
   const button = document.createElement('button');
   button.type = 'button';

@@ -12,6 +12,7 @@ WEIGHT_STATION = 0.2  # 駅からの近さ
 MAX_DISTANCE_M = 3000  # これより遠い地点は推薦しない
 STATION_MAX_M = 2000  # 駅からこれ以上離れると、駅からの近さは 0
 WALK_M_PER_MIN = 80
+NEAR_GOOD = 0.6  # 近さの点がこれ以上なら、推薦理由に「近い」と書く（1.2km 以内）
 
 # 施設には面積がないので、種類ごとに大きさの代わりの値を決める。
 # 公園の値と比べると、0.9 は 50ha、0.6 は 6ha、0.3 は 8,000㎡ くらいの公園にあたる。
@@ -76,36 +77,85 @@ def extra_score(value: float | None, full: float) -> float:
     return min(1.0, max(0.0, value / full))
 
 
-def make_reason(spot: dict) -> str:
-    """データから分かる事実だけで推薦理由を書く。"""
-    attrs = spot["attrs"]
-    walk = math.ceil(attrs["station_distance_m"] / WALK_M_PER_MIN)
-    access = f"{attrs['nearest_station']}駅から徒歩{walk}分"
-    area = attrs["area_m2"]
-    if area:
-        size = f"{area / 10000:.1f}ha" if area >= 10000 else f"{area:,}㎡"
-        reason = f"広さ{size}の{attrs['park_type']}。{access}"
-    else:
-        reason = f"{attrs.get('facility_type') or spot['category'] + 'の施設'}。{access}"
+def score_parts(spot: dict, lat: float, lng: float) -> dict | None:
+    """点数の内訳（重みを掛けた値）と、現在地からの距離。MAX_DISTANCE_M より遠い地点は None。"""
+    distance = distance_m(lat, lng, spot["lat"], spot["lng"])
+    near = 1 - distance / MAX_DISTANCE_M
+    if near <= 0:
+        return None
+    station = max(0.0, 1 - spot["attrs"]["station_distance_m"] / STATION_MAX_M)
+    parts = {
+        "near": WEIGHT_NEAR * near,
+        "size": WEIGHT_SIZE * size_score(spot),
+        "station": WEIGHT_STATION * station,
+    }
     for key, rule in EXTRA_RULES.items():
-        value = attrs.get(key)
-        if rule.get("reason") and value is not None:
-            reason += "。" + rule["reason"].format(value=value)
-    return reason
+        parts[key] = rule["weight"] * extra_score(spot["attrs"].get(key), rule["full"])
+    return {"parts": parts, "distance_m": distance}
 
 
 def score_spot(spot: dict, lat: float, lng: float) -> float | None:
     """点数（0〜1）。MAX_DISTANCE_M より遠い地点は None。"""
-    near = 1 - distance_m(lat, lng, spot["lat"], spot["lng"]) / MAX_DISTANCE_M
-    if near <= 0:
+    result = score_parts(spot, lat, lng)
+    if result is None:
         return None
-    station = max(0.0, 1 - spot["attrs"]["station_distance_m"] / STATION_MAX_M)
-    total = WEIGHT_NEAR * near + WEIGHT_SIZE * size_score(spot) + WEIGHT_STATION * station
-    weights = WEIGHT_NEAR + WEIGHT_SIZE + WEIGHT_STATION
+    weights = WEIGHT_NEAR + WEIGHT_SIZE + WEIGHT_STATION + sum(r["weight"] for r in EXTRA_RULES.values())
+    return sum(result["parts"].values()) / weights
+
+
+def distance_text(meters: float) -> str:
+    if meters < 1000:
+        return f"約{max(10, round(meters / 10) * 10)}m"
+    return f"約{meters / 1000:.1f}km"
+
+
+RANK_WORDS = {1: "一番", 2: "2番目に", 3: "3番目に"}
+
+
+def make_reason(spot: dict, lat: float, lng: float, park_rank: int | None = None) -> str:
+    """推薦理由を書く。点数を押し上げた要素から順に、データから分かる事実を並べる。
+
+    park_rank は、現在地から MAX_DISTANCE_M 以内の公園の中での広さの順位。
+    """
+    attrs = spot["attrs"]
+    result = score_parts(spot, lat, lng)
+    if result is None:
+        result = {"parts": {"near": 0.0, "size": 0.0, "station": 0.0}, "distance_m": MAX_DISTANCE_M}
+    parts = result["parts"]
+
+    near = f"現在地から{distance_text(result['distance_m'])}"
+    if parts["near"] >= WEIGHT_NEAR * NEAR_GOOD:
+        near += "と近い"
+
+    area = attrs["area_m2"]
+    if area:
+        size = f"広さ{area / 10000:.1f}ha" if area >= 10000 else f"広さ{area:,}㎡"
+        size += f"の{attrs['park_type']}"
+        if park_rank in RANK_WORDS:
+            size += f"で、半径{MAX_DISTANCE_M // 1000}km以内の公園で{RANK_WORDS[park_rank]}広い"
+    else:
+        size = attrs.get("facility_type") or spot["category"] + "の施設"
+
+    walk = math.ceil(attrs["station_distance_m"] / WALK_M_PER_MIN)
+    phrases = {"near": near, "size": size, "station": f"{attrs['nearest_station']}駅から徒歩{walk}分"}
     for key, rule in EXTRA_RULES.items():
-        total += rule["weight"] * extra_score(spot["attrs"].get(key), rule["full"])
-        weights += rule["weight"]
-    return total / weights
+        value = attrs.get(key)
+        if rule.get("reason") and value is not None:
+            phrases[key] = rule["reason"].format(value=value)
+
+    # 点数への寄与が大きい順。同じなら near、size、station の順
+    order = sorted(phrases, key=lambda key: -parts.get(key, 0.0))
+    return "。".join(phrases[key] for key in order)
+
+
+def park_ranks(spots: list[dict], lat: float, lng: float) -> dict[str, int]:
+    """現在地から MAX_DISTANCE_M 以内の公園の、広さの順位（1 から）。"""
+    parks = [
+        s for s in spots
+        if s["attrs"]["area_m2"] and distance_m(lat, lng, s["lat"], s["lng"]) < MAX_DISTANCE_M
+    ]
+    parks.sort(key=lambda s: -s["attrs"]["area_m2"])
+    return {s["id"]: i for i, s in enumerate(parks, start=1)}
 
 
 def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list[dict]:
@@ -134,6 +184,7 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
             counts[category] = counts.get(category, 0) + 1
     picked += [item for item in distinct if item not in picked]
     picked = sorted(picked[:limit], key=lambda item: (-item[0], item[1]["id"]))
+    ranks = park_ranks(spots, lat, lng)
 
     return [
         {
@@ -142,7 +193,7 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
             "lat": spot["lat"],
             "lng": spot["lng"],
             "score": score,
-            "reason": make_reason(spot),
+            "reason": make_reason(spot, lat, lng, ranks.get(spot["id"])),
         }
         for score, spot in picked
     ]

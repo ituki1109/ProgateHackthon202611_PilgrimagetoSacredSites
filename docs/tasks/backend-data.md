@@ -51,7 +51,7 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
 
 ### 4. 推薦理由を書く
 
-`reason` には、データから分かる事実だけを書きます。[data/README.md](../../data/README.md) の推薦理由の例のように、決まった文の型に値を差し込めば十分です。
+`reason` には、データから分かる事実だけを書きます。[data/README.md](../../data/README.md) の「推薦理由」のように、点数への寄与が大きい要素から順に、決まった文の型に値を差し込んで書きます。
 
 - データから分からないこと（混雑、撮影のしやすさ、安全さ）は書かない
 - 「怨念が強い場所」のように、データにない意味を付けない
