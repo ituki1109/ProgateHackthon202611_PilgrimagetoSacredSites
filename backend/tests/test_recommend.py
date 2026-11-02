@@ -88,24 +88,60 @@ def test_extra_rules(monkeypatch):
     assert all(0 <= r["score"] <= 1 for r in result)
 
 
-def test_prepare_attach_extra(tmp_path):
+def test_check_extra_rules():
+    rec.check_extra_rules({"a": {"weight": 0.2, "full": 5}, "b": {"weight": 0.1, "full": -500}})
+    with pytest.raises(ValueError):
+        rec.check_extra_rules({"a": {"weight": 0.2, "full": 0}})
+    with pytest.raises(ValueError):
+        rec.check_extra_rules({"a": {"weight": -1, "full": 5}})
+
+
+def test_prepare_extra_points(tmp_path):
     prepare = load_prepare()
     csv = tmp_path / "points.csv"
     csv.write_text("名前,緯度,経度\nA,35.5314,139.6968\nB,35.5320,139.6968\nC,35.6000,139.6000\n", encoding="utf-8")
-    geojson = tmp_path / "areas.geojson"
-    square = [[[139.696, 35.531], [139.697, 35.531], [139.697, 35.532], [139.696, 35.532]]]
-    geojson.write_text(
-        json.dumps({"features": [{"geometry": {"type": "Polygon", "coordinates": square}}]}), encoding="utf-8"
-    )
     spots = pd.DataFrame([{"lat": 35.5314, "lng": 139.6968}])
 
-    points = prepare.load_points(csv)
-    counted = prepare.attach_extra(spots, {"key": "n", "mode": "count", "radius_m": 100}, points)
+    shapes = prepare.load_shapes(csv)
+    assert shapes["count"] == 3
+    counted = prepare.attach_extra(spots, {"key": "n", "mode": "count", "radius_m": 100}, shapes)
     assert counted["n"].tolist() == [2]
 
-    areas = prepare.load_points(geojson)
-    nearest = prepare.attach_extra(spots, {"key": "d", "mode": "nearest"}, areas)
-    assert nearest["d"].tolist()[0] < 100
+
+def _square(lng, lat, half):
+    return [[[lng - half, lat - half], [lng + half, lat - half], [lng + half, lat + half], [lng - half, lat + half]]]
+
+
+def test_prepare_extra_shapes(tmp_path):
+    """面の中の地点は距離 0。座標のない地物は飛ばす。"""
+    prepare = load_prepare()
+    lng, lat = 139.6968, 35.5314
+    features = [
+        {"geometry": None},
+        {"geometry": {"type": "Polygon", "coordinates": []}},
+        # 地点を囲む、一辺 2km ほどの面。頂点はどれも地点から 1km 以上離れている
+        {"geometry": {"type": "Polygon", "coordinates": _square(lng, lat, 0.01)}},
+        # 地点から東へ約 900m の線
+        {"geometry": {"type": "LineString", "coordinates": [[lng + 0.01, lat - 0.01], [lng + 0.01, lat + 0.01]]}},
+        # 地点から北へ約 1.1km の点を含む集まり
+        {"geometry": {"type": "GeometryCollection", "geometries": [{"type": "Point", "coordinates": [lng, lat + 0.01]}]}},
+    ]
+    path = tmp_path / "shapes.geojson"
+    path.write_text(json.dumps({"features": features}), encoding="utf-8")
+    shapes = prepare.load_shapes(path)
+    assert shapes["count"] == 3
+
+    spots = pd.DataFrame([{"lat": lat, "lng": lng}, {"lat": lat, "lng": lng + 0.05}])
+    d = prepare.distances_to_shapes(lat, lng, shapes)
+    assert d[0] == 0
+    assert 850 < d[1] < 950
+    assert 1050 < d[2] < 1150
+
+    nearest = prepare.attach_extra(spots, {"key": "d", "mode": "nearest"}, shapes)
+    assert nearest["d"].tolist()[0] == 0
+    assert nearest["d"].tolist()[1] > 3000
+    counted = prepare.attach_extra(spots, {"key": "n", "mode": "count", "radius_m": 500}, shapes)
+    assert counted["n"].tolist() == [1, 0]
 
 
 @pytest.fixture
