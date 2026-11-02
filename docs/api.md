@@ -58,10 +58,10 @@
 {
   "id": 5,
   "nui_id": 1,
-  "spot_id": "park_012",
-  "spot_name": "○○公園",
-  "lat": 35.53,
-  "lng": 139.70,
+  "spot_id": "takaoka_113",
+  "spot_name": "高岡御車山会館",
+  "lat": 36.746688,
+  "lng": 137.009798,
   "photo_url": "/uploads/visit_5.jpg",
   "recommended": true,
   "created_at": "2026-11-07T14:30:00"
@@ -111,12 +111,12 @@
 ```json
 [
   {
-    "id": "park_012",
-    "name": "○○公園",
-    "lat": 35.53,
-    "lng": 139.70,
+    "id": "takaoka_113",
+    "name": "高岡御車山会館",
+    "lat": 36.746688,
+    "lng": 137.009798,
     "score": 0.82,
-    "reason": "駅から徒歩5分の公園"
+    "reason": "片原町駅から徒歩4分の観光・産業。この駅を最寄りとする空き家バンクの登録物件は6件"
   }
 ]
 ```
@@ -168,22 +168,30 @@
 ```json
 [
   {
-    "id": "park_012",
-    "name": "○○公園",
-    "lat": 35.53,
-    "lng": 139.70,
-    "category": "park",
-    "attrs": { "station_distance_m": 400 }
+    "id": "takaoka_113",
+    "name": "高岡御車山会館",
+    "lat": 36.746688,
+    "lng": 137.009798,
+    "category": "観光・産業",
+    "attrs": {
+      "nearest_station": "片原町",
+      "station_distance_m": 280,
+      "station_passengers": 100,
+      "akiya_count": 6
+    }
   }
 ]
 ```
 
 | 項目 | 型 | 内容 |
 |---|---|---|
-| `id` | 文字列 | 地点の ID。データの中で重ならない値 |
+| `id` | 文字列 | 地点の ID。`takaoka_` に高岡市施設一覧の `新番号` を付けた値 |
 | `name` | 文字列 | 地点の名前 |
 | `lat`、`lng` | 数値 | 緯度と経度（世界測地系 WGS84） |
-| `category` | 文字列 | 地点の種類 |
-| `attrs` | オブジェクト | 推薦に使う値。中身は採用するデータで決める |
+| `category` | 文字列 | 高岡市施設一覧の `ジャンル`（公園・緑地、観光・産業、文化・生涯学習、スポーツ） |
+| `attrs.nearest_station` | 文字列 | いちばん近い駅の名前 |
+| `attrs.station_distance_m` | 整数 | その駅までの直線距離（メートル） |
+| `attrs.station_passengers` | 整数 | その駅の1日の乗降客数（2024年度、路線の合計） |
+| `attrs.akiya_count` | 整数 | その駅を最寄りとする空き家バンク登録物件の数 |
 
-`attrs` の中身は、バックエンドA がデータを決めたあとに、この表へ書き足してください。
+データの出典と作り方は [data/README.md](../data/README.md) にあります。
