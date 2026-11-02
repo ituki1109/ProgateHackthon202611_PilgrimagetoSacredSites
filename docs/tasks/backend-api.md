@@ -17,7 +17,8 @@
 - FastAPI のアプリを作り、`uvicorn app.main:app --reload --port 8000` で起動できるようにする
 - `frontend/` を `/` で、`backend/uploads/` を `/uploads` で配る
 - データベースは SQLite のファイル1つ（`backend/nuitsuki.db`、git に入れない）
-- 表は `nuis` と `visits` の2つ。項目は [api.md](../api.md) の Nui と Visit に合わせる（`grudge` と `visit_count` は保存せず、返すときに計算する）
+- `main.py` と `db.py` は作成済みで、推薦地点の `spots` 表と `GET /recommend` がある。これに足していく
+- 足す表は `nuis` と `visits` の2つ。`db.py` の `SCHEMA` に書き足す。項目は [api.md](../api.md) の Nui と Visit に合わせる（`grudge` と `visit_count` は保存せず、返すときに計算する）
 
 **できあがり:** 起動して `http://localhost:8000/` で画面が開く。
 
@@ -27,9 +28,9 @@
 
 ### 3. 推薦の API
 
-`GET /recommend` を作ります。起動時に `backend/data/spots.json` を読み込み、バックエンドA の `recommend()` を呼びます。
+作成済みです。起動時に `backend/data/spots.json` を `spots` 表に入れ、`GET /recommend` で `recommend()` を呼んでいます。
 
-`recommend.py` がまだないうちは、`spots.json` の先頭5件をそのまま返す仮の関数で進めてください。
+`POST /visits` で `spot_id` から地点の名前を取るときは、`db.get_spot(conn, spot_id)` を使えます。
 
 ### 4. 訪問の API
 

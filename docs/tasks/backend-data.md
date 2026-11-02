@@ -11,6 +11,8 @@
 
 ## must
 
+must の1〜4は作成済みです（`data/prepare.py`、`backend/data/spots.json`、`backend/app/recommend.py`）。残っているのは、デモを見ながら推薦の重みや推薦地点の種類を調整することです。
+
 ### 1. データを読む（最初に）
 
 使うデータと対象地域（神奈川県川崎市）は決まっています。まず [data/README.md](../../data/README.md) を読み、3つのファイルをダウンロードして `data/raw/` に置きます。

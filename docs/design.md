@@ -55,19 +55,21 @@ API のサーバーが画面のファイルも配るので、本番は1つのコ
 ```
 backend/
   app/
-    main.py         API の入口。画面のファイルも配る（B）
-    db.py           SQLite の読み書き（B）
+    main.py         API の入口。画面のファイルも配る（B。推薦の API は作成済み）
+    db.py           SQLite の読み書き（B。spots 表は作成済み）
     grudge.py       怨念の計算（B）
-    recommend.py    推薦の処理（A）
+    recommend.py    推薦の処理（A。作成済み）
   data/
-    spots.json      前処理の結果（A が作る）
+    spots.json      前処理の結果。git に入れてあるので、前処理をしなくても API は動く
   uploads/          保存した写真（git に入れない）
   scripts/
     seed.py         デモ用のデータを入れる（B）
+  tests/            API のテスト
   requirements.txt
 data/
   raw/              ダウンロードした元のデータ（git に入れない）
-  prepare.py        元のデータから spots.json を作る（A）
+  prepare.py        元のデータから spots.json を作る（A。作成済み）
+  requirements.txt
   README.md         使ったデータの名前、出典、ライセンス（A）
 frontend/
   index.html        画面（A が骨組み、B が自分の画面の部分）
@@ -87,11 +89,24 @@ docs/               設計の文書
 
 ## 動かし方
 
-API と画面をまとめて動かすときは、`backend` で次を実行し、`http://localhost:8000/` を開きます。
+API と画面をまとめて動かすときは、`backend` で次を実行し、`http://localhost:8000/` を開きます。起動すると、`backend/data/spots.json` の推薦地点が SQLite（`backend/nuitsuki.db`）の `spots` 表に入ります。
 
 ```bash
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
+```
+
+推薦の API は、たとえば `http://localhost:8000/recommend?lat=35.5314&lng=139.6968`（川崎駅）で試せます。テストは `backend` で次を実行します。
+
+```bash
+python -m pytest tests
+```
+
+推薦地点を作り直すときは、リポジトリの直下で次を実行します。元のデータがなければダウンロードします。作り直したら API を起動し直してください。
+
+```bash
+pip install -r data/requirements.txt
+python data/prepare.py
 ```
 
 API がまだないうちは、`frontend` で静的サーバーを動かし、仮の JSON で画面を作ります（`js/api.js` の `USE_MOCK` を `true` にする）。

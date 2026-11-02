@@ -211,3 +211,21 @@
 | `attrs.park_type` | 文字列か null | 公園の種類（街区公園、総合公園など）。施設は null |
 
 データの出典と作り方は [data/README.md](../data/README.md) にあります。
+
+## spots 表
+
+API は起動時に `spots.json` を読み、SQLite の `spots` 表に入れ直します。`attrs` の中身は表では列に分けています。
+
+| 列 | 型 | 内容 |
+|---|---|---|
+| `id` | TEXT（主キー） | 地点の ID |
+| `name` | TEXT | 地点の名前 |
+| `lat`、`lng` | REAL | 緯度と経度 |
+| `category` | TEXT | `公園・緑地` か `文化・生涯学習` |
+| `nearest_station` | TEXT | いちばん近い駅の名前 |
+| `station_distance_m` | INTEGER | その駅までの直線距離 |
+| `station_passengers` | INTEGER | その駅の1日の乗降客数 |
+| `area_m2` | INTEGER（null 可） | 公園の面積 |
+| `park_type` | TEXT（null 可） | 公園の種類 |
+
+`db.get_spots(conn)` と `db.get_spot(conn, id)` は、表の行を `spots.json` と同じ形（`attrs` つき）に戻して返します。
