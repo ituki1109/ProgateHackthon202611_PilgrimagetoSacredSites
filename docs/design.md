@@ -90,12 +90,15 @@ docs/               設計の文書
 
 ## 動かし方
 
-API と画面をまとめて動かすときは、`backend` で次を実行し、`http://localhost:8000/` を開きます。
+API と画面をまとめて動かすときは、`backend` で次を実行し、`http://localhost:8000/` を開きます。画面は本物の API を呼びます（`js/api.js` の `USE_MOCK` は `false`）。
 
 ```bash
 pip install -r requirements.txt
+python scripts/seed.py
 uvicorn app.main:app --reload --port 8000
 ```
+
+`scripts/seed.py` は、データベースを空にしてから、デモ用のぬい3体と訪問の記録を入れます。デモの前に実行すれば、いつも同じ状態から始められます。
 
 推薦の API は、たとえば `http://localhost:8000/recommend?lat=35.5314&lng=139.6968`（川崎駅）で試せます。テストは `backend` で次を実行します。
 

@@ -35,7 +35,7 @@
 `frontend/js/api.js` に、[api.md](../api.md) の API を呼ぶ関数を並べます。ほかの JS は `fetch` を直接書かず、この関数を使います。
 
 ```js
-export const USE_MOCK = true; // API ができたら false にする
+export const USE_MOCK = false; // 仮の JSON で画面を作るときだけ true にする
 
 export async function getNuis() {}
 export async function createNui(formData) {}
