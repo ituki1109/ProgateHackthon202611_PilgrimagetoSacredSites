@@ -137,10 +137,10 @@
 
 1. ファイルを `data/raw/extra/` に置く（CSV か GeoJSON）
 2. `data/prepare.py` の `EXTRA_SOURCES` に1行足し、`python data/prepare.py` を実行する。各地点の `attrs` に値が入る
-   - `"mode": "count"`：地点から `radius_m` 以内にある点の数
-   - `"mode": "nearest"`：いちばん近い点までの距離（m）
-   - CSV は `lat_col` と `lng_col` で緯度と経度の列名を指定する（既定は `緯度` と `経度`）。GeoJSON の線や面は、頂点の平均の位置を使う
-3. `backend/app/recommend.py` の `EXTRA_RULES` に同じキーで、重み、点数が 1 になる値、推薦理由に足す文を書く。足した重みの分だけ全体を割り直すので、点数は 0〜1 のまま
+   - `"mode": "count"`：地点から `radius_m` 以内にある地物（点、線、面）の数
+   - `"mode": "nearest"`：いちばん近い地物までの距離（m）。面の中にある地点は 0
+   - CSV は `lat_col` と `lng_col` で緯度と経度の列名を指定する（既定は `緯度` と `経度`）。GeoJSON は点、線、面を形のまま扱い、座標のない地物は飛ばす
+3. `backend/app/recommend.py` の `EXTRA_RULES` に同じキーで、重み、点数が 1 になる値、推薦理由に足す文を書く。足した重みの分だけ全体を割り直すので、点数は 0〜1 のまま。`full` を 0 にするなど書き間違えると、API の起動時にエラーで知らせる
 4. API を起動し直す
 
 たとえば、配られたデータが催しの会場の一覧なら、次のように書きます（キーやファイル名は例です）。

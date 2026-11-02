@@ -35,6 +35,19 @@ MAX_PER_CATEGORY = 3  # 1つのカテゴリから返すのはここまで（ほ�
 EXTRA_RULES: dict[str, dict] = {}
 
 
+def check_extra_rules(rules: dict[str, dict]) -> None:
+    """EXTRA_RULES の書き間違いを、API の起動時に知らせる。"""
+    for key, rule in rules.items():
+        weight, full = rule.get("weight"), rule.get("full")
+        if not isinstance(weight, (int, float)) or weight < 0:
+            raise ValueError(f"EXTRA_RULES[{key!r}] の weight は 0 以上の数にする: {rule}")
+        if not isinstance(full, (int, float)) or full == 0:
+            raise ValueError(f"EXTRA_RULES[{key!r}] の full は 0 以外の数にする: {rule}")
+
+
+check_extra_rules(EXTRA_RULES)
+
+
 def distance_m(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
     """2点間の直線距離（メートル）。"""
     r = 6371000

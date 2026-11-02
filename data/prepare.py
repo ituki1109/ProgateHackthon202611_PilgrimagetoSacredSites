@@ -67,10 +67,10 @@ STATION_PASSENGERS_COLUMN = "S12_061"  # 2024年度の乗降客数
 
 # あとから足すデータ（中間発表で配られるデータなど）。
 # ファイルを data/raw/extra/ に置き、ここに1つ足すと、各地点の attrs[key] に値が入る。
-#   mode="count"   : 地点から radius_m 以内にある点の数
-#   mode="nearest" : いちばん近い点までの距離（m）
+#   mode="count"   : 地点から radius_m 以内にある地物（点、線、面）の数
+#   mode="nearest" : いちばん近い地物までの距離（m）。面の中にある地点は 0
 # CSV は lat_col と lng_col で緯度と経度の列を指定する（既定は「緯度」「経度」）。
-# GeoJSON は点ならその座標、線や面なら頂点の平均を使う。
+# GeoJSON は点、線、面を形のまま扱う。座標のない地物は飛ばす。
 # 推薦に使うときは、backend/app/recommend.py の EXTRA_RULES にも同じ key を足す。
 EXTRA_DIR = RAW_DIR / "extra"
 EXTRA_SOURCES: list[dict] = [
@@ -185,16 +185,44 @@ def attach_nearest_station(spots: pd.DataFrame, stations: pd.DataFrame) -> pd.Da
     return pd.concat([spots.reset_index(drop=True), pd.DataFrame(nearest)], axis=1)
 
 
-def load_points(path: Path, lat_col: str = "緯度", lng_col: str = "経度") -> pd.DataFrame:
-    """CSV か GeoJSON から、点の緯度と経度（lat、lng の列）を読む。"""
+def load_shapes(path: Path, lat_col: str = "緯度", lng_col: str = "経度") -> dict:
+    """CSV の点か GeoJSON の地物を読み、線分の並びにする。
+
+    点は長さ 0 の線分、線はそのまま、面は外周と穴の線分にする。
+    返す dict の配列は、どれも線分の数だけの長さを持つ。
+      ax, ay, bx, by : 線分の両端の経度と緯度
+      feature        : どの地物の線分か（0 から数える）
+      ring           : 面の縁の線分か（面の中にあるかを調べるのに使う）
+    座標のない地物（geometry が null など）は飛ばす。
+    """
     if path.suffix.lower() in (".geojson", ".json"):
         features = json.loads(path.read_text(encoding="utf-8"))["features"]
-        rows = []
-        for f in features:
-            coords = np.array(_flatten_coords(f["geometry"]["coordinates"]))
-            rows.append({"lng": coords[:, 0].mean(), "lat": coords[:, 1].mean()})
-        return pd.DataFrame(rows)
+        geometries = [f.get("geometry") for f in features]
+    else:
+        geometries = [{"type": "Point", "coordinates": [lng, lat]} for lat, lng in _read_csv_points(path, lat_col, lng_col)]
 
+    segments = []  # (ax, ay, bx, by, 地物の番号, 面の縁か)
+    count = 0
+    for geometry in geometries:
+        parts = list(_geometry_parts(geometry))
+        if not parts:
+            continue
+        for coords, kind in parts:
+            if kind == "point":
+                segments.append((*coords[0], *coords[0], count, False))
+            else:
+                for a, b in zip(coords, coords[1:]):
+                    segments.append((*a, *b, count, kind == "ring"))
+        count += 1
+
+    arr = np.array(segments, dtype=float).reshape(-1, 6)
+    return {
+        "ax": arr[:, 0], "ay": arr[:, 1], "bx": arr[:, 2], "by": arr[:, 3],
+        "feature": arr[:, 4].astype(int), "ring": arr[:, 5].astype(bool), "count": count,
+    }
+
+
+def _read_csv_points(path: Path, lat_col: str, lng_col: str) -> list[tuple[float, float]]:
     for encoding in ("utf-8-sig", "cp932"):
         try:
             df = pd.read_csv(path, encoding=encoding)
@@ -204,30 +232,75 @@ def load_points(path: Path, lat_col: str = "緯度", lng_col: str = "経度") ->
     else:
         raise ValueError(f"{path} の文字コードが分かりません")
     df = df[[lat_col, lng_col]].dropna().astype(float)
-    return df.rename(columns={lat_col: "lat", lng_col: "lng"})
+    return list(df.itertuples(index=False, name=None))
 
 
-def _flatten_coords(coords) -> list[list[float]]:
-    """GeoJSON の座標（点、線、面のどれでも）を [経度, 緯度] の並びにする。"""
-    if isinstance(coords[0], (int, float)):
-        return [coords[:2]]
-    return [pt for c in coords for pt in _flatten_coords(c)]
+def _geometry_parts(geometry):
+    """GeoJSON の geometry を、(座標の並び, "point" か "line" か "ring") に分ける。"""
+    if not geometry:
+        return
+    kind = geometry.get("type")
+    if kind == "GeometryCollection":
+        for g in geometry.get("geometries") or []:
+            yield from _geometry_parts(g)
+        return
+    coords = geometry.get("coordinates")
+    if not coords:
+        return
+    if kind == "Point":
+        yield [coords[:2]], "point"
+    elif kind == "MultiPoint":
+        for c in coords:
+            yield [c[:2]], "point"
+    elif kind == "LineString" and len(coords) >= 2:
+        yield [c[:2] for c in coords], "line"
+    elif kind == "MultiLineString":
+        for line in coords:
+            if len(line) >= 2:
+                yield [c[:2] for c in line], "line"
+    elif kind in ("Polygon", "MultiPolygon"):
+        polygons = [coords] if kind == "Polygon" else coords
+        for polygon in polygons:
+            for ring in polygon:
+                if len(ring) >= 3:
+                    yield [c[:2] for c in ring] + [ring[0][:2]], "ring"
 
 
-def distances_to(lat: float, lng: float, points: pd.DataFrame) -> np.ndarray:
-    """1つの地点から、たくさんの点までの直線距離（メートル）。"""
-    p1 = np.radians(lat)
-    p2 = np.radians(points["lat"].to_numpy())
-    dl = np.radians(points["lng"].to_numpy() - lng)
-    h = np.sin((p2 - p1) / 2) ** 2 + np.cos(p1) * np.cos(p2) * np.sin(dl / 2) ** 2
-    return 2 * 6371000 * np.arcsin(np.sqrt(h))
+def distances_to_shapes(lat: float, lng: float, shapes: dict) -> np.ndarray:
+    """1つの地点から各地物までの距離（メートル）。面の中にあれば 0。
+
+    川崎市くらいの広さなら、地点のまわりを平面とみなしても誤差は小さい。
+    """
+    kx = 111320 * math.cos(math.radians(lat))
+    ky = 110540
+    ax, ay = (shapes["ax"] - lng) * kx, (shapes["ay"] - lat) * ky
+    bx, by = (shapes["bx"] - lng) * kx, (shapes["by"] - lat) * ky
+    dx, dy = bx - ax, by - ay
+
+    # 原点（地点）から線分までの距離
+    length2 = dx * dx + dy * dy
+    with np.errstate(invalid="ignore", divide="ignore"):
+        t = np.where(length2 > 0, -(ax * dx + ay * dy) / length2, 0.0)
+    t = np.clip(t, 0.0, 1.0)
+    d = np.hypot(ax + t * dx, ay + t * dy)
+    result = np.full(shapes["count"], np.inf)
+    np.minimum.at(result, shapes["feature"], d)
+
+    # 原点から右へ伸ばした線が、面の縁と奇数回交われば面の中
+    crosses = shapes["ring"] & ((ay > 0) != (by > 0))
+    with np.errstate(invalid="ignore", divide="ignore"):
+        x_at = ax + (0 - ay) * dx / np.where(dy == 0, 1, dy)
+    crosses &= x_at > 0
+    inside = np.bincount(shapes["feature"][crosses], minlength=shapes["count"]) % 2 == 1
+    result[inside] = 0.0
+    return result
 
 
-def attach_extra(spots: pd.DataFrame, source: dict, points: pd.DataFrame) -> pd.DataFrame:
+def attach_extra(spots: pd.DataFrame, source: dict, shapes: dict) -> pd.DataFrame:
     """EXTRA_SOURCES の1つ分の値を、spots の source["key"] の列に入れる。"""
     values = []
     for spot in spots.itertuples():
-        d = distances_to(spot.lat, spot.lng, points)
+        d = distances_to_shapes(spot.lat, spot.lng, shapes)
         if source["mode"] == "count":
             values.append(int((d <= source["radius_m"]).sum()))
         elif source["mode"] == "nearest":
@@ -269,11 +342,11 @@ def main() -> None:
     spots = pd.concat([load_parks(), load_facilities()], ignore_index=True)
     spots = attach_nearest_station(spots, load_stations())
     for source in EXTRA_SOURCES:
-        points = load_points(
+        shapes = load_shapes(
             EXTRA_DIR / source["file"], source.get("lat_col", "緯度"), source.get("lng_col", "経度")
         )
-        spots = attach_extra(spots, source, points)
-        print(f"{source['file']} の {len(points)} 件から {source['key']} を足しました")
+        spots = attach_extra(spots, source, shapes)
+        print(f"{source['file']} の {shapes['count']} 件から {source['key']} を足しました")
     extra_keys = [source["key"] for source in EXTRA_SOURCES]
     result = [to_spot(row, extra_keys) for row in spots.to_dict("records")]
 
