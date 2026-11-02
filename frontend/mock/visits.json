@@ -1,0 +1,5 @@
+[
+  { "id": 3, "nui_id": 3, "spot_id": "sample_001", "spot_name": "サンプル公園A", "lat": 35.5335, "lng": 139.7010, "photo_url": null, "recommended": true, "created_at": "2026-11-01T15:20:00" },
+  { "id": 2, "nui_id": 1, "spot_id": null, "spot_name": "近所のカフェ", "lat": 35.5310, "lng": 139.6990, "photo_url": null, "recommended": false, "created_at": "2026-10-28T12:05:00" },
+  { "id": 1, "nui_id": 1, "spot_id": "sample_002", "spot_name": "サンプル公園B", "lat": 35.5290, "lng": 139.6935, "photo_url": null, "recommended": true, "created_at": "2026-10-20T10:40:00" }
+]

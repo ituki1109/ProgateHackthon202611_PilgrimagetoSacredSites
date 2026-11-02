@@ -1,0 +1,89 @@
+# フロントA：画面の骨組み、地図、訪問の記録
+
+画面全体の骨組みと、地図で推薦地点を選んで訪問を記録する流れを作る担当です。フロントB が作る画面も、この骨組みの上に載ります。
+
+## 書くファイル
+
+- `frontend/index.html`（骨組み。フロントB の画面の部分を除く）
+- `frontend/js/api.js`
+- `frontend/js/main.js`
+- `frontend/js/map.js`
+- `frontend/js/visit.js`
+
+## must
+
+### 1. 骨組みと画面の切り替え（最初に）
+
+フロントB が作業を始められるよう、最初に作ります。
+
+- `index.html` は1ページで、画面ごとに `<section>` を分ける
+- URL の `#` で画面を切り替える（`#map`、`#nuis`、`#nui/1`、`#register`、`#visit`）
+- 画面の下か上に、地図、ぬい一覧、登録への移動ボタンを置く
+
+画面と担当は次のとおりです。
+
+| 画面 | `#` | 担当 |
+|---|---|---|
+| 地図と推薦地点 | `#map` | フロントA |
+| 訪問の記録 | `#visit` | フロントA |
+| ぬいの一覧 | `#nuis` | フロントB |
+| ぬいの思い出 | `#nui/1` | フロントB |
+| ぬいの登録 | `#register` | フロントB |
+
+### 2. API の呼び出しをまとめる
+
+`frontend/js/api.js` に、[api.md](../api.md) の API を呼ぶ関数を並べます。ほかの JS は `fetch` を直接書かず、この関数を使います。
+
+```js
+export const USE_MOCK = true; // API ができたら false にする
+
+export async function getNuis() {}
+export async function createNui(formData) {}
+export async function getRecommend(lat, lng) {}
+export async function createVisit(formData) {}
+export async function getVisits(nuiId) {}
+```
+
+`USE_MOCK` が true のときは、`frontend/mock/` の JSON を返します。`createNui` と `createVisit` は、仮の値を返すだけで構いません。
+
+**できあがり:** フロントB が `api.js` の関数を呼んで、仮の JSON で画面を作れる。
+
+### 3. 地図と推薦地点
+
+`frontend/js/map.js` で、Leaflet の地図に推薦地点を表示します。
+
+- 地図は OpenStreetMap のタイルを使う
+- 推薦地点にピンを立て、押すと名前と推薦理由が出る
+- ピンから「ここで記録する」で `#visit` に進む
+
+### 4. 現在地
+
+- ブラウザーの位置情報で現在地を取る
+- 地図をクリックしたら、そこを現在地として扱う（デモで GPS がずれたときのため）
+- 現在地が変わったら、推薦地点を取り直す
+
+### 5. 訪問の記録
+
+`frontend/js/visit.js` で、記録の画面を作ります。
+
+1. 連れて行くぬいを選ぶ（怨念の強い順に並べる）
+2. 写真を選ぶか撮る（`<input type="file" accept="image/*" capture>`）
+3. 送る
+4. 返ってきた `grudge_before` と `grudge_after` を出す（例: 「怨念が 82 → 52 に鎮まった」）
+
+推薦地点を選ばずに記録するときは、地点の名前を入力させます。
+
+**できあがり:** 地図で地点を選び、ぬいと写真を送ると、怨念が減ったことが分かる。
+
+## should
+
+- **AR の組み込み。** 試作は `tkg28/ar-marker-prototype` ブランチの `ar/` にあります。記録が終わった画面に「憑依を見る」ボタンを置き、`ar/index.html` を開く。まずはリンクで開くだけで十分です。
+
+## 注意
+
+- ビルドの要るツール（npm、React など）は使わない。Leaflet は CDN から読み込む。
+- フロントB の JS には、画面を表示する関数（例: `showNuis()`）を用意してもらい、`main.js` から呼ぶ。
+
+## AI への最初の指示の例
+
+> docs/design.md、docs/api.md、docs/tasks/frontend-main.md を読んでください。私はフロントA の担当です。まず must の1（骨組み）と2（api.js）を作ってください。フレームワークやビルドツールは使わず、素の HTML と JavaScript で書いてください。

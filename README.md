@@ -20,6 +20,14 @@ PythonとpandasでProject LINKSなどのオープンデータを整え、地点�
 - Python（機械学習）
 - pandas（データの読み込みと整形）
 
+## 開発の資料
+
+設計と分担は [docs/](docs/) にまとめています。AI に実装を頼むときは、[AGENTS.md](AGENTS.md) の手順で文書を読ませてください。
+
+- [全体設計](docs/design.md)
+- [API 仕様](docs/api.md)
+- 担当ごとの作業：[バックエンドA](docs/tasks/backend-data.md)、[バックエンドB](docs/tasks/backend-api.md)、[フロントA](docs/tasks/frontend-main.md)、[フロントB](docs/tasks/frontend-nui.md)
+
 ## Issueのラベル
 
 機能の優先度はMoSCoW法の4つのラベルで管理します。

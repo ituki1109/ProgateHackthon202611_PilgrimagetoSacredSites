@@ -1,0 +1,6 @@
+# 元のデータ、写真、データベースは git に入れない
+data/raw/
+backend/uploads/
+backend/*.db
+__pycache__/
+.venv/
