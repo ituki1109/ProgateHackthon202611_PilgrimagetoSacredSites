@@ -2,10 +2,12 @@
 
 backend で `python scripts/seed.py` を実行する。
 毎回データベースを空にしてから、ぬい3体と訪問の記録を入れる。
+写真は scripts/demo_photos/ の仮のイラストを backend/uploads/ に写して使う。
 """
 
 from __future__ import annotations
 
+import shutil
 import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -17,28 +19,37 @@ if str(BACKEND_DIR) not in sys.path:
 from app import db  # noqa: E402
 from app.grudge import calc_grudge  # noqa: E402
 
+DEMO_PHOTOS = Path(__file__).resolve().parent / "demo_photos"
+
+
+def demo_photo(filename: str) -> str:
+    """demo_photos/ の画像を uploads/ に写し、/uploads/... の URL を返す。"""
+    db.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(DEMO_PHOTOS / filename, db.UPLOAD_DIR / f"demo_{filename}")
+    return f"/uploads/demo_{filename}"
+
 
 def main() -> None:
     today = date.today()
     db.reset_db()
 
-    # (名前, 最後に連れ出した日は何日前か)
+    # (名前, 最後に連れ出した日は何日前か, 写真)
     # 怨念が「強い」「中くらい」「弱い」に分かれるようにする。
     nui_specs = [
-        ("もちもち", 45),
-        ("ふわまる", 60),
-        ("こんぺいとう", 20),
+        ("もちもち", 45, "nui_mochimochi.svg"),
+        ("ふわまる", 60, "nui_fuwamaru.svg"),
+        ("こんぺいとう", 20, "nui_konpeito.svg"),
     ]
 
     nuis = []
-    for name, days_ago in nui_specs:
+    for name, days_ago, photo in nui_specs:
         last_outing_date = (today - timedelta(days=days_ago)).isoformat()
-        nuis.append(db.create_nui(name, last_outing_date, photo_url=None))
+        nuis.append(db.create_nui(name, last_outing_date, photo_url=demo_photo(photo)))
 
-    # (ぬいの番号, spot_id, 地点名, 緯度, 経度, 推薦地点か, 何日前か, 時, 分)
+    # (ぬいの番号, spot_id, 地点名, 緯度, 経度, 推薦地点か, 何日前か, 時, 分, 写真)
     visit_specs = [
-        (0, "park_0798", "富士見公園", 35.529843, 139.710875, True, 7, 10, 40),
-        (0, None, "近所のカフェ", 35.5325, 139.699, False, 3, 16, 5),
+        (0, "park_0798", "富士見公園", 35.529843, 139.710875, True, 7, 10, 40, "visit_fujimi.svg"),
+        (0, None, "近所のカフェ", 35.5325, 139.699, False, 3, 16, 5, "visit_cafe.svg"),
         (
             2,
             "facility_141305000015",
@@ -49,10 +60,11 @@ def main() -> None:
             2,
             15,
             20,
+            "visit_muza.svg",
         ),
     ]
 
-    for nui_index, spot_id, spot_name, lat, lng, recommended, days_ago, hour, minute in visit_specs:
+    for nui_index, spot_id, spot_name, lat, lng, recommended, days_ago, hour, minute, photo in visit_specs:
         day = today - timedelta(days=days_ago)
         created_at = datetime(day.year, day.month, day.day, hour, minute).strftime(
             "%Y-%m-%dT%H:%M:%S"
@@ -63,7 +75,7 @@ def main() -> None:
             spot_name=spot_name,
             lat=lat,
             lng=lng,
-            photo_url=None,
+            photo_url=demo_photo(photo),
             recommended=recommended,
             created_at=created_at,
         )

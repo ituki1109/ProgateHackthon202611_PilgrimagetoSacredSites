@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#1b1430" stop-opacity=".35"/>
+    </radialGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFC4EA"/><stop offset="1" stop-color="#F3EFF8"/></linearGradient>
+  </defs>
+
+  <rect width="400" height="400" fill="#F1E3E6"/>
+  <g transform="translate(200 250) scale(1.05)">
+      <ellipse cx="0" cy="112" rx="96" ry="12" fill="#000" opacity=".16"/>
+      <ellipse cx="-66" cy="52" rx="22" ry="34" transform="rotate(28 -66 52)" fill="#B9A8E4"/>
+      <ellipse cx="66" cy="52" rx="22" ry="34" transform="rotate(-28 66 52)" fill="#B9A8E4"/>
+      <ellipse cx="0" cy="60" rx="66" ry="56" fill="#DCD0F4"/>
+      <ellipse cx="-34" cy="106" rx="30" ry="16" fill="#DCD0F4"/><ellipse cx="34" cy="106" rx="30" ry="16" fill="#DCD0F4"/>
+      <ellipse cx="-34" cy="108" rx="16" ry="8" fill="#B9A8E4"/><ellipse cx="34" cy="108" rx="16" ry="8" fill="#B9A8E4"/>
+      <circle cx="-62" cy="-96" r="30" fill="#DCD0F4"/><circle cx="62" cy="-96" r="30" fill="#DCD0F4"/>
+      <circle cx="-62" cy="-94" r="15" fill="#B9A8E4"/><circle cx="62" cy="-94" r="15" fill="#B9A8E4"/>
+      <ellipse cx="0" cy="-36" rx="100" ry="82" fill="#DCD0F4"/>
+      <path d="M0 -116 v24" stroke="#B9A8E4" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round"/>
+      <circle cx="-30" cy="-36" r="10" fill="#2A2140"/><circle cx="30" cy="-36" r="10" fill="#2A2140"/>
+        <circle cx="-27" cy="-39" r="3" fill="#fff"/><circle cx="33" cy="-39" r="3" fill="#fff"/>
+        <path d="M-10 -12 q10 6 20 0" fill="none" stroke="#2A2140" stroke-width="6" stroke-linecap="round"/>
+    </g>
+
+  <rect width="400" height="400" fill="url(#vignette)"/>
+</svg>
