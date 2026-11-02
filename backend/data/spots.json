@@ -1,0 +1,6778 @@
+[
+  {
+    "id": "park_0001",
+    "name": "東高根森林公園",
+    "lat": 35.604638,
+    "lng": 139.586261,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "久地",
+      "station_distance_m": 865,
+      "station_passengers": 26960,
+      "area_m2": 110150,
+      "park_type": "特殊公園"
+    }
+  },
+  {
+    "id": "park_0006",
+    "name": "旭町公園",
+    "lat": 35.531317,
+    "lng": 139.716981,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 561,
+      "station_passengers": 10906,
+      "area_m2": 1713,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0008",
+    "name": "池田町公園",
+    "lat": 35.522263,
+    "lng": 139.691897,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "八丁畷",
+      "station_distance_m": 98,
+      "station_passengers": 20206,
+      "area_m2": 1321,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0010",
+    "name": "伊勢町第1公園",
+    "lat": 35.531156,
+    "lng": 139.720558,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 470,
+      "station_passengers": 10906,
+      "area_m2": 3618,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0011",
+    "name": "伊勢町第2公園",
+    "lat": 35.53233,
+    "lng": 139.723223,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 411,
+      "station_passengers": 10906,
+      "area_m2": 2340,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0012",
+    "name": "稲毛公園",
+    "lat": 35.530214,
+    "lng": 139.704509,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京急川崎",
+      "station_distance_m": 448,
+      "station_passengers": 123389,
+      "area_m2": 2275,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0013",
+    "name": "入江崎公園",
+    "lat": 35.518713,
+    "lng": 139.736017,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "昭和",
+      "station_distance_m": 1710,
+      "station_passengers": 0,
+      "area_m2": 6529,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0014",
+    "name": "姥ヶ森公園",
+    "lat": 35.51437,
+    "lng": 139.713263,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 485,
+      "station_passengers": 0,
+      "area_m2": 3164,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0015",
+    "name": "江川ふれあい公園",
+    "lat": 35.536166,
+    "lng": 139.74414,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "大師橋",
+      "station_distance_m": 338,
+      "station_passengers": 10557,
+      "area_m2": 5732,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0016",
+    "name": "大島第1公園",
+    "lat": 35.524619,
+    "lng": 139.716546,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "港町",
+      "station_distance_m": 1215,
+      "station_passengers": 7737,
+      "area_m2": 2570,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0017",
+    "name": "大島第2公園",
+    "lat": 35.5227,
+    "lng": 139.719141,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 1417,
+      "station_passengers": 10906,
+      "area_m2": 1422,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0018",
+    "name": "大島第3公園",
+    "lat": 35.52108,
+    "lng": 139.718818,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 1315,
+      "station_passengers": 0,
+      "area_m2": 2060,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0019",
+    "name": "大島第4公園",
+    "lat": 35.521528,
+    "lng": 139.714624,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小田栄",
+      "station_distance_m": 1171,
+      "station_passengers": 0,
+      "area_m2": 2392,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0020",
+    "name": "大島第5公園",
+    "lat": 35.519276,
+    "lng": 139.715213,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 1039,
+      "station_passengers": 0,
+      "area_m2": 3155,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0021",
+    "name": "大島第6公園",
+    "lat": 35.524297,
+    "lng": 139.710808,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "港町",
+      "station_distance_m": 1209,
+      "station_passengers": 7737,
+      "area_m2": 1883,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0022",
+    "name": "小田1丁目中央公園",
+    "lat": 35.515749,
+    "lng": 139.699908,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎新町",
+      "station_distance_m": 292,
+      "station_passengers": 0,
+      "area_m2": 3734,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0025",
+    "name": "小田7丁目公園",
+    "lat": 35.509636,
+    "lng": 139.709237,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 402,
+      "station_passengers": 0,
+      "area_m2": 4056,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0029",
+    "name": "小田栄2丁目公園",
+    "lat": 35.512647,
+    "lng": 139.711313,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 361,
+      "station_passengers": 0,
+      "area_m2": 2206,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0032",
+    "name": "貝塚公園",
+    "lat": 35.52409,
+    "lng": 139.701563,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎新町",
+      "station_distance_m": 674,
+      "station_passengers": 0,
+      "area_m2": 2048,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0033",
+    "name": "上並木公園",
+    "lat": 35.52576,
+    "lng": 139.693773,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "八丁畷",
+      "station_distance_m": 370,
+      "station_passengers": 20206,
+      "area_m2": 3694,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0034",
+    "name": "川中島公園",
+    "lat": 35.531524,
+    "lng": 139.725833,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 472,
+      "station_passengers": 17432,
+      "area_m2": 2462,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0035",
+    "name": "観音町公園",
+    "lat": 35.525939,
+    "lng": 139.72957,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 1140,
+      "station_passengers": 17432,
+      "area_m2": 1852,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0037",
+    "name": "北ノ崎公園",
+    "lat": 35.522815,
+    "lng": 139.737476,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "大師橋",
+      "station_distance_m": 1557,
+      "station_passengers": 10557,
+      "area_m2": 4040,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0039",
+    "name": "京町公園",
+    "lat": 35.518713,
+    "lng": 139.693286,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "八丁畷",
+      "station_distance_m": 511,
+      "station_passengers": 20206,
+      "area_m2": 1188,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0045",
+    "name": "京町ももたろう公園",
+    "lat": 35.5099,
+    "lng": 139.697072,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小田栄",
+      "station_distance_m": 881,
+      "station_passengers": 0,
+      "area_m2": 1064,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0046",
+    "name": "鋼管通第1公園",
+    "lat": 35.515232,
+    "lng": 139.71569,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 608,
+      "station_passengers": 0,
+      "area_m2": 2361,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0047",
+    "name": "小島新田公園",
+    "lat": 35.53481,
+    "lng": 139.750242,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小島新田",
+      "station_distance_m": 244,
+      "station_passengers": 21774,
+      "area_m2": 3560,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0048",
+    "name": "桜本公園",
+    "lat": 35.52158,
+    "lng": 139.725883,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 1578,
+      "station_passengers": 17432,
+      "area_m2": 2297,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0050",
+    "name": "塩浜町公園",
+    "lat": 35.52817,
+    "lng": 139.739243,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "大師橋",
+      "station_distance_m": 944,
+      "station_passengers": 10557,
+      "area_m2": 4862,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0051",
+    "name": "塩浜橋公園",
+    "lat": 35.523206,
+    "lng": 139.74024,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小島新田",
+      "station_distance_m": 1433,
+      "station_passengers": 21774,
+      "area_m2": 1395,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0053",
+    "name": "下河原公園",
+    "lat": 35.538303,
+    "lng": 139.753722,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小島新田",
+      "station_distance_m": 691,
+      "station_passengers": 21774,
+      "area_m2": 3385,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0056",
+    "name": "新町公園",
+    "lat": 35.520104,
+    "lng": 139.697276,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎新町",
+      "station_distance_m": 267,
+      "station_passengers": 0,
+      "area_m2": 1961,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0057",
+    "name": "大師河原1丁目公園",
+    "lat": 35.540015,
+    "lng": 139.736797,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東門前",
+      "station_distance_m": 442,
+      "station_passengers": 12967,
+      "area_m2": 2701,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0058",
+    "name": "大師西町公園",
+    "lat": 35.534497,
+    "lng": 139.72416,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 218,
+      "station_passengers": 17432,
+      "area_m2": 1293,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0060",
+    "name": "鷹取公園",
+    "lat": 35.52734,
+    "lng": 139.747063,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小島新田",
+      "station_distance_m": 813,
+      "station_passengers": 21774,
+      "area_m2": 4138,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0061",
+    "name": "田島公園",
+    "lat": 35.521196,
+    "lng": 139.709735,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小田栄",
+      "station_distance_m": 864,
+      "station_passengers": 0,
+      "area_m2": 3696,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0063",
+    "name": "田島ふれあい公園",
+    "lat": 35.516353,
+    "lng": 139.710601,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小田栄",
+      "station_distance_m": 544,
+      "station_passengers": 0,
+      "area_m2": 5329,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0064",
+    "name": "田町ふれあい公園",
+    "lat": 35.534373,
+    "lng": 139.742985,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "大師橋",
+      "station_distance_m": 338,
+      "station_passengers": 10557,
+      "area_m2": 1962,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0065",
+    "name": "出来野公園",
+    "lat": 35.532864,
+    "lng": 139.746024,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小島新田",
+      "station_distance_m": 241,
+      "station_passengers": 21774,
+      "area_m2": 3896,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0066",
+    "name": "出来野第1公園",
+    "lat": 35.534654,
+    "lng": 139.740262,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "大師橋",
+      "station_distance_m": 218,
+      "station_passengers": 10557,
+      "area_m2": 1518,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0067",
+    "name": "天飛公園",
+    "lat": 35.517046,
+    "lng": 139.704867,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小田栄",
+      "station_distance_m": 293,
+      "station_passengers": 0,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0068",
+    "name": "殿町第1公園",
+    "lat": 35.538092,
+    "lng": 139.746569,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小島新田",
+      "station_distance_m": 394,
+      "station_passengers": 21774,
+      "area_m2": 1664,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0069",
+    "name": "殿町第2公園",
+    "lat": 35.54072,
+    "lng": 139.751113,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小島新田",
+      "station_distance_m": 749,
+      "station_passengers": 21774,
+      "area_m2": 3473,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0070",
+    "name": "殿町第3公園",
+    "lat": 35.539238,
+    "lng": 139.74942,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小島新田",
+      "station_distance_m": 538,
+      "station_passengers": 21774,
+      "area_m2": 7161,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0071",
+    "name": "中島公園",
+    "lat": 35.529068,
+    "lng": 139.71727,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 766,
+      "station_passengers": 10906,
+      "area_m2": 1415,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0073",
+    "name": "中瀬公園",
+    "lat": 35.538236,
+    "lng": 139.729633,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 428,
+      "station_passengers": 17432,
+      "area_m2": 1702,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0075",
+    "name": "中留公園",
+    "lat": 35.522919,
+    "lng": 139.728092,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 1441,
+      "station_passengers": 17432,
+      "area_m2": 4155,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0076",
+    "name": "中浜公園",
+    "lat": 35.524699,
+    "lng": 139.741362,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小島新田",
+      "station_distance_m": 1239,
+      "station_passengers": 21774,
+      "area_m2": 3881,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0078",
+    "name": "日進町中央公園",
+    "lat": 35.52391,
+    "lng": 139.694333,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "八丁畷",
+      "station_distance_m": 281,
+      "station_passengers": 20206,
+      "area_m2": 2074,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0079",
+    "name": "浜川崎公園",
+    "lat": 35.515024,
+    "lng": 139.721313,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 889,
+      "station_passengers": 0,
+      "area_m2": 1157,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0080",
+    "name": "浜町公園",
+    "lat": 35.517863,
+    "lng": 139.716775,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 916,
+      "station_passengers": 0,
+      "area_m2": 1798,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0082",
+    "name": "浜町第3公園",
+    "lat": 35.513774,
+    "lng": 139.717421,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 539,
+      "station_passengers": 0,
+      "area_m2": 2300,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0084",
+    "name": "東小田公園",
+    "lat": 35.511646,
+    "lng": 139.707589,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小田栄",
+      "station_distance_m": 383,
+      "station_passengers": 0,
+      "area_m2": 2714,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0085",
+    "name": "東田公園",
+    "lat": 35.528539,
+    "lng": 139.701869,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京急川崎",
+      "station_distance_m": 504,
+      "station_passengers": 123389,
+      "area_m2": 3221,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0086",
+    "name": "東町公園",
+    "lat": 35.533438,
+    "lng": 139.702433,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京急川崎",
+      "station_distance_m": 143,
+      "station_passengers": 123389,
+      "area_m2": 1001,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0087",
+    "name": "東門前公園",
+    "lat": 35.53634,
+    "lng": 139.732533,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東門前",
+      "station_distance_m": 165,
+      "station_passengers": 12967,
+      "area_m2": 1937,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0088",
+    "name": "東渡田第2公園",
+    "lat": 35.518685,
+    "lng": 139.712444,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小田栄",
+      "station_distance_m": 818,
+      "station_passengers": 0,
+      "area_m2": 2154,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0092",
+    "name": "藤崎第2公園",
+    "lat": 35.526929,
+    "lng": 139.721354,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 942,
+      "station_passengers": 10906,
+      "area_m2": 2559,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0093",
+    "name": "藤崎第3公園",
+    "lat": 35.52768,
+    "lng": 139.719023,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 869,
+      "station_passengers": 10906,
+      "area_m2": 5081,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0094",
+    "name": "藤崎第4公園",
+    "lat": 35.524361,
+    "lng": 139.720007,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 1227,
+      "station_passengers": 10906,
+      "area_m2": 2572,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0096",
+    "name": "藤崎第6公園",
+    "lat": 35.528773,
+    "lng": 139.720052,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 737,
+      "station_passengers": 10906,
+      "area_m2": 1004,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0097",
+    "name": "藤崎つつじ公園",
+    "lat": 35.526091,
+    "lng": 139.723197,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 1058,
+      "station_passengers": 10906,
+      "area_m2": 1493,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0101",
+    "name": "港町公園",
+    "lat": 35.534283,
+    "lng": 139.71694,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鈴木町",
+      "station_distance_m": 358,
+      "station_passengers": 10906,
+      "area_m2": 3616,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0102",
+    "name": "南小田公園",
+    "lat": 35.51204,
+    "lng": 139.700796,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小田栄",
+      "station_distance_m": 469,
+      "station_passengers": 0,
+      "area_m2": 1478,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0103",
+    "name": "冥加公園",
+    "lat": 35.525217,
+    "lng": 139.731461,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 1273,
+      "station_passengers": 17432,
+      "area_m2": 3135,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0104",
+    "name": "向町公園",
+    "lat": 35.520306,
+    "lng": 139.704592,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎新町",
+      "station_distance_m": 530,
+      "station_passengers": 0,
+      "area_m2": 1438,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0105",
+    "name": "四谷上町けやき公園",
+    "lat": 35.527109,
+    "lng": 139.735174,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東門前",
+      "station_distance_m": 1057,
+      "station_passengers": 12967,
+      "area_m2": 1203,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0106",
+    "name": "四谷上町公園",
+    "lat": 35.527807,
+    "lng": 139.735917,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東門前",
+      "station_distance_m": 987,
+      "station_passengers": 12967,
+      "area_m2": 2021,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0107",
+    "name": "四谷ゆめ公園",
+    "lat": 35.525633,
+    "lng": 139.738296,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "大師橋",
+      "station_distance_m": 1235,
+      "station_passengers": 10557,
+      "area_m2": 6976,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0108",
+    "name": "渡田山王町公園",
+    "lat": 35.51911,
+    "lng": 139.697102,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎新町",
+      "station_distance_m": 214,
+      "station_passengers": 0,
+      "area_m2": 1575,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0110",
+    "name": "渡田第1公園",
+    "lat": 35.517818,
+    "lng": 139.706778,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小田栄",
+      "station_distance_m": 408,
+      "station_passengers": 0,
+      "area_m2": 3655,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0111",
+    "name": "渡田第2公園",
+    "lat": 35.52375,
+    "lng": 139.705523,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎新町",
+      "station_distance_m": 828,
+      "station_passengers": 0,
+      "area_m2": 1749,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0116",
+    "name": "小倉下町公園",
+    "lat": 35.53827,
+    "lng": 139.672717,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 706,
+      "station_passengers": 35884,
+      "area_m2": 1600,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0117",
+    "name": "小倉西公園",
+    "lat": 35.537481,
+    "lng": 139.665291,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 1383,
+      "station_passengers": 35884,
+      "area_m2": 4564,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0120",
+    "name": "北加瀬熊野台公園",
+    "lat": 35.550658,
+    "lng": 139.662087,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新川崎",
+      "station_distance_m": 867,
+      "station_passengers": 51854,
+      "area_m2": 1529,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0121",
+    "name": "北加瀬公園",
+    "lat": 35.550883,
+    "lng": 139.668289,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新川崎",
+      "station_distance_m": 310,
+      "station_passengers": 51854,
+      "area_m2": 1253,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0122",
+    "name": "北加瀬第1公園",
+    "lat": 35.555005,
+    "lng": 139.660396,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新川崎",
+      "station_distance_m": 1083,
+      "station_passengers": 51854,
+      "area_m2": 1586,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0124",
+    "name": "小向第1公園",
+    "lat": 35.550388,
+    "lng": 139.69597,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢口渡",
+      "station_distance_m": 1398,
+      "station_passengers": 25506,
+      "area_m2": 4572,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0126",
+    "name": "小向第3公園",
+    "lat": 35.545894,
+    "lng": 139.689411,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 1086,
+      "station_passengers": 35884,
+      "area_m2": 3876,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0128",
+    "name": "小向第5公園",
+    "lat": 35.5463,
+    "lng": 139.686908,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 963,
+      "station_passengers": 35884,
+      "area_m2": 1318,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0130",
+    "name": "小向第7公園",
+    "lat": 35.547955,
+    "lng": 139.691927,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 1408,
+      "station_passengers": 35884,
+      "area_m2": 1323,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0131",
+    "name": "幸町公園",
+    "lat": 35.536828,
+    "lng": 139.697689,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京急川崎",
+      "station_distance_m": 517,
+      "station_passengers": 123389,
+      "area_m2": 1657,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0133",
+    "name": "下平間稲荷公園",
+    "lat": 35.552505,
+    "lng": 139.676333,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鹿島田",
+      "station_distance_m": 169,
+      "station_passengers": 33178,
+      "area_m2": 1694,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0136",
+    "name": "下平間春風公園",
+    "lat": 35.549307,
+    "lng": 139.680472,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鹿島田",
+      "station_distance_m": 551,
+      "station_passengers": 33178,
+      "area_m2": 4000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0137",
+    "name": "諏訪公園",
+    "lat": 35.534609,
+    "lng": 139.690813,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 652,
+      "station_passengers": 388782,
+      "area_m2": 1671,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0140",
+    "name": "塚越公園",
+    "lat": 35.54166,
+    "lng": 139.6805,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 245,
+      "station_passengers": 35884,
+      "area_m2": 1225,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0144",
+    "name": "塚越沼ノ上公園",
+    "lat": 35.544926,
+    "lng": 139.680802,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 609,
+      "station_passengers": 35884,
+      "area_m2": 1018,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0146",
+    "name": "戸手第1公園",
+    "lat": 35.543417,
+    "lng": 139.686509,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 708,
+      "station_passengers": 35884,
+      "area_m2": 1357,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0148",
+    "name": "戸手町公園",
+    "lat": 35.545534,
+    "lng": 139.694143,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "六郷土手",
+      "station_distance_m": 1336,
+      "station_passengers": 16205,
+      "area_m2": 1185,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0152",
+    "name": "東小倉公園",
+    "lat": 35.537652,
+    "lng": 139.671434,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 834,
+      "station_passengers": 35884,
+      "area_m2": 1019,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0155",
+    "name": "古市場公園",
+    "lat": 35.552235,
+    "lng": 139.686991,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鹿島田",
+      "station_distance_m": 1090,
+      "station_passengers": 33178,
+      "area_m2": 2492,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0156",
+    "name": "古市場第1公園",
+    "lat": 35.553282,
+    "lng": 139.686825,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鹿島田",
+      "station_distance_m": 1091,
+      "station_passengers": 33178,
+      "area_m2": 1382,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0157",
+    "name": "古市場第2公園",
+    "lat": 35.552584,
+    "lng": 139.684213,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鹿島田",
+      "station_distance_m": 845,
+      "station_passengers": 33178,
+      "area_m2": 2341,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0158",
+    "name": "古市場第3公園",
+    "lat": 35.555985,
+    "lng": 139.683085,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鹿島田",
+      "station_distance_m": 890,
+      "station_passengers": 33178,
+      "area_m2": 1645,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0159",
+    "name": "古市場第4公園",
+    "lat": 35.554408,
+    "lng": 139.682535,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鹿島田",
+      "station_distance_m": 758,
+      "station_passengers": 33178,
+      "area_m2": 1180,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0160",
+    "name": "古市場第5公園",
+    "lat": 35.553361,
+    "lng": 139.68171,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鹿島田",
+      "station_distance_m": 645,
+      "station_passengers": 33178,
+      "area_m2": 1797,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0163",
+    "name": "古市場東公園",
+    "lat": 35.552956,
+    "lng": 139.688778,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鹿島田",
+      "station_distance_m": 1259,
+      "station_passengers": 33178,
+      "area_m2": 2124,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0167",
+    "name": "堀川町公園",
+    "lat": 35.533934,
+    "lng": 139.697757,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 298,
+      "station_passengers": 388782,
+      "area_m2": 1028,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0170",
+    "name": "南加瀬けやき公園",
+    "lat": 35.542516,
+    "lng": 139.659914,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新川崎",
+      "station_distance_m": 1462,
+      "station_passengers": 51854,
+      "area_m2": 1021,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0171",
+    "name": "南加瀬五反公園",
+    "lat": 35.546029,
+    "lng": 139.663737,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新川崎",
+      "station_distance_m": 943,
+      "station_passengers": 51854,
+      "area_m2": 1888,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0173",
+    "name": "南加瀬辻公園",
+    "lat": 35.539824,
+    "lng": 139.655335,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "日吉",
+      "station_distance_m": 1726,
+      "station_passengers": 226673,
+      "area_m2": 2254,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0174",
+    "name": "柳町公園",
+    "lat": 35.530743,
+    "lng": 139.691487,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 487,
+      "station_passengers": 388782,
+      "area_m2": 1897,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0177",
+    "name": "井田公園",
+    "lat": 35.56232,
+    "lng": 139.642079,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "日吉",
+      "station_distance_m": 1049,
+      "station_passengers": 226673,
+      "area_m2": 6523,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0178",
+    "name": "井田こもれび公園",
+    "lat": 35.561797,
+    "lng": 139.633719,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "日吉本町",
+      "station_distance_m": 1322,
+      "station_passengers": 8297,
+      "area_m2": 1435,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0179",
+    "name": "井田さくらが丘公園",
+    "lat": 35.562506,
+    "lng": 139.635314,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "日吉本町",
+      "station_distance_m": 1412,
+      "station_passengers": 8297,
+      "area_m2": 5475,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0181",
+    "name": "井田杉山町公園",
+    "lat": 35.568261,
+    "lng": 139.644321,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 982,
+      "station_passengers": 59259,
+      "area_m2": 1190,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0186",
+    "name": "市ノ坪中村通公園",
+    "lat": 35.569083,
+    "lng": 139.659488,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 572,
+      "station_passengers": 59259,
+      "area_m2": 1330,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0188",
+    "name": "今井公園",
+    "lat": 35.573261,
+    "lng": 139.650894,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 909,
+      "station_passengers": 59259,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0189",
+    "name": "今井さくら公園",
+    "lat": 35.573174,
+    "lng": 139.648817,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 987,
+      "station_passengers": 59259,
+      "area_m2": 1127,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0192",
+    "name": "上小田中北公園",
+    "lat": 35.590864,
+    "lng": 139.634956,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 655,
+      "station_passengers": 69142,
+      "area_m2": 1427,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0193",
+    "name": "上小田中公園",
+    "lat": 35.583814,
+    "lng": 139.642932,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵中原",
+      "station_distance_m": 369,
+      "station_passengers": 55204,
+      "area_m2": 1274,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0194",
+    "name": "上小田中第2公園",
+    "lat": 35.587452,
+    "lng": 139.638834,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵中原",
+      "station_distance_m": 823,
+      "station_passengers": 55204,
+      "area_m2": 1151,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0195",
+    "name": "上小田中第4公園",
+    "lat": 35.592047,
+    "lng": 139.630198,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 525,
+      "station_passengers": 69142,
+      "area_m2": 1002,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0197",
+    "name": "上小田中西公園",
+    "lat": 35.589535,
+    "lng": 139.630721,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 278,
+      "station_passengers": 69142,
+      "area_m2": 3065,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0198",
+    "name": "上小田中南公園",
+    "lat": 35.581945,
+    "lng": 139.638738,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵中原",
+      "station_distance_m": 344,
+      "station_passengers": 55204,
+      "area_m2": 1124,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0205",
+    "name": "木月公園",
+    "lat": 35.564274,
+    "lng": 139.649257,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 519,
+      "station_passengers": 59259,
+      "area_m2": 1115,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0206",
+    "name": "木月下町公園",
+    "lat": 35.558865,
+    "lng": 139.655622,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 765,
+      "station_passengers": 59259,
+      "area_m2": 1164,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0208",
+    "name": "木月住吉南公園",
+    "lat": 35.56418,
+    "lng": 139.661303,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 620,
+      "station_passengers": 59259,
+      "area_m2": 1663,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0212",
+    "name": "小杉御殿町2丁目公園",
+    "lat": 35.577733,
+    "lng": 139.654662,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵小杉",
+      "station_distance_m": 610,
+      "station_passengers": 431702,
+      "area_m2": 2115,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0213",
+    "name": "小杉御殿町公園",
+    "lat": 35.58067,
+    "lng": 139.653083,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新丸子",
+      "station_distance_m": 801,
+      "station_passengers": 26424,
+      "area_m2": 1973,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0217",
+    "name": "下小田中3丁目公園",
+    "lat": 35.573847,
+    "lng": 139.640691,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵中原",
+      "station_distance_m": 758,
+      "station_passengers": 55204,
+      "area_m2": 1302,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0219",
+    "name": "下小田中北島公園",
+    "lat": 35.577,
+    "lng": 139.643991,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵中原",
+      "station_distance_m": 430,
+      "station_passengers": 55204,
+      "area_m2": 1029,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0220",
+    "name": "下小田中公園",
+    "lat": 35.57789,
+    "lng": 139.640732,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵中原",
+      "station_distance_m": 323,
+      "station_passengers": 55204,
+      "area_m2": 1208,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0223",
+    "name": "下沼部公園",
+    "lat": 35.574951,
+    "lng": 139.666721,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "向河原",
+      "station_distance_m": 313,
+      "station_passengers": 14604,
+      "area_m2": 1470,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0224",
+    "name": "新城公園",
+    "lat": 35.584231,
+    "lng": 139.629731,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 359,
+      "station_passengers": 69142,
+      "area_m2": 1049,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0226",
+    "name": "住吉西公園",
+    "lat": 35.564567,
+    "lng": 139.64802,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 619,
+      "station_passengers": 59259,
+      "area_m2": 4258,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0228",
+    "name": "中丸子公園",
+    "lat": 35.567033,
+    "lng": 139.672428,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "平間",
+      "station_distance_m": 729,
+      "station_passengers": 26592,
+      "area_m2": 3122,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0231",
+    "name": "中丸子まるっこ公園",
+    "lat": 35.570784,
+    "lng": 139.662926,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "向河原",
+      "station_distance_m": 424,
+      "station_passengers": 14604,
+      "area_m2": 3000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0241",
+    "name": "梶ケ谷第2公園",
+    "lat": 35.583319,
+    "lng": 139.608169,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "梶が谷",
+      "station_distance_m": 1185,
+      "station_passengers": 36095,
+      "area_m2": 6585,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0242",
+    "name": "梶ケ谷第3公園",
+    "lat": 35.585931,
+    "lng": 139.607523,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "梶が谷",
+      "station_distance_m": 888,
+      "station_passengers": 36095,
+      "area_m2": 3202,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0245",
+    "name": "蟹ヶ谷のぞみの丘公園",
+    "lat": 35.562281,
+    "lng": 139.632949,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "日吉本町",
+      "station_distance_m": 1376,
+      "station_passengers": 8297,
+      "area_m2": 1302,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0249",
+    "name": "上作延第4公園",
+    "lat": 35.598207,
+    "lng": 139.589523,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "津田山",
+      "station_distance_m": 1179,
+      "station_passengers": 7826,
+      "area_m2": 1535,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0250",
+    "name": "上作延農住公園",
+    "lat": 35.596968,
+    "lng": 139.594941,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "津田山",
+      "station_distance_m": 908,
+      "station_passengers": 7826,
+      "area_m2": 1530,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0251",
+    "name": "久地の里公園",
+    "lat": 35.608951,
+    "lng": 139.602284,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "津田山",
+      "station_distance_m": 606,
+      "station_passengers": 7826,
+      "area_m2": 1714,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0252",
+    "name": "久地梅林公園",
+    "lat": 35.609391,
+    "lng": 139.606753,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "津田山",
+      "station_distance_m": 840,
+      "station_passengers": 7826,
+      "area_m2": 3800,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0253",
+    "name": "久地ふれあい公園",
+    "lat": 35.608095,
+    "lng": 139.605391,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "津田山",
+      "station_distance_m": 650,
+      "station_passengers": 7826,
+      "area_m2": 1475,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0254",
+    "name": "坂戸公園",
+    "lat": 35.594637,
+    "lng": 139.622622,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 993,
+      "station_passengers": 69142,
+      "area_m2": 1862,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0260",
+    "name": "下作延北ノ谷公園",
+    "lat": 35.609109,
+    "lng": 139.597113,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "久地",
+      "station_distance_m": 382,
+      "station_passengers": 26960,
+      "area_m2": 1782,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0261",
+    "name": "下作延第2公園",
+    "lat": 35.595549,
+    "lng": 139.602339,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "梶が谷",
+      "station_distance_m": 363,
+      "station_passengers": 36095,
+      "area_m2": 1896,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0263",
+    "name": "下作延中央公園",
+    "lat": 35.60012,
+    "lng": 139.605093,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "溝の口",
+      "station_distance_m": 494,
+      "station_passengers": 195762,
+      "area_m2": 5563,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0271",
+    "name": "下野毛2丁目公園",
+    "lat": 35.596777,
+    "lng": 139.637239,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 1275,
+      "station_passengers": 69142,
+      "area_m2": 1534,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0276",
+    "name": "新作第3公園",
+    "lat": 35.587384,
+    "lng": 139.625853,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 293,
+      "station_passengers": 69142,
+      "area_m2": 1170,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0281",
+    "name": "末長けやき公園",
+    "lat": 35.592114,
+    "lng": 139.604773,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "梶が谷",
+      "station_distance_m": 204,
+      "station_passengers": 36095,
+      "area_m2": 1470,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0284",
+    "name": "末長高之面公園",
+    "lat": 35.591011,
+    "lng": 139.623392,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 652,
+      "station_passengers": 69142,
+      "area_m2": 2159,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0285",
+    "name": "末長中町公園",
+    "lat": 35.591371,
+    "lng": 139.621907,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 784,
+      "station_passengers": 69142,
+      "area_m2": 1547,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0286",
+    "name": "末長西公園",
+    "lat": 35.589524,
+    "lng": 139.608939,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "梶が谷",
+      "station_distance_m": 556,
+      "station_passengers": 36095,
+      "area_m2": 1508,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0287",
+    "name": "末長東公園",
+    "lat": 35.589164,
+    "lng": 139.627462,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 244,
+      "station_passengers": 69142,
+      "area_m2": 1959,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0293",
+    "name": "千年新町公園",
+    "lat": 35.579626,
+    "lng": 139.627891,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 873,
+      "station_passengers": 69142,
+      "area_m2": 2032,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0296",
+    "name": "千年中央公園",
+    "lat": 35.580616,
+    "lng": 139.623997,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 885,
+      "station_passengers": 69142,
+      "area_m2": 1784,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0299",
+    "name": "千年三笠公園",
+    "lat": 35.582991,
+    "lng": 139.618656,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 1064,
+      "station_passengers": 69142,
+      "area_m2": 1549,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0300",
+    "name": "津田山公園",
+    "lat": 35.605787,
+    "lng": 139.602132,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "津田山",
+      "station_distance_m": 270,
+      "station_passengers": 7826,
+      "area_m2": 1739,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0302",
+    "name": "津田山第3公園",
+    "lat": 35.605764,
+    "lng": 139.599107,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "津田山",
+      "station_distance_m": 277,
+      "station_passengers": 7826,
+      "area_m2": 3085,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0304",
+    "name": "野川中公園",
+    "lat": 35.571797,
+    "lng": 139.61526,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東山田",
+      "station_distance_m": 2126,
+      "station_passengers": 5193,
+      "area_m2": 3132,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0305",
+    "name": "野川東公園",
+    "lat": 35.570682,
+    "lng": 139.618111,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 2109,
+      "station_passengers": 69142,
+      "area_m2": 2397,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0306",
+    "name": "野川南公園",
+    "lat": 35.564864,
+    "lng": 139.610458,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東山田",
+      "station_distance_m": 1250,
+      "station_passengers": 5193,
+      "area_m2": 1262,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0309",
+    "name": "久末表耕地公園",
+    "lat": 35.570941,
+    "lng": 139.621824,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 1946,
+      "station_passengers": 69142,
+      "area_m2": 1213,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0310",
+    "name": "久末公園",
+    "lat": 35.561526,
+    "lng": 139.615237,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東山田",
+      "station_distance_m": 1164,
+      "station_passengers": 5193,
+      "area_m2": 1085,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0312",
+    "name": "久末城法谷公園",
+    "lat": 35.564432,
+    "lng": 139.626018,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "高田",
+      "station_distance_m": 1726,
+      "station_passengers": 8132,
+      "area_m2": 3086,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0313",
+    "name": "久末第3公園",
+    "lat": 35.564038,
+    "lng": 139.619046,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東山田",
+      "station_distance_m": 1606,
+      "station_passengers": 5193,
+      "area_m2": 1022,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0314",
+    "name": "久末つつじ公園",
+    "lat": 35.562049,
+    "lng": 139.623748,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "高田",
+      "station_distance_m": 1419,
+      "station_passengers": 8132,
+      "area_m2": 1757,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0316",
+    "name": "久末道下公園",
+    "lat": 35.56491,
+    "lng": 139.614503,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東山田",
+      "station_distance_m": 1415,
+      "station_passengers": 5193,
+      "area_m2": 1086,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0319",
+    "name": "久本公園",
+    "lat": 35.595651,
+    "lng": 139.611868,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵溝ノ口",
+      "station_distance_m": 355,
+      "station_passengers": 155920,
+      "area_m2": 1116,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0321",
+    "name": "久本薬医門公園",
+    "lat": 35.597385,
+    "lng": 139.611799,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵溝ノ口",
+      "station_distance_m": 164,
+      "station_passengers": 155920,
+      "area_m2": 1228,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0325",
+    "name": "不動ヶ丘公園",
+    "lat": 35.594491,
+    "lng": 139.599327,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "梶が谷",
+      "station_distance_m": 583,
+      "station_passengers": 36095,
+      "area_m2": 5272,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0326",
+    "name": "溝口北公園",
+    "lat": 35.607138,
+    "lng": 139.61411,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "高津",
+      "station_distance_m": 520,
+      "station_passengers": 28557,
+      "area_m2": 1657,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0328",
+    "name": "溝口南公園",
+    "lat": 35.603072,
+    "lng": 139.614123,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "高津",
+      "station_distance_m": 323,
+      "station_passengers": 28557,
+      "area_m2": 1638,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0329",
+    "name": "向ヶ丘東公園",
+    "lat": 35.594536,
+    "lng": 139.595601,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "梶が谷",
+      "station_distance_m": 919,
+      "station_passengers": 36095,
+      "area_m2": 1160,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0332",
+    "name": "有馬2丁目公園",
+    "lat": 35.578284,
+    "lng": 139.583472,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 750,
+      "station_passengers": 46121,
+      "area_m2": 1018,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0334",
+    "name": "有馬かえで公園",
+    "lat": 35.575255,
+    "lng": 139.575744,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 543,
+      "station_passengers": 59568,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0335",
+    "name": "有馬かしの木公園",
+    "lat": 35.5771,
+    "lng": 139.587433,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 991,
+      "station_passengers": 46121,
+      "area_m2": 4172,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0340",
+    "name": "有馬こども公園",
+    "lat": 35.57123,
+    "lng": 139.583073,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 1302,
+      "station_passengers": 59568,
+      "area_m2": 4295,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0341",
+    "name": "有馬さくら公園",
+    "lat": 35.572755,
+    "lng": 139.569817,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 816,
+      "station_passengers": 59568,
+      "area_m2": 6008,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0344",
+    "name": "有馬中央公園",
+    "lat": 35.57492,
+    "lng": 139.579573,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 789,
+      "station_passengers": 59568,
+      "area_m2": 8375,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0345",
+    "name": "有馬つつじ公園",
+    "lat": 35.57649,
+    "lng": 139.583653,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 950,
+      "station_passengers": 46121,
+      "area_m2": 3612,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0347",
+    "name": "有馬梅林公園",
+    "lat": 35.569871,
+    "lng": 139.57969,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "中川",
+      "station_distance_m": 1179,
+      "station_passengers": 8466,
+      "area_m2": 2823,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0355",
+    "name": "犬蔵くすのき公園",
+    "lat": 35.585661,
+    "lng": 139.558624,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "たまプラーザ",
+      "station_distance_m": 918,
+      "station_passengers": 78780,
+      "area_m2": 1799,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0356",
+    "name": "犬蔵さくらの丘公園",
+    "lat": 35.585492,
+    "lng": 139.562199,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "たまプラーザ",
+      "station_distance_m": 955,
+      "station_passengers": 78780,
+      "area_m2": 4500,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0359",
+    "name": "五所塚第1公園",
+    "lat": 35.606107,
+    "lng": 139.577049,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宿河原",
+      "station_distance_m": 1060,
+      "station_passengers": 16416,
+      "area_m2": 1603,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0363",
+    "name": "小台公園",
+    "lat": 35.58065,
+    "lng": 139.579913,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 524,
+      "station_passengers": 46121,
+      "area_m2": 6562,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0364",
+    "name": "小台西公園",
+    "lat": 35.580642,
+    "lng": 139.577035,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 380,
+      "station_passengers": 59568,
+      "area_m2": 2968,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0365",
+    "name": "小台東公園",
+    "lat": 35.58337,
+    "lng": 139.583183,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 196,
+      "station_passengers": 46121,
+      "area_m2": 1379,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0366",
+    "name": "鷺沼北公園",
+    "lat": 35.583865,
+    "lng": 139.568409,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 631,
+      "station_passengers": 59568,
+      "area_m2": 4797,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0367",
+    "name": "鷺沼第1公園",
+    "lat": 35.576712,
+    "lng": 139.571779,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 342,
+      "station_passengers": 59568,
+      "area_m2": 2900,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0369",
+    "name": "鷺沼第3公園",
+    "lat": 35.579118,
+    "lng": 139.568194,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 440,
+      "station_passengers": 59568,
+      "area_m2": 1404,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0371",
+    "name": "神木公園",
+    "lat": 35.592607,
+    "lng": 139.579691,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 881,
+      "station_passengers": 46121,
+      "area_m2": 4870,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0373",
+    "name": "神木高根公園",
+    "lat": 35.60238,
+    "lng": 139.583423,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "久地",
+      "station_distance_m": 1224,
+      "station_passengers": 26960,
+      "area_m2": 1008,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0375",
+    "name": "白幡台第1公園",
+    "lat": 35.595941,
+    "lng": 139.568517,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 1742,
+      "station_passengers": 46121,
+      "area_m2": 2326,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0380",
+    "name": "菅生清水公園",
+    "lat": 35.588214,
+    "lng": 139.56043,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "たまプラーザ",
+      "station_distance_m": 1213,
+      "station_passengers": 78780,
+      "area_m2": 1219,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0383",
+    "name": "菅生第4公園",
+    "lat": 35.594881,
+    "lng": 139.549055,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "たまプラーザ",
+      "station_distance_m": 2128,
+      "station_passengers": 78780,
+      "area_m2": 2058,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0384",
+    "name": "菅生みどり公園",
+    "lat": 35.5938,
+    "lng": 139.559743,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "たまプラーザ",
+      "station_distance_m": 1826,
+      "station_passengers": 78780,
+      "area_m2": 5769,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0385",
+    "name": "蔵敷第2公園",
+    "lat": 35.592111,
+    "lng": 139.553098,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "たまプラーザ",
+      "station_distance_m": 1711,
+      "station_passengers": 78780,
+      "area_m2": 1051,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0388",
+    "name": "平4丁目公園",
+    "lat": 35.599308,
+    "lng": 139.568356,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "向ヶ丘遊園",
+      "station_distance_m": 2027,
+      "station_passengers": 57254,
+      "area_m2": 2941,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0390",
+    "name": "平公園",
+    "lat": 35.602178,
+    "lng": 139.575378,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宿河原",
+      "station_distance_m": 1520,
+      "station_passengers": 16416,
+      "area_m2": 3587,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0394",
+    "name": "高山さくら公園",
+    "lat": 35.604805,
+    "lng": 139.571927,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宿河原",
+      "station_distance_m": 1367,
+      "station_passengers": 16416,
+      "area_m2": 1061,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0395",
+    "name": "土橋1丁目公園",
+    "lat": 35.588291,
+    "lng": 139.576159,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 664,
+      "station_passengers": 46121,
+      "area_m2": 5333,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0397",
+    "name": "土橋2丁目公園",
+    "lat": 35.585918,
+    "lng": 139.574623,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 698,
+      "station_passengers": 46121,
+      "area_m2": 4345,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0399",
+    "name": "土橋4丁目公園",
+    "lat": 35.586845,
+    "lng": 139.570512,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 836,
+      "station_passengers": 59568,
+      "area_m2": 1964,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0400",
+    "name": "土橋7丁目公園",
+    "lat": 35.59004,
+    "lng": 139.573583,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 966,
+      "station_passengers": 46121,
+      "area_m2": 5000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0404",
+    "name": "土橋原台公園",
+    "lat": 35.583313,
+    "lng": 139.576348,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 510,
+      "station_passengers": 59568,
+      "area_m2": 3049,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0405",
+    "name": "土橋南公園",
+    "lat": 35.582353,
+    "lng": 139.571658,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 329,
+      "station_passengers": 59568,
+      "area_m2": 2641,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0406",
+    "name": "東名神木公園",
+    "lat": 35.600969,
+    "lng": 139.581018,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "久地",
+      "station_distance_m": 1490,
+      "station_passengers": 26960,
+      "area_m2": 3195,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0407",
+    "name": "東名土橋公園",
+    "lat": 35.588424,
+    "lng": 139.568881,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 1049,
+      "station_passengers": 59568,
+      "area_m2": 1686,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0408",
+    "name": "長尾公園",
+    "lat": 35.605368,
+    "lng": 139.575795,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宿河原",
+      "station_distance_m": 1168,
+      "station_passengers": 16416,
+      "area_m2": 3558,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0409",
+    "name": "長尾第3公園",
+    "lat": 35.603822,
+    "lng": 139.577965,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宿河原",
+      "station_distance_m": 1297,
+      "station_passengers": 16416,
+      "area_m2": 1162,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0411",
+    "name": "南平台公園",
+    "lat": 35.594181,
+    "lng": 139.569243,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 1561,
+      "station_passengers": 46121,
+      "area_m2": 1150,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0413",
+    "name": "南平台なかよし公園",
+    "lat": 35.594042,
+    "lng": 139.568908,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 1574,
+      "station_passengers": 46121,
+      "area_m2": 1276,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0417",
+    "name": "野川けやき公園",
+    "lat": 35.5652,
+    "lng": 139.604046,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "北山田",
+      "station_distance_m": 1120,
+      "station_passengers": 12750,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0418",
+    "name": "野川公園",
+    "lat": 35.574184,
+    "lng": 139.614935,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 1950,
+      "station_passengers": 69142,
+      "area_m2": 1560,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0422",
+    "name": "野川第2公園",
+    "lat": 35.573389,
+    "lng": 139.603749,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "北山田",
+      "station_distance_m": 1691,
+      "station_passengers": 12750,
+      "area_m2": 1349,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0423",
+    "name": "野川第3公園",
+    "lat": 35.575442,
+    "lng": 139.603102,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮崎台",
+      "station_distance_m": 1704,
+      "station_passengers": 47972,
+      "area_m2": 2520,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0424",
+    "name": "野川第4公園",
+    "lat": 35.574703,
+    "lng": 139.604018,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮崎台",
+      "station_distance_m": 1821,
+      "station_passengers": 47972,
+      "area_m2": 3790,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0426",
+    "name": "野川中耕地公園",
+    "lat": 35.572153,
+    "lng": 139.614208,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東山田",
+      "station_distance_m": 2128,
+      "station_passengers": 5193,
+      "area_m2": 1657,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0433",
+    "name": "野川南台公園",
+    "lat": 35.568201,
+    "lng": 139.609908,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東山田",
+      "station_distance_m": 1595,
+      "station_passengers": 5193,
+      "area_m2": 1107,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0443",
+    "name": "馬絹古墳公園",
+    "lat": 35.58336,
+    "lng": 139.601614,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮崎台",
+      "station_distance_m": 1058,
+      "station_passengers": 47972,
+      "area_m2": 1194,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0446",
+    "name": "馬絹陸橋下公園",
+    "lat": 35.584077,
+    "lng": 139.598523,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮崎台",
+      "station_distance_m": 770,
+      "station_passengers": 47972,
+      "area_m2": 3444,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0447",
+    "name": "南菅生けやき公園",
+    "lat": 35.588402,
+    "lng": 139.556522,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "たまプラーザ",
+      "station_distance_m": 1238,
+      "station_passengers": 78780,
+      "area_m2": 3724,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0450",
+    "name": "みなみだいら公園",
+    "lat": 35.593082,
+    "lng": 139.570768,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 1376,
+      "station_passengers": 46121,
+      "area_m2": 2767,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0454",
+    "name": "宮崎おちば公園",
+    "lat": 35.587176,
+    "lng": 139.592832,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮崎台",
+      "station_distance_m": 179,
+      "station_passengers": 47972,
+      "area_m2": 1034,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0460",
+    "name": "宮崎第2公園",
+    "lat": 35.588976,
+    "lng": 139.591133,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮崎台",
+      "station_distance_m": 211,
+      "station_passengers": 47972,
+      "area_m2": 1660,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0461",
+    "name": "宮崎第3公園",
+    "lat": 35.592033,
+    "lng": 139.590069,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮崎台",
+      "station_distance_m": 554,
+      "station_passengers": 47972,
+      "area_m2": 2915,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0466",
+    "name": "宮前平公園",
+    "lat": 35.587839,
+    "lng": 139.58085,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 344,
+      "station_passengers": 46121,
+      "area_m2": 4523,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0468",
+    "name": "宮前平第1公園",
+    "lat": 35.583456,
+    "lng": 139.59019,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮崎台",
+      "station_distance_m": 408,
+      "station_passengers": 47972,
+      "area_m2": 1001,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0469",
+    "name": "宮前平第2公園",
+    "lat": 35.585145,
+    "lng": 139.586443,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 379,
+      "station_passengers": 46121,
+      "area_m2": 2340,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0470",
+    "name": "宮前平第3公園",
+    "lat": 35.588093,
+    "lng": 139.586281,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮崎台",
+      "station_distance_m": 428,
+      "station_passengers": 47972,
+      "area_m2": 2082,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0471",
+    "name": "宮前平第4公園",
+    "lat": 35.588424,
+    "lng": 139.581726,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 388,
+      "station_passengers": 46121,
+      "area_m2": 1252,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0472",
+    "name": "向ヶ丘公園",
+    "lat": 35.592806,
+    "lng": 139.574987,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 1092,
+      "station_passengers": 46121,
+      "area_m2": 3447,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0473",
+    "name": "鷲ヶ峰けやき公園",
+    "lat": 35.59646,
+    "lng": 139.539351,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 2067,
+      "station_passengers": 44658,
+      "area_m2": 3706,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0474",
+    "name": "鷲ヶ峰公園",
+    "lat": 35.596271,
+    "lng": 139.544967,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 2096,
+      "station_passengers": 44658,
+      "area_m2": 1130,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0476",
+    "name": "鷲ヶ峰子供の里公園",
+    "lat": 35.597398,
+    "lng": 139.542168,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 1951,
+      "station_passengers": 44658,
+      "area_m2": 2696,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0477",
+    "name": "鷲ヶ峰ゆりの木公園",
+    "lat": 35.596971,
+    "lng": 139.53858,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 2019,
+      "station_passengers": 44658,
+      "area_m2": 1357,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0479",
+    "name": "生田2丁目公園",
+    "lat": 35.622566,
+    "lng": 139.549527,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "中野島",
+      "station_distance_m": 841,
+      "station_passengers": 28216,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0483",
+    "name": "生田大谷第2公園",
+    "lat": 35.608849,
+    "lng": 139.549655,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 981,
+      "station_passengers": 44658,
+      "area_m2": 4131,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0486",
+    "name": "生田雁俣谷公園",
+    "lat": 35.610953,
+    "lng": 139.523757,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 572,
+      "station_passengers": 31747,
+      "area_m2": 1313,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0487",
+    "name": "生田北大作公園",
+    "lat": 35.6161,
+    "lng": 139.533943,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 555,
+      "station_passengers": 31747,
+      "area_m2": 1177,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0491",
+    "name": "生田中谷第1公園",
+    "lat": 35.605158,
+    "lng": 139.5402,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 1097,
+      "station_passengers": 44658,
+      "area_m2": 1412,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0493",
+    "name": "生田根岸跨線橋下公園",
+    "lat": 35.615968,
+    "lng": 139.553149,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 1032,
+      "station_passengers": 44658,
+      "area_m2": 1251,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0516",
+    "name": "菅小谷公園",
+    "lat": 35.629764,
+    "lng": 139.526601,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京王稲田堤",
+      "station_distance_m": 688,
+      "station_passengers": 50725,
+      "area_m2": 1378,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0517",
+    "name": "菅さくら公園",
+    "lat": 35.624278,
+    "lng": 139.523581,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京王よみうりランド",
+      "station_distance_m": 1125,
+      "station_passengers": 14826,
+      "area_m2": 5000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0518",
+    "name": "菅芝間公園",
+    "lat": 35.639809,
+    "lng": 139.527167,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢野口",
+      "station_distance_m": 645,
+      "station_passengers": 18294,
+      "area_m2": 2243,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0519",
+    "name": "菅芝間こども公園",
+    "lat": 35.639577,
+    "lng": 139.526641,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢野口",
+      "station_distance_m": 610,
+      "station_passengers": 18294,
+      "area_m2": 1431,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0521",
+    "name": "菅仙谷公園",
+    "lat": 35.628517,
+    "lng": 139.528245,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京王稲田堤",
+      "station_distance_m": 712,
+      "station_passengers": 50725,
+      "area_m2": 4635,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0528",
+    "name": "菅馬場公園",
+    "lat": 35.623605,
+    "lng": 139.5333,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 1095,
+      "station_passengers": 31747,
+      "area_m2": 4997,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0533",
+    "name": "寺尾台第1公園",
+    "lat": 35.620238,
+    "lng": 139.53609,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 783,
+      "station_passengers": 44658,
+      "area_m2": 4415,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0534",
+    "name": "寺尾台第2公園",
+    "lat": 35.62217,
+    "lng": 139.537977,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 875,
+      "station_passengers": 44658,
+      "area_m2": 3150,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0538",
+    "name": "東名宿河原6丁目公園",
+    "lat": 35.61338,
+    "lng": 139.590613,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "久地",
+      "station_distance_m": 427,
+      "station_passengers": 26960,
+      "area_m2": 2198,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0539",
+    "name": "東名宿河原公園",
+    "lat": 35.612895,
+    "lng": 139.589619,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "久地",
+      "station_distance_m": 440,
+      "station_passengers": 26960,
+      "area_m2": 1999,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0540",
+    "name": "東名堰公園",
+    "lat": 35.616321,
+    "lng": 139.594297,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "久地",
+      "station_distance_m": 700,
+      "station_passengers": 26960,
+      "area_m2": 1614,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0541",
+    "name": "東名堰第2公園",
+    "lat": 35.614001,
+    "lng": 139.59141,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "久地",
+      "station_distance_m": 459,
+      "station_passengers": 26960,
+      "area_m2": 4966,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0542",
+    "name": "東名長尾7丁目公園",
+    "lat": 35.60919,
+    "lng": 139.586219,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "久地",
+      "station_distance_m": 628,
+      "station_passengers": 26960,
+      "area_m2": 2513,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0550",
+    "name": "中野島石河原公園",
+    "lat": 35.628892,
+    "lng": 139.561888,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "中野島",
+      "station_distance_m": 985,
+      "station_passengers": 28216,
+      "area_m2": 1652,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0553",
+    "name": "中野島中央公園",
+    "lat": 35.631078,
+    "lng": 139.561457,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "中野島",
+      "station_distance_m": 946,
+      "station_passengers": 28216,
+      "area_m2": 2583,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0554",
+    "name": "中野島中河原公園",
+    "lat": 35.631,
+    "lng": 139.55864,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "中野島",
+      "station_distance_m": 692,
+      "station_passengers": 28216,
+      "area_m2": 2746,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0559",
+    "name": "登戸第1公園",
+    "lat": 35.622236,
+    "lng": 139.566929,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "登戸",
+      "station_distance_m": 305,
+      "station_passengers": 316047,
+      "area_m2": 1383,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0560",
+    "name": "登戸第2公園",
+    "lat": 35.624248,
+    "lng": 139.564943,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "登戸",
+      "station_distance_m": 583,
+      "station_passengers": 316047,
+      "area_m2": 2266,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0565",
+    "name": "ふじやま遺跡公園",
+    "lat": 35.607963,
+    "lng": 139.58084,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宿河原",
+      "station_distance_m": 837,
+      "station_passengers": 16416,
+      "area_m2": 2833,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0566",
+    "name": "三田第2公園",
+    "lat": 35.613383,
+    "lng": 139.540619,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 203,
+      "station_passengers": 44658,
+      "area_m2": 9372,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0567",
+    "name": "三田第3公園",
+    "lat": 35.613891,
+    "lng": 139.544096,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 238,
+      "station_passengers": 44658,
+      "area_m2": 2473,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0568",
+    "name": "三田第4公園",
+    "lat": 35.609696,
+    "lng": 139.546293,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 711,
+      "station_passengers": 44658,
+      "area_m2": 4644,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0571",
+    "name": "南生田1丁目公園",
+    "lat": 35.611153,
+    "lng": 139.531763,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 521,
+      "station_passengers": 31747,
+      "area_m2": 3202,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0573",
+    "name": "南生田2丁目公園",
+    "lat": 35.602598,
+    "lng": 139.531979,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 1396,
+      "station_passengers": 31747,
+      "area_m2": 1261,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0574",
+    "name": "南生田3丁目公園",
+    "lat": 35.604784,
+    "lng": 139.533097,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 1197,
+      "station_passengers": 31747,
+      "area_m2": 1385,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0576",
+    "name": "南生田桜陰公園",
+    "lat": 35.600082,
+    "lng": 139.532706,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 1683,
+      "station_passengers": 31747,
+      "area_m2": 1483,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0581",
+    "name": "池の端公園",
+    "lat": 35.615988,
+    "lng": 139.498982,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1567,
+      "station_passengers": 114816,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0585",
+    "name": "王禅寺北第1公園",
+    "lat": 35.594673,
+    "lng": 139.520036,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1516,
+      "station_passengers": 114816,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0587",
+    "name": "王禅寺北第3公園",
+    "lat": 35.595953,
+    "lng": 139.515426,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1122,
+      "station_passengers": 114816,
+      "area_m2": 1759,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0589",
+    "name": "王禅寺北第5公園",
+    "lat": 35.592057,
+    "lng": 139.513647,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1410,
+      "station_passengers": 114816,
+      "area_m2": 1124,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0593",
+    "name": "王禅寺源左ェ門谷公園",
+    "lat": 35.593812,
+    "lng": 139.523446,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1815,
+      "station_passengers": 114816,
+      "area_m2": 1262,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0594",
+    "name": "王禅寺源内谷公園",
+    "lat": 35.584882,
+    "lng": 139.50157,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 636,
+      "station_passengers": 34337,
+      "area_m2": 1062,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0596",
+    "name": "王禅寺源内谷南公園",
+    "lat": 35.5838,
+    "lng": 139.501718,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 744,
+      "station_passengers": 34337,
+      "area_m2": 2158,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0598",
+    "name": "王禅寺さくら公園",
+    "lat": 35.583513,
+    "lng": 139.514119,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1643,
+      "station_passengers": 34337,
+      "area_m2": 1001,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0601",
+    "name": "王禅寺中公園",
+    "lat": 35.58869,
+    "lng": 139.515534,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1629,
+      "station_passengers": 34337,
+      "area_m2": 2529,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0602",
+    "name": "王禅寺中第1公園",
+    "lat": 35.591472,
+    "lng": 139.517435,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1631,
+      "station_passengers": 114816,
+      "area_m2": 1007,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0603",
+    "name": "王禅寺中第2公園",
+    "lat": 35.588469,
+    "lng": 139.518661,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1913,
+      "station_passengers": 34337,
+      "area_m2": 1006,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0605",
+    "name": "王禅寺中第4公園",
+    "lat": 35.587796,
+    "lng": 139.513121,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1422,
+      "station_passengers": 34337,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0607",
+    "name": "王禅寺西公園",
+    "lat": 35.590335,
+    "lng": 139.507514,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 905,
+      "station_passengers": 34337,
+      "area_m2": 1060,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0615",
+    "name": "岡上けやき公園",
+    "lat": 35.58157,
+    "lng": 139.476661,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鶴川",
+      "station_distance_m": 497,
+      "station_passengers": 60371,
+      "area_m2": 1370,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0618",
+    "name": "海道ひだまり公園",
+    "lat": 35.615193,
+    "lng": 139.462347,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "はるひ野",
+      "station_distance_m": 430,
+      "station_passengers": 9763,
+      "area_m2": 2638,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0627",
+    "name": "片平中町遺跡公園",
+    "lat": 35.590544,
+    "lng": 139.489331,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 751,
+      "station_passengers": 34337,
+      "area_m2": 2345,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0632",
+    "name": "金程西平公園",
+    "lat": 35.612986,
+    "lng": 139.499764,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1245,
+      "station_passengers": 114816,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0633",
+    "name": "金程前田公園",
+    "lat": 35.611308,
+    "lng": 139.498834,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1151,
+      "station_passengers": 114816,
+      "area_m2": 1050,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0634",
+    "name": "金程夕木公園",
+    "lat": 35.609762,
+    "lng": 139.500856,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 901,
+      "station_passengers": 114816,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0636",
+    "name": "上麻生隠れ谷公園",
+    "lat": 35.60195,
+    "lng": 139.503363,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 420,
+      "station_passengers": 114816,
+      "area_m2": 5625,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0639",
+    "name": "上麻生北第2公園",
+    "lat": 35.601622,
+    "lng": 139.508668,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 256,
+      "station_passengers": 114816,
+      "area_m2": 1141,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0645",
+    "name": "栗木おおしばら公園",
+    "lat": 35.606131,
+    "lng": 139.47158,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "黒川",
+      "station_distance_m": 783,
+      "station_passengers": 9073,
+      "area_m2": 1500,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0646",
+    "name": "栗木公園",
+    "lat": 35.604773,
+    "lng": 139.474963,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "栗平",
+      "station_distance_m": 583,
+      "station_passengers": 22743,
+      "area_m2": 3927,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0648",
+    "name": "栗木台山家公園",
+    "lat": 35.60986,
+    "lng": 139.472373,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "黒川",
+      "station_distance_m": 393,
+      "station_passengers": 9073,
+      "area_m2": 1331,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0649",
+    "name": "栗木台すげ沢公園",
+    "lat": 35.607466,
+    "lng": 139.477376,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "栗平",
+      "station_distance_m": 402,
+      "station_passengers": 22743,
+      "area_m2": 1762,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0650",
+    "name": "栗木台まみ沢公園",
+    "lat": 35.612886,
+    "lng": 139.478629,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "黒川",
+      "station_distance_m": 713,
+      "station_passengers": 9073,
+      "area_m2": 3304,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0652",
+    "name": "栗平東公園",
+    "lat": 35.608096,
+    "lng": 139.482214,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "栗平",
+      "station_distance_m": 274,
+      "station_passengers": 22743,
+      "area_m2": 1588,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0653",
+    "name": "弘法松公園",
+    "lat": 35.602345,
+    "lng": 139.515332,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 726,
+      "station_passengers": 114816,
+      "area_m2": 8341,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0654",
+    "name": "五力田大台公園",
+    "lat": 35.599916,
+    "lng": 139.491731,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "五月台",
+      "station_distance_m": 154,
+      "station_passengers": 9688,
+      "area_m2": 1413,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0655",
+    "name": "五力田高尾根公園",
+    "lat": 35.600269,
+    "lng": 139.49603,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "五月台",
+      "station_distance_m": 239,
+      "station_passengers": 9688,
+      "area_m2": 3260,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0656",
+    "name": "五力田中村通公園",
+    "lat": 35.599828,
+    "lng": 139.489277,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "五月台",
+      "station_distance_m": 374,
+      "station_passengers": 9688,
+      "area_m2": 1500,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0657",
+    "name": "五力田見晴し公園",
+    "lat": 35.606815,
+    "lng": 139.488253,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "栗平",
+      "station_distance_m": 640,
+      "station_passengers": 22743,
+      "area_m2": 8331,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0660",
+    "name": "下麻生けやき公園",
+    "lat": 35.584186,
+    "lng": 139.511059,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1360,
+      "station_passengers": 34337,
+      "area_m2": 1012,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0661",
+    "name": "下麻生ねむの木公園",
+    "lat": 35.575808,
+    "lng": 139.511814,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 2001,
+      "station_passengers": 34337,
+      "area_m2": 1300,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0663",
+    "name": "下麻生花島公園",
+    "lat": 35.580654,
+    "lng": 139.508242,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1385,
+      "station_passengers": 34337,
+      "area_m2": 1857,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0666",
+    "name": "白鳥小台公園",
+    "lat": 35.604607,
+    "lng": 139.487525,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "栗平",
+      "station_distance_m": 577,
+      "station_passengers": 22743,
+      "area_m2": 1279,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0667",
+    "name": "白鳥公園",
+    "lat": 35.602863,
+    "lng": 139.484425,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "栗平",
+      "station_distance_m": 428,
+      "station_passengers": 22743,
+      "area_m2": 7553,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0668",
+    "name": "白鳥諏訪公園",
+    "lat": 35.608074,
+    "lng": 139.485719,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "栗平",
+      "station_distance_m": 476,
+      "station_passengers": 22743,
+      "area_m2": 1564,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0669",
+    "name": "白鳥東公園",
+    "lat": 35.601208,
+    "lng": 139.488684,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "五月台",
+      "station_distance_m": 439,
+      "station_passengers": 9688,
+      "area_m2": 1726,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0670",
+    "name": "真福寺公園",
+    "lat": 35.595633,
+    "lng": 139.507406,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 898,
+      "station_passengers": 114816,
+      "area_m2": 1450,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0671",
+    "name": "新ゆりアートパークス",
+    "lat": 35.599949,
+    "lng": 139.508053,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 421,
+      "station_passengers": 114816,
+      "area_m2": 2289,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0672",
+    "name": "高石4丁目公園",
+    "lat": 35.610037,
+    "lng": 139.521393,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 493,
+      "station_passengers": 20583,
+      "area_m2": 1417,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0673",
+    "name": "高石5丁目公園",
+    "lat": 35.604508,
+    "lng": 139.520926,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 666,
+      "station_passengers": 20583,
+      "area_m2": 1581,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0675",
+    "name": "高石6丁目公園",
+    "lat": 35.604217,
+    "lng": 139.522653,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 799,
+      "station_passengers": 20583,
+      "area_m2": 1031,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0680",
+    "name": "高石桜ヶ丘公園",
+    "lat": 35.611858,
+    "lng": 139.519155,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 420,
+      "station_passengers": 20583,
+      "area_m2": 3838,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0681",
+    "name": "高石さくら公園",
+    "lat": 35.611963,
+    "lng": 139.522077,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 621,
+      "station_passengers": 31747,
+      "area_m2": 2030,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0686",
+    "name": "高石西第3公園",
+    "lat": 35.614171,
+    "lng": 139.51565,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 574,
+      "station_passengers": 20583,
+      "area_m2": 3564,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0694",
+    "name": "千代ヶ丘公園",
+    "lat": 35.609588,
+    "lng": 139.50601,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 667,
+      "station_passengers": 114816,
+      "area_m2": 2018,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0695",
+    "name": "千代ヶ丘第1公園",
+    "lat": 35.617147,
+    "lng": 139.50945,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 1084,
+      "station_passengers": 20583,
+      "area_m2": 1259,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0696",
+    "name": "千代ヶ丘第2公園",
+    "lat": 35.615045,
+    "lng": 139.507326,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 1037,
+      "station_passengers": 20583,
+      "area_m2": 2619,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0697",
+    "name": "千代ヶ丘第3公園",
+    "lat": 35.61665,
+    "lng": 139.504943,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 1316,
+      "station_passengers": 20583,
+      "area_m2": 1745,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0698",
+    "name": "千代ヶ丘中ノ間公園",
+    "lat": 35.61932,
+    "lng": 139.506474,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 1437,
+      "station_passengers": 20583,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0699",
+    "name": "千代ヶ丘中ノ間東公園",
+    "lat": 35.619399,
+    "lng": 139.508275,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 1352,
+      "station_passengers": 20583,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0704",
+    "name": "虹ヶ丘北公園",
+    "lat": 35.581387,
+    "lng": 139.519864,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 2213,
+      "station_passengers": 34337,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0705",
+    "name": "虹ヶ丘南公園",
+    "lat": 35.575645,
+    "lng": 139.523651,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 2823,
+      "station_passengers": 34337,
+      "area_m2": 1062,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0707",
+    "name": "白山公園",
+    "lat": 35.588848,
+    "lng": 139.507762,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 927,
+      "station_passengers": 34337,
+      "area_m2": 3700,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0718",
+    "name": "細山8丁目公園",
+    "lat": 35.62133,
+    "lng": 139.511473,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京王よみうりランド",
+      "station_distance_m": 1394,
+      "station_passengers": 14826,
+      "area_m2": 2269,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0720",
+    "name": "細山金井久保中央公園",
+    "lat": 35.623865,
+    "lng": 139.513758,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京王よみうりランド",
+      "station_distance_m": 1059,
+      "station_passengers": 14826,
+      "area_m2": 5199,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0726",
+    "name": "細山中島第2公園",
+    "lat": 35.61623,
+    "lng": 139.514273,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 818,
+      "station_passengers": 20583,
+      "area_m2": 1249,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0730",
+    "name": "細山東公園",
+    "lat": 35.61769,
+    "lng": 139.515262,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 966,
+      "station_passengers": 20583,
+      "area_m2": 1013,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0731",
+    "name": "丸山こもれび公園",
+    "lat": 35.618892,
+    "lng": 139.461054,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "はるひ野",
+      "station_distance_m": 359,
+      "station_passengers": 9763,
+      "area_m2": 2500,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0732",
+    "name": "万福寺もりの丘公園",
+    "lat": 35.60923,
+    "lng": 139.510133,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 538,
+      "station_passengers": 20583,
+      "area_m2": 2800,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0733",
+    "name": "南黒川第1公園",
+    "lat": 35.612932,
+    "lng": 139.471763,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "黒川",
+      "station_distance_m": 94,
+      "station_passengers": 9073,
+      "area_m2": 3800,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0734",
+    "name": "南黒川第2公園",
+    "lat": 35.613611,
+    "lng": 139.469626,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "黒川",
+      "station_distance_m": 114,
+      "station_passengers": 9073,
+      "area_m2": 2394,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0736",
+    "name": "宮添みのり公園",
+    "lat": 35.61575,
+    "lng": 139.469993,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "黒川",
+      "station_distance_m": 298,
+      "station_passengers": 9073,
+      "area_m2": 4589,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0737",
+    "name": "美山台公園",
+    "lat": 35.591001,
+    "lng": 139.502556,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 480,
+      "station_passengers": 34337,
+      "area_m2": 5949,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0740",
+    "name": "向原公園",
+    "lat": 35.620154,
+    "lng": 139.500925,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "稲城",
+      "station_distance_m": 1779,
+      "station_passengers": 19257,
+      "area_m2": 1000,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0742",
+    "name": "向原の丘公園",
+    "lat": 35.618033,
+    "lng": 139.498568,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1785,
+      "station_passengers": 114816,
+      "area_m2": 3127,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0743",
+    "name": "向原弁天公園",
+    "lat": 35.617587,
+    "lng": 139.501132,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1647,
+      "station_passengers": 114816,
+      "area_m2": 2152,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0744",
+    "name": "向原弥生公園",
+    "lat": 35.616459,
+    "lng": 139.496095,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1752,
+      "station_passengers": 114816,
+      "area_m2": 1089,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0746",
+    "name": "餅坂第3公園",
+    "lat": 35.598106,
+    "lng": 139.521475,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 1308,
+      "station_passengers": 20583,
+      "area_m2": 1045,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0748",
+    "name": "餅坂第5公園",
+    "lat": 35.596918,
+    "lng": 139.519727,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1340,
+      "station_passengers": 114816,
+      "area_m2": 1193,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0751",
+    "name": "柳町いろどり公園",
+    "lat": 35.617216,
+    "lng": 139.465638,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "はるひ野",
+      "station_distance_m": 145,
+      "station_passengers": 9763,
+      "area_m2": 2942,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0752",
+    "name": "山口台公園",
+    "lat": 35.5952,
+    "lng": 139.504149,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 865,
+      "station_passengers": 34337,
+      "area_m2": 1500,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0753",
+    "name": "百合丘1丁目公園",
+    "lat": 35.605608,
+    "lng": 139.516279,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 380,
+      "station_passengers": 20583,
+      "area_m2": 1150,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0755",
+    "name": "百合丘第2公園",
+    "lat": 35.60378,
+    "lng": 139.517176,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 592,
+      "station_passengers": 20583,
+      "area_m2": 4003,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0756",
+    "name": "百合丘第4公園",
+    "lat": 35.605169,
+    "lng": 139.514457,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 453,
+      "station_passengers": 20583,
+      "area_m2": 1383,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0757",
+    "name": "百合丘第5公園",
+    "lat": 35.602327,
+    "lng": 139.519326,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 801,
+      "station_passengers": 20583,
+      "area_m2": 1388,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0760",
+    "name": "籠口ノ池公園",
+    "lat": 35.581796,
+    "lng": 139.511543,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1532,
+      "station_passengers": 34337,
+      "area_m2": 9677,
+      "park_type": "街区公園"
+    }
+  },
+  {
+    "id": "park_0761",
+    "name": "池上新田公園",
+    "lat": 35.521104,
+    "lng": 139.731164,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 1696,
+      "station_passengers": 17432,
+      "area_m2": 19967,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0762",
+    "name": "浮島町公園",
+    "lat": 35.521454,
+    "lng": 139.788098,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新整備場",
+      "station_distance_m": 2376,
+      "station_passengers": 4366,
+      "area_m2": 22639,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0763",
+    "name": "小田公園",
+    "lat": 35.509948,
+    "lng": 139.698825,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小田栄",
+      "station_distance_m": 753,
+      "station_passengers": 0,
+      "area_m2": 23477,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0764",
+    "name": "渡田新町公園",
+    "lat": 35.522653,
+    "lng": 139.699136,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎新町",
+      "station_distance_m": 481,
+      "station_passengers": 0,
+      "area_m2": 10089,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0765",
+    "name": "南河原公園",
+    "lat": 35.537012,
+    "lng": 139.689075,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "尻手",
+      "station_distance_m": 798,
+      "station_passengers": 28394,
+      "area_m2": 21267,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0766",
+    "name": "平間公園",
+    "lat": 35.557734,
+    "lng": 139.677304,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "平間",
+      "station_distance_m": 644,
+      "station_passengers": 26592,
+      "area_m2": 15690,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0767",
+    "name": "梶ケ谷第1公園",
+    "lat": 35.5888,
+    "lng": 139.603063,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "梶が谷",
+      "station_distance_m": 604,
+      "station_passengers": 36095,
+      "area_m2": 13344,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0768",
+    "name": "橘公園",
+    "lat": 35.56924,
+    "lng": 139.634493,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵中原",
+      "station_distance_m": 1436,
+      "station_passengers": 55204,
+      "area_m2": 16916,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0769",
+    "name": "有馬ふるさと公園",
+    "lat": 35.57229,
+    "lng": 139.574653,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 827,
+      "station_passengers": 59568,
+      "area_m2": 11853,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0770",
+    "name": "鷺沼公園",
+    "lat": 35.57706,
+    "lng": 139.567083,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鷺沼",
+      "station_distance_m": 608,
+      "station_passengers": 59568,
+      "area_m2": 15337,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0771",
+    "name": "西長沢公園",
+    "lat": 35.595466,
+    "lng": 139.529785,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 1952,
+      "station_passengers": 20583,
+      "area_m2": 22894,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0772",
+    "name": "宮崎第1公園",
+    "lat": 35.585688,
+    "lng": 139.592343,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮崎台",
+      "station_distance_m": 206,
+      "station_passengers": 47972,
+      "area_m2": 14739,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0773",
+    "name": "宮崎第4公園",
+    "lat": 35.591521,
+    "lng": 139.583343,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 736,
+      "station_passengers": 46121,
+      "area_m2": 20593,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0774",
+    "name": "宮前美しの森公園",
+    "lat": 35.583917,
+    "lng": 139.562339,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "たまプラーザ",
+      "station_distance_m": 797,
+      "station_passengers": 78780,
+      "area_m2": 11621,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0775",
+    "name": "西菅公園",
+    "lat": 35.624544,
+    "lng": 139.529163,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 1095,
+      "station_passengers": 31747,
+      "area_m2": 20000,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0776",
+    "name": "三田第1公園",
+    "lat": 35.608239,
+    "lng": 139.543569,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 762,
+      "station_passengers": 44658,
+      "area_m2": 12767,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0777",
+    "name": "南生田公園",
+    "lat": 35.608186,
+    "lng": 139.530911,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 773,
+      "station_passengers": 31747,
+      "area_m2": 10152,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0778",
+    "name": "王禅寺公園",
+    "lat": 35.595778,
+    "lng": 139.517833,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1286,
+      "station_passengers": 114816,
+      "area_m2": 17994,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0779",
+    "name": "片平公園",
+    "lat": 35.5979,
+    "lng": 139.493033,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "五月台",
+      "station_distance_m": 261,
+      "station_passengers": 9688,
+      "area_m2": 11991,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0780",
+    "name": "黒川谷ツ公園",
+    "lat": 35.62017,
+    "lng": 139.463801,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "はるひ野",
+      "station_distance_m": 223,
+      "station_passengers": 9763,
+      "area_m2": 31988,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0781",
+    "name": "化粧面谷公園",
+    "lat": 35.583159,
+    "lng": 139.51623,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1833,
+      "station_passengers": 34337,
+      "area_m2": 14449,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0782",
+    "name": "鶴亀松公園",
+    "lat": 35.596985,
+    "lng": 139.507959,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 749,
+      "station_passengers": 114816,
+      "area_m2": 13980,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0783",
+    "name": "とんびいけ公園",
+    "lat": 35.610307,
+    "lng": 139.475666,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "黒川",
+      "station_distance_m": 545,
+      "station_passengers": 9073,
+      "area_m2": 19242,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0784",
+    "name": "虹ヶ丘公園",
+    "lat": 35.579593,
+    "lng": 139.521588,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 2440,
+      "station_passengers": 34337,
+      "area_m2": 19838,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0785",
+    "name": "万福寺おやしろ公園",
+    "lat": 35.605906,
+    "lng": 139.508088,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 251,
+      "station_passengers": 114816,
+      "area_m2": 12210,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0786",
+    "name": "万福寺さとやま公園",
+    "lat": 35.609856,
+    "lng": 139.503637,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 767,
+      "station_passengers": 114816,
+      "area_m2": 29936,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0787",
+    "name": "万福寺檜山公園",
+    "lat": 35.604461,
+    "lng": 139.511504,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 374,
+      "station_passengers": 114816,
+      "area_m2": 11506,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0788",
+    "name": "向原の森公園",
+    "lat": 35.618499,
+    "lng": 139.501565,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 1683,
+      "station_passengers": 20583,
+      "area_m2": 16028,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0789",
+    "name": "むじなが池公園",
+    "lat": 35.591603,
+    "lng": 139.509302,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1086,
+      "station_passengers": 34337,
+      "area_m2": 36225,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0790",
+    "name": "山口白山公園",
+    "lat": 35.599053,
+    "lng": 139.505223,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 556,
+      "station_passengers": 114816,
+      "area_m2": 16021,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0791",
+    "name": "百合丘第3公園",
+    "lat": 35.606145,
+    "lng": 139.517104,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 333,
+      "station_passengers": 20583,
+      "area_m2": 14401,
+      "park_type": "近隣公園"
+    }
+  },
+  {
+    "id": "park_0792",
+    "name": "桜川公園",
+    "lat": 35.518469,
+    "lng": 139.72282,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 1253,
+      "station_passengers": 0,
+      "area_m2": 28104,
+      "park_type": "地区公園"
+    }
+  },
+  {
+    "id": "park_0793",
+    "name": "大師公園",
+    "lat": 35.53172,
+    "lng": 139.731673,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東門前",
+      "station_distance_m": 592,
+      "station_passengers": 12967,
+      "area_m2": 87956,
+      "park_type": "地区公園"
+    }
+  },
+  {
+    "id": "park_0794",
+    "name": "御幸公園",
+    "lat": 35.552391,
+    "lng": 139.693766,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "矢口渡",
+      "station_distance_m": 1267,
+      "station_passengers": 25506,
+      "area_m2": 30028,
+      "park_type": "地区公園"
+    }
+  },
+  {
+    "id": "park_0795",
+    "name": "夢見ヶ崎公園",
+    "lat": 35.549488,
+    "lng": 139.665423,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新川崎",
+      "station_distance_m": 606,
+      "station_passengers": 51854,
+      "area_m2": 63703,
+      "park_type": "地区公園"
+    }
+  },
+  {
+    "id": "park_0796",
+    "name": "川崎市中原平和公園",
+    "lat": 35.567702,
+    "lng": 139.658301,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 393,
+      "station_passengers": 59259,
+      "area_m2": 40740,
+      "park_type": "地区公園"
+    }
+  },
+  {
+    "id": "park_0797",
+    "name": "稲田公園",
+    "lat": 35.637283,
+    "lng": 139.538034,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "稲田堤",
+      "station_distance_m": 471,
+      "station_passengers": 47366,
+      "area_m2": 22178,
+      "park_type": "地区公園"
+    }
+  },
+  {
+    "id": "park_0798",
+    "name": "富士見公園",
+    "lat": 35.529843,
+    "lng": 139.710875,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "港町",
+      "station_distance_m": 602,
+      "station_passengers": 7737,
+      "area_m2": 116584,
+      "park_type": "総合公園"
+    }
+  },
+  {
+    "id": "park_0799",
+    "name": "等々力緑地",
+    "lat": 35.584789,
+    "lng": 139.65134,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵中原",
+      "station_distance_m": 956,
+      "station_passengers": 55204,
+      "area_m2": 365886,
+      "park_type": "総合公園"
+    }
+  },
+  {
+    "id": "park_0800",
+    "name": "生田緑地",
+    "lat": 35.608001,
+    "lng": 139.56127,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "向ヶ丘遊園",
+      "station_distance_m": 1075,
+      "station_passengers": 57254,
+      "area_m2": 960965,
+      "park_type": "総合公園"
+    }
+  },
+  {
+    "id": "park_0801",
+    "name": "王禅寺ふるさと公園",
+    "lat": 35.585532,
+    "lng": 139.519285,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 2016,
+      "station_passengers": 34337,
+      "area_m2": 104676,
+      "park_type": "総合公園"
+    }
+  },
+  {
+    "id": "park_0802",
+    "name": "多摩川緑地",
+    "lat": 35.587255,
+    "lng": 139.664176,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "多摩川",
+      "station_distance_m": 481,
+      "station_passengers": 21510,
+      "area_m2": 720935,
+      "park_type": "運動公園"
+    }
+  },
+  {
+    "id": "park_0803",
+    "name": "緑化センター",
+    "lat": 35.61327,
+    "lng": 139.583688,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宿河原",
+      "station_distance_m": 444,
+      "station_passengers": 16416,
+      "area_m2": 12364,
+      "park_type": "特殊公園"
+    }
+  },
+  {
+    "id": "park_0805",
+    "name": "早野聖地公園",
+    "lat": 35.572739,
+    "lng": 139.519265,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 2713,
+      "station_passengers": 34337,
+      "area_m2": 29920,
+      "park_type": "特殊公園"
+    }
+  },
+  {
+    "id": "park_0806",
+    "name": "浅野町緑地",
+    "lat": 35.513319,
+    "lng": 139.721902,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "昭和",
+      "station_distance_m": 738,
+      "station_passengers": 0,
+      "area_m2": 1867,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0807",
+    "name": "扇町緑地",
+    "lat": 35.503477,
+    "lng": 139.714678,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "扇町",
+      "station_distance_m": 727,
+      "station_passengers": 0,
+      "area_m2": 1509,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0809",
+    "name": "小田緑地",
+    "lat": 35.516799,
+    "lng": 139.701142,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎新町",
+      "station_distance_m": 240,
+      "station_passengers": 0,
+      "area_m2": 2150,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0810",
+    "name": "鋼管通5丁目緑地",
+    "lat": 35.51201,
+    "lng": 139.716257,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 323,
+      "station_passengers": 0,
+      "area_m2": 1369,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0811",
+    "name": "小島町緑地",
+    "lat": 35.536418,
+    "lng": 139.752454,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "小島新田",
+      "station_distance_m": 485,
+      "station_passengers": 21774,
+      "area_m2": 3000,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0812",
+    "name": "桜堀緑地",
+    "lat": 35.515042,
+    "lng": 139.728963,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "昭和",
+      "station_distance_m": 1014,
+      "station_passengers": 0,
+      "area_m2": 11268,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0813",
+    "name": "新町緑地",
+    "lat": 35.518087,
+    "lng": 139.7001,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎新町",
+      "station_distance_m": 80,
+      "station_passengers": 0,
+      "area_m2": 6568,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0814",
+    "name": "中瀬緑地",
+    "lat": 35.537279,
+    "lng": 139.728336,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 270,
+      "station_passengers": 17432,
+      "area_m2": 1356,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0815",
+    "name": "井田長瀬緑地",
+    "lat": 35.563941,
+    "lng": 139.637306,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "日吉",
+      "station_distance_m": 1429,
+      "station_passengers": 226673,
+      "area_m2": 6941,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0817",
+    "name": "明石穂緑地",
+    "lat": 35.563481,
+    "lng": 139.625895,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "高田",
+      "station_distance_m": 1622,
+      "station_passengers": 8132,
+      "area_m2": 1097,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0818",
+    "name": "久末ひなた山緑地",
+    "lat": 35.562495,
+    "lng": 139.617633,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東山田",
+      "station_distance_m": 1396,
+      "station_passengers": 5193,
+      "area_m2": 1241,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0819",
+    "name": "久末丸山緑地",
+    "lat": 35.564415,
+    "lng": 139.617102,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東山田",
+      "station_distance_m": 1513,
+      "station_passengers": 5193,
+      "area_m2": 1023,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0820",
+    "name": "溝口緑地",
+    "lat": 35.605042,
+    "lng": 139.615626,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "高津",
+      "station_distance_m": 255,
+      "station_passengers": 28557,
+      "area_m2": 2145,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0822",
+    "name": "菅生緑地",
+    "lat": 35.589156,
+    "lng": 139.549533,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "たまプラーザ",
+      "station_distance_m": 1545,
+      "station_passengers": 78780,
+      "area_m2": 64598,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0825",
+    "name": "向ヶ丘緑地",
+    "lat": 35.592772,
+    "lng": 139.573813,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 1156,
+      "station_passengers": 46121,
+      "area_m2": 5539,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0826",
+    "name": "菅北浦緑地",
+    "lat": 35.629178,
+    "lng": 139.531663,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京王稲田堤",
+      "station_distance_m": 555,
+      "station_passengers": 50725,
+      "area_m2": 54946,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0827",
+    "name": "菅小谷緑地",
+    "lat": 35.629889,
+    "lng": 139.529526,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京王稲田堤",
+      "station_distance_m": 524,
+      "station_passengers": 50725,
+      "area_m2": 4000,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0828",
+    "name": "菅仙谷緑地",
+    "lat": 35.627492,
+    "lng": 139.525292,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "京王よみうりランド",
+      "station_distance_m": 951,
+      "station_passengers": 14826,
+      "area_m2": 11110,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0829",
+    "name": "寺尾台緑地",
+    "lat": 35.618994,
+    "lng": 139.533722,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "読売ランド前",
+      "station_distance_m": 699,
+      "station_passengers": 31747,
+      "area_m2": 4613,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0831",
+    "name": "三田第7緑地",
+    "lat": 35.614862,
+    "lng": 139.546619,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 436,
+      "station_passengers": 44658,
+      "area_m2": 3560,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0834",
+    "name": "王禅寺すぎのき緑地",
+    "lat": 35.581032,
+    "lng": 139.514517,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1804,
+      "station_passengers": 34337,
+      "area_m2": 1919,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0835",
+    "name": "王禅寺どんぐり山緑地",
+    "lat": 35.5866,
+    "lng": 139.511267,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1284,
+      "station_passengers": 34337,
+      "area_m2": 2656,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0836",
+    "name": "金程後谷緑地",
+    "lat": 35.614268,
+    "lng": 139.502462,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1259,
+      "station_passengers": 114816,
+      "area_m2": 2703,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0837",
+    "name": "黒川池谷戸緑地",
+    "lat": 35.616039,
+    "lng": 139.460273,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "はるひ野",
+      "station_distance_m": 501,
+      "station_passengers": 9763,
+      "area_m2": 8126,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0838",
+    "name": "島田生長の森緑地",
+    "lat": 35.588085,
+    "lng": 139.512394,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1352,
+      "station_passengers": 34337,
+      "area_m2": 4943,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0839",
+    "name": "下麻生まつのき緑地",
+    "lat": 35.583875,
+    "lng": 139.509584,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1259,
+      "station_passengers": 34337,
+      "area_m2": 11272,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0840",
+    "name": "高石富士見台緑地",
+    "lat": 35.606405,
+    "lng": 139.523409,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 724,
+      "station_passengers": 20583,
+      "area_m2": 1412,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0842",
+    "name": "茶臼山緑地",
+    "lat": 35.593175,
+    "lng": 139.504003,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 708,
+      "station_passengers": 34337,
+      "area_m2": 4038,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0843",
+    "name": "千代ヶ丘西久保緑地",
+    "lat": 35.617587,
+    "lng": 139.504029,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 1447,
+      "station_passengers": 20583,
+      "area_m2": 4900,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0844",
+    "name": "白山北緑地",
+    "lat": 35.591881,
+    "lng": 139.513546,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1425,
+      "station_passengers": 114816,
+      "area_m2": 21681,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0845",
+    "name": "白山西緑地",
+    "lat": 35.592539,
+    "lng": 139.509079,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1093,
+      "station_passengers": 34337,
+      "area_m2": 17210,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0846",
+    "name": "白山東緑地",
+    "lat": 35.5876,
+    "lng": 139.510793,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1217,
+      "station_passengers": 34337,
+      "area_m2": 5868,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0847",
+    "name": "白山南緑地",
+    "lat": 35.586409,
+    "lng": 139.508755,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 1072,
+      "station_passengers": 34337,
+      "area_m2": 28719,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0848",
+    "name": "葉積緑地",
+    "lat": 35.598064,
+    "lng": 139.497761,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "五月台",
+      "station_distance_m": 463,
+      "station_passengers": 9688,
+      "area_m2": 20421,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0849",
+    "name": "東百合丘4丁目緑地",
+    "lat": 35.59853,
+    "lng": 139.522365,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 1298,
+      "station_passengers": 20583,
+      "area_m2": 5562,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0850",
+    "name": "古沢こもれびの杜緑地",
+    "lat": 35.60676,
+    "lng": 139.50241,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 570,
+      "station_passengers": 114816,
+      "area_m2": 10227,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0853",
+    "name": "南黒川緑地",
+    "lat": 35.61465,
+    "lng": 139.471422,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "黒川",
+      "station_distance_m": 179,
+      "station_passengers": 9073,
+      "area_m2": 1244,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0854",
+    "name": "向原南緑地",
+    "lat": 35.613748,
+    "lng": 139.496091,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1519,
+      "station_passengers": 114816,
+      "area_m2": 1931,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0855",
+    "name": "向原緑地",
+    "lat": 35.61889,
+    "lng": 139.498383,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 1878,
+      "station_passengers": 114816,
+      "area_m2": 4007,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0856",
+    "name": "百合丘第1緑地",
+    "lat": 35.604618,
+    "lng": 139.517211,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "百合ヶ丘",
+      "station_distance_m": 501,
+      "station_passengers": 20583,
+      "area_m2": 3443,
+      "park_type": "都市緑地"
+    }
+  },
+  {
+    "id": "park_0857",
+    "name": "井田伊勢台特別緑地保全地区",
+    "lat": 35.5653,
+    "lng": 139.636753,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "日吉",
+      "station_distance_m": 1580,
+      "station_passengers": 226673,
+      "area_m2": 9134,
+      "park_type": "都市林"
+    }
+  },
+  {
+    "id": "park_0858",
+    "name": "東生田緑地",
+    "lat": 35.617683,
+    "lng": 139.552148,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "生田",
+      "station_distance_m": 984,
+      "station_passengers": 44658,
+      "area_m2": 44853,
+      "park_type": "都市林"
+    }
+  },
+  {
+    "id": "park_0859",
+    "name": "浅野町緑道",
+    "lat": 35.516576,
+    "lng": 139.724633,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "昭和",
+      "station_distance_m": 1079,
+      "station_passengers": 0,
+      "area_m2": 8747,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "park_0860",
+    "name": "池上新町中緑道",
+    "lat": 35.521815,
+    "lng": 139.735265,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "東門前",
+      "station_distance_m": 1645,
+      "station_passengers": 12967,
+      "area_m2": 7067,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "park_0861",
+    "name": "池上新町緑道",
+    "lat": 35.520882,
+    "lng": 139.732533,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "昭和",
+      "station_distance_m": 1739,
+      "station_passengers": 0,
+      "area_m2": 2476,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "park_0864",
+    "name": "小倉緑道",
+    "lat": 35.539464,
+    "lng": 139.663079,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新川崎",
+      "station_distance_m": 1553,
+      "station_passengers": 51854,
+      "area_m2": 1576,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "park_0866",
+    "name": "さいわい緑道",
+    "lat": 35.538711,
+    "lng": 139.694389,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 846,
+      "station_passengers": 388782,
+      "area_m2": 21847,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "park_0867",
+    "name": "北谷町緑道",
+    "lat": 35.564086,
+    "lng": 139.670985,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "平間",
+      "station_distance_m": 392,
+      "station_passengers": 26592,
+      "area_m2": 1842,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "park_0868",
+    "name": "中丸子南緑道",
+    "lat": 35.564256,
+    "lng": 139.673161,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "平間",
+      "station_distance_m": 451,
+      "station_passengers": 26592,
+      "area_m2": 2549,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "park_0869",
+    "name": "中丸子緑道",
+    "lat": 35.566875,
+    "lng": 139.672228,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "平間",
+      "station_distance_m": 709,
+      "station_passengers": 26592,
+      "area_m2": 6957,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "park_0870",
+    "name": "平間緑道",
+    "lat": 35.554625,
+    "lng": 139.6754,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "鹿島田",
+      "station_distance_m": 354,
+      "station_passengers": 33178,
+      "area_m2": 2667,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "park_0872",
+    "name": "二子坂戸緑道",
+    "lat": 35.599124,
+    "lng": 139.621686,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "高津",
+      "station_distance_m": 604,
+      "station_passengers": 28557,
+      "area_m2": 1763,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "park_0873",
+    "name": "こやのさ緑道",
+    "lat": 35.600598,
+    "lng": 139.509959,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 412,
+      "station_passengers": 114816,
+      "area_m2": 5841,
+      "park_type": "緑道"
+    }
+  },
+  {
+    "id": "facility_141305000009",
+    "name": "川崎市藤子・Ｆ・不二雄ミュージアム",
+    "lat": 35.609924,
+    "lng": 139.573432,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "宿河原",
+      "station_distance_m": 824,
+      "station_passengers": 16416,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000010",
+    "name": "川崎市岡本太郎美術館",
+    "lat": 35.608069,
+    "lng": 139.557454,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "向ヶ丘遊園",
+      "station_distance_m": 1211,
+      "station_passengers": 57254,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000011",
+    "name": "川崎市市民ミュージアム",
+    "lat": 35.58866,
+    "lng": 139.647475,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "武蔵中原",
+      "station_distance_m": 1022,
+      "station_passengers": 55204,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000012",
+    "name": "アートガーデンかわさき",
+    "lat": 35.531938,
+    "lng": 139.698569,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 171,
+      "station_passengers": 388782,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000013",
+    "name": "川崎市国際交流センター",
+    "lat": 35.568343,
+    "lng": 139.648656,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 622,
+      "station_passengers": 59259,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000014",
+    "name": "川崎能楽堂",
+    "lat": 35.527539,
+    "lng": 139.694748,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 465,
+      "station_passengers": 388782,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000015",
+    "name": "ミューザ川崎シンフォニーホール",
+    "lat": 35.530981,
+    "lng": 139.694692,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 196,
+      "station_passengers": 388782,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000016",
+    "name": "ラゾーナ川崎プラザソル",
+    "lat": 35.533212,
+    "lng": 139.69563,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 231,
+      "station_passengers": 388782,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000017",
+    "name": "男女共同参画センター（すくらむ２１）",
+    "lat": 35.604549,
+    "lng": 139.609176,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "溝の口",
+      "station_distance_m": 545,
+      "station_passengers": 195762,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000018",
+    "name": "川崎市総合自治会館",
+    "lat": 35.575059,
+    "lng": 139.655304,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "武蔵小杉",
+      "station_distance_m": 519,
+      "station_passengers": 431702,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000019",
+    "name": "新百合トウェンティワンホール",
+    "lat": 35.602977,
+    "lng": 139.505905,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 163,
+      "station_passengers": 114816,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000020",
+    "name": "川崎市民プラザ（指定都市記念市民プラザ）",
+    "lat": 35.584918,
+    "lng": 139.610508,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "梶が谷",
+      "station_distance_m": 1077,
+      "station_passengers": 36095,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000021",
+    "name": "川崎市平和館",
+    "lat": 35.568733,
+    "lng": 139.658964,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "元住吉",
+      "station_distance_m": 511,
+      "station_passengers": 59259,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000023",
+    "name": "かわさき市民活動センター",
+    "lat": 35.574666,
+    "lng": 139.66045,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "武蔵小杉",
+      "station_distance_m": 134,
+      "station_passengers": 431702,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000024",
+    "name": "川崎市アートセンター",
+    "lat": 35.605976,
+    "lng": 139.50569,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 300,
+      "station_passengers": 114816,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000032",
+    "name": "アートガーデンかわさき特別展示室（川崎浮世絵ギャラリー）",
+    "lat": 35.532021,
+    "lng": 139.698618,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 179,
+      "station_passengers": 388782,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000033",
+    "name": "小黒恵子童謡記念館",
+    "lat": 35.602127,
+    "lng": 139.626048,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "二子新地",
+      "station_distance_m": 648,
+      "station_passengers": 20845,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000037",
+    "name": "川崎市コンベンションホール",
+    "lat": 35.577695,
+    "lng": 139.656881,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "武蔵小杉",
+      "station_distance_m": 426,
+      "station_passengers": 431702,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000087",
+    "name": "教育文化会館",
+    "lat": 35.528792,
+    "lng": 139.707786,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "京急川崎",
+      "station_distance_m": 777,
+      "station_passengers": 123389,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000088",
+    "name": "教育文化会館大師分館",
+    "lat": 35.534118,
+    "lng": 139.725388,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 192,
+      "station_passengers": 17432,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000089",
+    "name": "教育文化会館田島分館",
+    "lat": 35.519115,
+    "lng": 139.716468,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 1043,
+      "station_passengers": 0,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000090",
+    "name": "東海道かわさき宿交流館",
+    "lat": 35.532504,
+    "lng": 139.702898,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "京急川崎",
+      "station_distance_m": 186,
+      "station_passengers": 123389,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000096",
+    "name": "幸市民館",
+    "lat": 35.544238,
+    "lng": 139.687591,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 841,
+      "station_passengers": 35884,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000097",
+    "name": "幸市民館日吉分館",
+    "lat": 35.546678,
+    "lng": 139.668314,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "新川崎",
+      "station_distance_m": 622,
+      "station_passengers": 51854,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000101",
+    "name": "中原市民館",
+    "lat": 35.574666,
+    "lng": 139.66045,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "武蔵小杉",
+      "station_distance_m": 134,
+      "station_passengers": 431702,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000105",
+    "name": "高津市民館",
+    "lat": 35.599092,
+    "lng": 139.612806,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "武蔵溝ノ口",
+      "station_distance_m": 133,
+      "station_passengers": 155920,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000106",
+    "name": "高津市民館橘分館",
+    "lat": 35.570123,
+    "lng": 139.623863,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 1980,
+      "station_passengers": 69142,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000107",
+    "name": "川崎市大山街道ふるさと館",
+    "lat": 35.603394,
+    "lng": 139.612856,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "高津",
+      "station_distance_m": 435,
+      "station_passengers": 28557,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000112",
+    "name": "宮前市民館",
+    "lat": 35.589365,
+    "lng": 139.579643,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 544,
+      "station_passengers": 46121,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000113",
+    "name": "宮前市民館菅生分館",
+    "lat": 35.594939,
+    "lng": 139.555465,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "たまプラーザ",
+      "station_distance_m": 1971,
+      "station_passengers": 78780,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000119",
+    "name": "多摩市民館",
+    "lat": 35.619523,
+    "lng": 139.562103,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "向ヶ丘遊園",
+      "station_distance_m": 337,
+      "station_passengers": 57254,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000125",
+    "name": "麻生市民館",
+    "lat": 35.604321,
+    "lng": 139.505409,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 199,
+      "station_passengers": 114816,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000126",
+    "name": "麻生市民館岡上分館",
+    "lat": 35.58085,
+    "lng": 139.482634,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "鶴川",
+      "station_distance_m": 262,
+      "station_passengers": 60371,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305000134",
+    "name": "地名資料室",
+    "lat": 35.598797,
+    "lng": 139.614008,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "武蔵溝ノ口",
+      "station_distance_m": 238,
+      "station_passengers": 155920,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001368",
+    "name": "川崎市立川崎図書館",
+    "lat": 35.531938,
+    "lng": 139.698569,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 171,
+      "station_passengers": 388782,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001369",
+    "name": "川崎市立川崎図書館大師分館",
+    "lat": 35.534118,
+    "lng": 139.725388,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎大師",
+      "station_distance_m": 192,
+      "station_passengers": 17432,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001370",
+    "name": "川崎市立川崎図書館田島分館",
+    "lat": 35.519115,
+    "lng": 139.716468,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "浜川崎",
+      "station_distance_m": 1043,
+      "station_passengers": 0,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001371",
+    "name": "川崎市立幸図書館",
+    "lat": 35.544238,
+    "lng": 139.687591,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "矢向",
+      "station_distance_m": 841,
+      "station_passengers": 35884,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001372",
+    "name": "川崎市立幸図書館日吉分館",
+    "lat": 35.546673,
+    "lng": 139.668448,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "新川崎",
+      "station_distance_m": 617,
+      "station_passengers": 51854,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001373",
+    "name": "川崎市立中原図書館",
+    "lat": 35.575876,
+    "lng": 139.659184,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "武蔵小杉",
+      "station_distance_m": 162,
+      "station_passengers": 431702,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001374",
+    "name": "川崎市立高津図書館",
+    "lat": 35.605215,
+    "lng": 139.615114,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "高津",
+      "station_distance_m": 302,
+      "station_passengers": 28557,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001375",
+    "name": "川崎市立高津図書館橘分館",
+    "lat": 35.570123,
+    "lng": 139.623863,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "武蔵新城",
+      "station_distance_m": 1980,
+      "station_passengers": 69142,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001376",
+    "name": "川崎市立宮前図書館",
+    "lat": 35.589403,
+    "lng": 139.579885,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "宮前平",
+      "station_distance_m": 539,
+      "station_passengers": 46121,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001377",
+    "name": "川崎市立多摩図書館",
+    "lat": 35.619589,
+    "lng": 139.562008,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "向ヶ丘遊園",
+      "station_distance_m": 348,
+      "station_passengers": 57254,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001378",
+    "name": "川崎市立麻生図書館",
+    "lat": 35.604387,
+    "lng": 139.505354,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "新百合ヶ丘",
+      "station_distance_m": 206,
+      "station_passengers": 114816,
+      "area_m2": null,
+      "park_type": null
+    }
+  },
+  {
+    "id": "facility_141305001379",
+    "name": "川崎市立麻生図書館柿生分館",
+    "lat": 35.591171,
+    "lng": 139.495023,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "柿生",
+      "station_distance_m": 290,
+      "station_passengers": 34337,
+      "area_m2": null,
+      "park_type": null
+    }
+  }
+]
