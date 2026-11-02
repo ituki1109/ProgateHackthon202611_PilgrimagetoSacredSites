@@ -1,614 +1,661 @@
 /* アプリ全体の見た目です。
-   怨念がテーマなので、暗い紫と青を基本にしています。
-   スマートフォンの幅（375px くらい）でも崩れないようにしています。 */
+   サムネイルと同じく、藤色の紙に紫紺の墨で書き、鎮めた記録には朱印を押す、という見た目にしています。
+   スマートフォンの幅（375px）を基本にし、広い画面では真ん中に寄せます。 */
 
 :root {
-  --bg: #120e22;
-  --bg-deep: #0b0817;
-  --panel: #211a38;
-  --panel-strong: #2b2248;
-  --text: #f5f1ff;
-  --muted: #b9afd6;
-  --accent: #b69cff;
-  --accent-strong: #7c4dff;
-  --border: rgba(182, 156, 255, 0.18);
-  --danger: #ff8fa3;
-  --danger-bg: rgba(255, 90, 120, 0.12);
-  --calm: #4ade80;
-  --weak: #c084fc;
-  --medium: #fbbf24;
-  --strong: #f87171;
-  --radius: 18px;
-  --shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+  --paper: #E9E4EF;      /* 背景の紙 */
+  --surface: #F7F5FA;    /* カードや入力欄 */
+  --ink: #2A2140;        /* 文字と線（紫紺） */
+  --ink-soft: #5E5474;
+  --ink-faint: #8C83A0;
+  --line: #D2CADD;
+  --wisp: #A796EC;       /* 人魂の色。怨念のゲージに使う */
+  --wisp-pale: #E3DCF7;
+  --shu: #C23A2B;        /* 朱印。推薦地点と、鎮めた記録だけに使う */
+  --shu-pale: #F5E1DD;
+  --nui: #F1CBCC;
+  --nui-shade: #DCA7AC;
+
+  --stage-weak: #B9AAEE;
+  --stage-medium: #8467DA;
+  --stage-strong: #3E2780;
+
+  --serif: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", serif;
+  --sans: "BIZ UDPGothic", "Yu Gothic", "Hiragino Sans", sans-serif;
+  --radius: 14px;
 }
 
-/* 日付の入力欄なども暗い色でそろえる */
 html {
-  min-height: 100%;
-  color-scheme: dark;
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   min-height: 100vh;
-  margin: 0;
-  padding-bottom: calc(78px + env(safe-area-inset-bottom));
-  color: var(--text);
-  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic",
-    "Segoe UI", sans-serif;
+  padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
   line-height: 1.7;
-  background:
-    radial-gradient(circle at 10% -10%, rgba(124, 77, 255, 0.35), transparent 42%),
-    radial-gradient(circle at 100% 0%, rgba(41, 121, 255, 0.18), transparent 38%),
-    var(--bg);
-  -webkit-font-smoothing: antialiased;
+  background: var(--paper);
 }
 
-img {
-  max-width: 100%;
-}
-
-::selection {
-  color: #fff;
-  background: rgba(124, 77, 255, 0.75);
-}
-
-a {
-  color: var(--accent);
-}
-
-h2 {
-  margin: 0 0 8px;
-  font-size: clamp(1.35rem, 5vw, 1.75rem);
-  letter-spacing: 0.04em;
-}
-
-h3,
-p {
-  overflow-wrap: anywhere;
-}
-
-/* 画面全体の幅。375px でも左右に余白が残るようにする */
-header,
-main {
-  width: min(100% - 32px, 760px);
-  margin-right: auto;
-  margin-left: auto;
-}
-
-header {
-  padding: 22px 0 0;
-}
-
-header h1 {
-  margin: 0;
-  font-size: clamp(1.8rem, 6vw, 2.6rem);
-  letter-spacing: 0.12em;
-}
-
-/* タイトルの下の光る線 */
-header h1::after {
-  display: block;
-  width: 58px;
-  height: 3px;
-  margin-top: 10px;
-  content: "";
-  background: linear-gradient(90deg, var(--accent-strong), var(--accent));
-  border-radius: 999px;
-  box-shadow: 0 0 18px rgba(182, 156, 255, 0.65);
-}
-
-/* index.html の .screen の padding を上書きして、幅をそろえる */
-.screen {
-  padding: 14px 0 24px;
-}
-
-/* hidden 属性と .hidden クラスは、どちらでも非表示にする */
-.hidden,
-[hidden] {
-  display: none !important;
-}
-
-button,
-input,
-select {
-  font: inherit;
-}
-
-/* フロントA の画面（地図・訪問）も含めて、ボタンを暗い色にそろえる */
-button {
-  padding: 10px 16px;
-  color: var(--text);
-  font-weight: 600;
-  cursor: pointer;
-  background: rgba(182, 156, 255, 0.14);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  transition: background 0.18s ease, border-color 0.18s ease,
-    transform 0.18s ease;
-}
-
-button:hover:not(:disabled) {
-  background: rgba(182, 156, 255, 0.24);
-  border-color: rgba(182, 156, 255, 0.45);
-}
-
-button:active:not(:disabled) {
-  transform: translateY(1px);
-}
-
-button:disabled {
-  cursor: wait;
-  opacity: 0.65;
-}
+img { max-width: 100%; display: block; }
+h2, h3, p { margin: 0; overflow-wrap: anywhere; }
+a { color: inherit; }
 
 :focus-visible {
-  outline: 3px solid rgba(182, 156, 255, 0.8);
-  outline-offset: 3px;
+  outline: 3px solid var(--wisp);
+  outline-offset: 2px;
 }
 
-/* ============ ぬいの一覧 ============ */
+/* ---------- 枠 ---------- */
 
-.nui-list {
-  display: grid;
-  gap: 14px;
-  margin-top: 18px;
+.app-header,
+.app-main {
+  width: min(100% - 32px, 600px);
+  margin-inline: auto;
 }
 
-.nui-card {
-  display: block;
-  padding: 14px;
-  overflow: hidden;
-  color: var(--text);
-  text-decoration: none;
-  background: linear-gradient(160deg, var(--panel-strong), var(--panel));
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  transition: transform 0.18s ease, border-color 0.18s ease,
-    box-shadow 0.18s ease;
-}
-
-.nui-card:hover {
-  border-color: rgba(182, 156, 255, 0.5);
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.42);
-  transform: translateY(-3px);
-}
-
-.nui-card:active {
-  transform: translateY(0);
-}
-
-.nui-photo {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  background: #19132c;
-  border-radius: 12px;
-}
-
-/* 写真がないときの 🧸 の表示 */
-.photo-placeholder {
+.app-header {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #d8ccff;
-  font-size: clamp(2.4rem, 10vw, 3.6rem);
-  background:
-    radial-gradient(circle at 50% 30%, rgba(182, 156, 255, 0.28), transparent 62%),
-    #19132c;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  padding: 18px 0 12px;
+  border-bottom: 1px solid var(--line);
 }
 
-.nui-name {
-  margin: 12px 0 8px;
-  font-size: 1.1rem;
+.brand {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.tagline {
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+/* URL の #map などで、ブラウザーが <section id="map"> まで下にずらさないようにする */
+.screen { scroll-margin-top: 100vh; }
+
+.screen-title {
+  margin: 24px 0 4px;
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 900;
   line-height: 1.4;
 }
 
-/* 怨念のゲージ */
-.grudge-gauge {
-  height: 12px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+.lead {
+  margin-bottom: 16px;
+  color: var(--ink-soft);
+  font-size: 14.5px;
 }
 
-.grudge-gauge-fill {
-  height: 100%;
-  border-radius: inherit;
-  transition: width 0.35s ease;
+.list-title {
+  margin: 32px 0 2px;
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
 }
 
-/* 怨念の段階ごとの色（docs/design.md の「怨念の段階」） */
-.grudge-gauge-fill.is-calm {
-  background: linear-gradient(90deg, #34d399, var(--calm));
-  box-shadow: 0 0 12px rgba(74, 222, 128, 0.45);
+.list-note {
+  color: var(--ink-soft);
+  font-size: 13.5px;
 }
 
-.grudge-gauge-fill.is-weak {
-  background: linear-gradient(90deg, #a855f7, var(--weak));
-  box-shadow: 0 0 12px rgba(192, 132, 252, 0.45);
+.status {
+  min-height: 1.7em;
+  margin-top: 8px;
+  color: var(--ink-faint);
+  font-size: 13.5px;
 }
 
-.grudge-gauge-fill.is-medium {
-  background: linear-gradient(90deg, #f59e0b, var(--medium));
-  box-shadow: 0 0 12px rgba(251, 191, 36, 0.45);
+.empty {
+  padding: 16px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--ink-soft);
+  font-size: 14.5px;
 }
 
-.grudge-gauge-fill.is-strong {
-  background: linear-gradient(90deg, #ef4444, var(--strong));
-  box-shadow: 0 0 12px rgba(248, 113, 113, 0.5);
+.error {
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--shu);
+  background: var(--shu-pale);
+  font-size: 14px;
 }
 
-.nui-info {
+/* ---------- ボタンとリンク ---------- */
+
+.actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 10px;
-  justify-content: space-between;
-  margin: 10px 0 0;
-  color: var(--muted);
-  font-size: 0.88rem;
+  align-items: center;
+  gap: 10px 16px;
+  margin-top: 12px;
 }
 
-.nui-visits {
-  color: var(--accent);
-}
-
-/* ============ ぬいの思い出 ============ */
-
-.back-link {
+.button {
   display: inline-flex;
   align-items: center;
-  margin-bottom: 14px;
-  color: var(--accent);
-  font-size: 0.92rem;
-  text-decoration: none;
-}
-
-.back-link:hover {
-  text-decoration: underline;
-}
-
-.detail-summary {
-  margin: 0 0 12px;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.visit-list {
-  display: grid;
-  gap: 12px;
-}
-
-.visit-card {
-  display: grid;
-  grid-template-columns: 96px minmax(0, 1fr);
-  gap: 14px;
-  align-items: start;
-  padding: 12px;
-  background: linear-gradient(160deg, var(--panel-strong), var(--panel));
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.visit-photo {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  background: #19132c;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1.5px solid var(--ink);
   border-radius: 10px;
+  color: var(--ink);
+  background: var(--surface);
+  font: 700 15px/1.3 var(--sans);
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.visit-body {
-  min-width: 0;
+.button:hover { background: #fff; }
+.button:disabled { opacity: 0.55; cursor: wait; }
+
+.button.is-primary {
+  color: var(--surface);
+  background: var(--ink);
+}
+.button.is-primary:hover { background: #3a2f57; }
+
+.button.is-shu {
+  border-color: var(--shu);
+  color: var(--shu);
+  background: transparent;
+}
+.button.is-shu:hover { background: var(--shu-pale); }
+
+.button.is-small {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 13.5px;
 }
 
-.visit-place {
-  margin: 0 0 6px;
-  font-size: 1rem;
-  line-height: 1.45;
+.text-link {
+  color: var(--ink);
+  font-size: 14.5px;
+  font-weight: 700;
+  text-underline-offset: 3px;
 }
 
-.visit-badge {
-  display: inline-block;
-  margin-bottom: 6px;
-  padding: 2px 8px;
-  color: #d8ccff;
-  font-size: 0.72rem;
-  font-weight: 600;
-  background: rgba(124, 77, 255, 0.22);
-  border: 1px solid rgba(182, 156, 255, 0.35);
-  border-radius: 999px;
-}
+/* ---------- 地図 ---------- */
 
-.visit-date {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-
-/* ============ ぬいの登録 ============ */
-
-.register-wrap {
-  margin-top: 18px;
-}
-
-.register-form {
-  display: grid;
-  gap: 16px;
-  padding: 18px;
-  background: linear-gradient(160deg, var(--panel-strong), var(--panel));
-  border: 1px solid var(--border);
+.map-frame {
+  overflow: hidden;
+  border: 1.5px solid var(--ink);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: var(--surface);
+}
+
+/* 地図の色を紙の色に寄せる。ピンと現在地だけが目立つようにする */
+.map-frame .leaflet-tile-pane {
+  filter: grayscale(1) sepia(0.3) hue-rotate(215deg) saturate(1.3) contrast(0.9) brightness(1.06);
+}
+
+.leaflet-container { font-family: var(--sans); }
+.leaflet-control-attribution { font-size: 10px; }
+
+.spot-pin span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  color: var(--surface);
+  background: var(--ink);
+  font: 900 15px/1 var(--serif);
+  box-shadow: 0 1px 0 var(--ink);
+}
+
+.leaflet-popup-content-wrapper { border-radius: 12px; }
+.leaflet-popup-content { margin: 14px 16px; }
+.popup-name { font: 700 16px/1.4 var(--serif); }
+.popup-reason { margin: 6px 0 2px; color: var(--ink-soft); font-size: 13.5px; line-height: 1.6; }
+.popup-score { margin: 0 0 10px; color: var(--ink-faint); font-size: 12px; }
+
+/* 推薦された地点の一覧。番号は推薦の順位で、ピンの番号と同じ */
+.spot-list {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.spot-item {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.spot-item:last-child { border-bottom: 1px solid var(--line); }
+
+.spot-rank {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  font: 900 15px/1 var(--serif);
+}
+
+.spot-name {
+  display: block;
+  font: 700 17px/1.45 var(--serif);
+}
+
+.spot-reason {
+  margin-top: 2px;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+.attribution {
+  margin-top: 28px;
+  color: var(--ink-faint);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+/* ---------- 入力 ---------- */
+
+.form {
+  display: grid;
+  gap: 18px;
+  margin-top: 20px;
 }
 
 .field {
   display: grid;
-  gap: 7px;
-  font-size: 0.95rem;
+  gap: 6px;
 }
 
 .field-label {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.field-note {
+  color: var(--ink-faint);
+  font-size: 12.5px;
 }
 
 .required,
 .optional {
-  padding: 1px 8px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  border-radius: 999px;
+  margin-left: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
 }
+.required { color: var(--shu); }
+.optional { color: var(--ink-faint); }
 
-.required {
-  color: #ffd1da;
-  background: rgba(255, 90, 120, 0.18);
-}
-
-.optional {
-  color: var(--muted);
-  background: rgba(255, 255, 255, 0.06);
-}
-
-input[type="text"],
-input[type="date"],
-input[type="file"],
-select {
+.field input[type="text"],
+.field input[type="date"],
+.field select,
+.place-card input[type="text"] {
   width: 100%;
   min-height: 46px;
   padding: 10px 12px;
-  color: var(--text);
-  font-size: 16px; /* iPhone で入力時に画面が拡大されないようにする */
-  background: #17112a;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink);
+  background: var(--surface);
+  font: 16px/1.4 var(--sans); /* 16px 未満だと iPhone で拡大される */
 }
 
-input[type="text"]:focus,
-input[type="date"]:focus,
-input[type="file"]:focus,
-select:focus {
-  border-color: var(--accent);
+.field input:focus,
+.field select:focus,
+.place-card input:focus {
+  border-color: var(--ink);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.25);
 }
 
-input::placeholder {
-  color: #8076a3;
+.field input[type="file"] {
+  font-size: 14px;
+  color: var(--ink-soft);
 }
 
-input[type="file"] {
-  padding: 8px;
-}
-
-input[type="file"]::file-selector-button {
-  margin-right: 10px;
-  padding: 7px 12px;
-  color: var(--text);
-  background: rgba(182, 156, 255, 0.16);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+.field input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 10px;
+  color: var(--ink);
+  background: var(--surface);
+  font: 700 14px var(--sans);
   cursor: pointer;
 }
 
-.primary-button {
-  width: 100%;
-  min-height: 48px;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  background: linear-gradient(135deg, #8b5cf6, #5b8cff);
-  border: 0;
-  border-radius: 999px;
-  box-shadow: 0 10px 24px rgba(91, 140, 255, 0.25);
-  transition: filter 0.18s ease, transform 0.18s ease;
-}
+.register-form .button { justify-self: start; }
 
-.primary-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #8b5cf6, #5b8cff);
-  filter: brightness(1.08);
-}
+/* ---------- 訪問の記録 ---------- */
 
-.primary-button:active {
-  transform: translateY(1px);
-}
-
-.primary-button:disabled {
-  cursor: wait;
-  filter: grayscale(0.35);
-  opacity: 0.7;
-}
-
-/* ============ 訪問の記録（フロントA の画面） ============ */
-
-#visit-form {
+.place-card {
   display: grid;
-  gap: 16px;
-  padding: 18px;
-  margin-top: 14px;
-  background: linear-gradient(160deg, var(--panel-strong), var(--panel));
-  border: 1px solid var(--border);
+  gap: 4px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: var(--surface);
 }
 
-#visit-place,
-#visit-result {
-  padding: 14px;
-  margin-bottom: 14px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border);
-  border-radius: 14px;
+.place-card.is-recommended { border-color: var(--shu); }
+
+.place-kind {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.place-card.is-recommended .place-kind { color: var(--shu); }
+
+.place-name {
+  font: 900 22px/1.4 var(--serif);
 }
 
-#visit-place:empty {
-  display: none;
+.place-reason {
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.65;
 }
 
-#visit-error {
-  padding: 12px 14px;
-  margin: 0;
-  color: var(--danger);
-  background: var(--danger-bg);
-  border: 1px solid rgba(255, 143, 163, 0.3);
-  border-radius: 12px;
+.place-note {
+  margin-top: 6px;
+  color: var(--shu);
+  font-size: 13.5px;
+  font-weight: 700;
 }
 
-#spot-list {
-  padding-left: 1.2em;
-}
+.place-card .field { margin-top: 4px; }
 
-#spot-list li {
-  margin-bottom: 14px;
-}
-
-#spot-list p {
-  margin: 0 0 6px;
-}
-
-#map-status,
-#map-hint {
-  color: var(--muted);
-}
-
-/* ============ 共通のメッセージ ============ */
-
-.empty {
-  padding: 20px;
-  color: var(--muted);
+.visit-result {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 32px 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
   text-align: center;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px dashed var(--border);
-  border-radius: 14px;
 }
 
-.error,
-.form-error {
-  padding: 12px 14px;
-  margin: 0 0 12px;
-  color: var(--danger);
-  background: var(--danger-bg);
-  border: 1px solid rgba(255, 143, 163, 0.3);
+.visit-result .grudge-gauge { width: min(100%, 320px); margin: 6px 0 2px; }
+.visit-result .actions { justify-content: center; margin-top: 14px; }
+
+.result-where { color: var(--ink-soft); font-size: 14.5px; }
+
+.result-grudge {
+  font: 600 18px/1.4 var(--serif);
+}
+
+.result-from {
+  color: var(--ink-faint);
+  text-decoration: line-through;
+}
+
+.result-to {
+  font-size: 40px;
+  font-weight: 900;
+}
+
+.result-diff { font-size: 14.5px; }
+
+/* ---------- 朱印 ---------- */
+
+.seal {
+  display: inline-grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 3px solid currentColor;
+  border-radius: 9px;
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+  font: 900 28px/1 var(--serif);
+  transform: rotate(-6deg);
+  mix-blend-mode: multiply;
+}
+.seal.is-shu { color: var(--shu); }
+.seal.is-sumi { color: var(--ink-faint); }
+
+/* 記録したときに押す朱印。この画面で動くのはここだけ */
+.seal.is-stamped {
+  width: 112px;
+  height: 112px;
+  margin-bottom: 8px;
+  border-width: 5px;
+  border-radius: 16px;
+  font-size: 66px;
+  animation: stamp 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+@keyframes stamp {
+  from { opacity: 0; transform: scale(1.7) rotate(-16deg); }
+  to { opacity: 1; transform: scale(1) rotate(-6deg); }
+}
+
+/* ---------- 怨念のゲージ ---------- */
+
+.grudge-gauge {
+  position: relative;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #DCD5E5;
+}
+
+.grudge-gauge-fill,
+.grudge-gauge-ghost {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+}
+
+.grudge-gauge-fill { background: var(--stage-weak); }
+.grudge-gauge.is-medium .grudge-gauge-fill { background: var(--stage-medium); }
+.grudge-gauge.is-strong .grudge-gauge-fill { background: var(--stage-strong); }
+
+/* 鎮まった分。斜線で薄く残す */
+.grudge-gauge-ghost {
+  background: repeating-linear-gradient(-45deg, var(--wisp) 0 3px, transparent 3px 6px);
+  opacity: 0.6;
+}
+
+.stage-label {
+  padding: 0 8px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+.stage-label.is-calm { color: var(--shu); }
+.stage-label.is-weak { color: #6F5DC4; }
+.stage-label.is-medium { color: #5134B4; }
+.stage-label.is-strong { color: var(--surface); border-color: var(--stage-strong); background: var(--stage-strong); }
+
+/* ---------- ぬい ---------- */
+
+.nui-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.nui-list .add-nui { justify-self: start; margin-top: 6px; }
+
+.nui-card {
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-decoration: none;
+}
+
+.nui-card:hover { border-color: var(--ink); }
+
+/* 怨念が強いぬいは、まわりに人魂の色がにじむ */
+.nui-card.is-strong {
+  background:
+    radial-gradient(circle at 50px 50%, rgba(167, 150, 236, 0.45), transparent 90px),
+    var(--surface);
+}
+
+.nui-photo {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.nui-photo.is-large { width: 92px; height: 92px; }
+
+.nui-face {
+  padding: 6px;
+  background: var(--paper);
+}
+.nui-face svg { display: block; width: 100%; height: 100%; }
+.face-head, .face-ear { fill: var(--nui); }
+.face-ear-in { fill: var(--nui-shade); }
+.face-fill { fill: var(--ink); }
+.face-line { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; }
+.face-gloom { stroke: var(--ink-soft); stroke-width: 1.8; stroke-linecap: round; opacity: 0.6; }
+
+.nui-body { display: grid; gap: 6px; min-width: 0; }
+
+.nui-name {
+  font: 900 19px/1.35 var(--serif);
+}
+.nui-name.is-large { font-size: 24px; }
+
+.nui-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+}
+
+.grudge-value { color: var(--ink); font-weight: 700; }
+
+.nui-since { color: var(--ink-faint); font-size: 13px; }
+
+.back-link { display: inline-block; margin: 4px 0 12px; }
+
+.nui-header {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- 思い出（御朱印帳） ---------- */
+
+.visit-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.visit-card {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 16px 12px 12px;
+  border: 1px solid var(--line);
   border-radius: 12px;
+  background: var(--surface);
 }
 
-/* ============ 下の移動ボタン ============ */
+.visit-photo-frame {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.visit-photo { width: 100%; height: 100%; object-fit: cover; }
+.visit-photo-blank { color: var(--ink-faint); font-size: 12px; }
+
+.visit-place { font: 700 16.5px/1.45 var(--serif); }
+.visit-date { color: var(--ink-soft); font: 600 14px/1.5 var(--serif); }
+.visit-kind { color: var(--ink-faint); font-size: 12.5px; }
+.visit-card.is-recommended .visit-kind { color: var(--shu); }
+
+/* ---------- 下の移動ボタン ---------- */
 
 .navbar {
+  position: fixed;
+  inset: auto 0 0 0;
   z-index: 1000;
+  display: flex;
+  justify-content: center;
   padding-bottom: env(safe-area-inset-bottom);
-  color: var(--text);
-  background: rgba(18, 14, 34, 0.94);
-  border-top: 1px solid var(--border);
-  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+  background: rgba(247, 245, 250, 0.95);
+  backdrop-filter: blur(8px);
 }
 
 .navbar a {
-  padding: 12px 0 10px;
-  color: var(--muted);
-  font-size: 0.85rem;
+  position: relative;
+  flex: 1;
+  max-width: 200px;
+  padding: 14px 0 16px;
+  color: var(--ink-faint);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
   text-decoration: none;
-  transition: color 0.18s ease, text-shadow 0.18s ease;
 }
 
-.navbar a.is-current {
-  color: var(--accent);
-  text-shadow: 0 0 14px rgba(182, 156, 255, 0.7);
+.navbar a.is-current { color: var(--ink); }
+.navbar a.is-current::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 28px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--ink);
+  transform: translateX(-50%);
 }
 
-.navbar a:hover {
-  color: var(--text);
-}
+/* ---------- 狭い画面 ---------- */
 
-/* ============ 地図まわり ============ */
+@media (max-width: 480px) {
+  .screen-title { font-size: 23px; }
 
-.leaflet-container {
-  font: inherit;
-  background: #1c1630;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-}
-
-.leaflet-control-attribution,
-.leaflet-control-attribution a {
-  color: #2b2248;
-}
-
-.attribution {
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-/* ============ 画面の幅に合わせた調整 ============ */
-
-@media (min-width: 560px) {
-  .nui-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .spot-item {
+    grid-template-columns: 32px minmax(0, 1fr);
   }
+  .spot-item .button { grid-column: 2; justify-self: start; }
+
+  .visit-card { grid-template-columns: 76px minmax(0, 1fr) auto; }
+  .visit-photo-frame { width: 76px; height: 76px; }
+  .visit-card .seal { width: 44px; height: 44px; font-size: 24px; }
 }
 
-@media (max-width: 420px) {
-  header {
-    padding-top: 18px;
-  }
-
-  .screen {
-    padding-top: 10px;
-  }
-
-  .nui-card {
-    padding: 12px;
-  }
-
-  .nui-info {
-    font-size: 0.82rem;
-  }
-
-  .visit-card {
-    grid-template-columns: 84px minmax(0, 1fr);
-    gap: 10px;
-  }
-
-  .register-form {
-    padding: 14px;
-  }
-}
-
-/* アニメーションを減らす設定にしている人には、動きを止める */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-  }
+  .seal.is-stamped { animation: none; }
 }

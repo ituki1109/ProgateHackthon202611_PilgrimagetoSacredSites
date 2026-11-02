@@ -5,7 +5,7 @@ import { createNui } from './api.js';
 
 // 登録フォームの HTML です。入力欄の名前は docs/api.md の POST /nuis に合わせています。
 const FORM_HTML = `
-  <form class="register-form" novalidate>
+  <form class="form register-form" novalidate>
     <label class="field">
       <span class="field-label">名前 <span class="required">必須</span></span>
       <input type="text" name="name" maxlength="40" autocomplete="off" placeholder="例：もちもち">
@@ -19,10 +19,11 @@ const FORM_HTML = `
     <label class="field">
       <span class="field-label">最後に連れ出した日 <span class="required">必須</span></span>
       <input type="date" name="last_outing_date">
+      <span class="field-note">この日から、1日ごとに怨念が 2 ずつたまります。</span>
     </label>
 
-    <p class="form-error" role="alert" hidden></p>
-    <button type="submit" class="primary-button">登録する</button>
+    <p class="form-error error" role="alert" hidden></p>
+    <button type="submit" class="button is-primary">登録する</button>
   </form>
 `;
 
@@ -105,6 +106,11 @@ export function showRegister() {
 
     const form = container.querySelector('form');
     form.addEventListener('submit', (event) => submitForm(event, form));
+
+    // 最後に連れ出した日は、今日より後を選べないようにします。
+    const today = new Date();
+    today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+    form.last_outing_date.max = today.toISOString().slice(0, 10);
 
     // 入力し直したら、前のエラーの文を消します。
     form.addEventListener('input', () => setError(form, ''));

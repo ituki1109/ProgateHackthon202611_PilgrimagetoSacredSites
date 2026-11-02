@@ -2,58 +2,60 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E9E4EF">
 <title>ぬい憑き</title>
 
-<!-- 地図（Leaflet）は CDN から読み込む。npm やビルドは使わない。 -->
+<!-- 地図（Leaflet）と文字は CDN から読み込む。npm やビルドは使わない。 -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Noto+Serif+JP:wght@600;900&display=swap">
 
 <!--
   骨組みを動かすのに必要な最小限のスタイルだけを置いています（フロントA）。
-  色、文字、カードの見た目は css/style.css（フロントB）に書いてください。
-  style.css はこの <style> より後ろで読み込むので、ここの指定は上書きできます。
+  色、文字、カードの見た目は css/style.css に書いています。
 -->
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; }
   /* 画面の切り替え。表示中の <section> だけに is-active が付く（main.js） */
-  .screen { display: none; padding: 16px; }
+  .screen { display: none; }
   .screen.is-active { display: block; }
   /* 地図は高さがないと表示されないので、ここで指定しておく */
-  #map-canvas { height: 55vh; min-height: 240px; width: 100%; }
-  .attribution { font-size: 0.75em; opacity: 0.7; }
-  /* 下の移動ボタン。画面の中身がボタンに隠れないよう body に余白を取る */
-  body { padding-bottom: 64px; }
-  .navbar {
-    position: fixed; inset: auto 0 0 0; display: flex;
-    border-top: 1px solid currentColor;
-  }
-  .navbar a { flex: 1; padding: 14px 0; text-align: center; text-decoration: none; }
-  .hidden { display: none; }
+  #map-canvas { height: 46vh; min-height: 260px; width: 100%; }
+  .hidden { display: none !important; }
 </style>
 
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<header>
-  <h1>ぬい憑き</h1>
+<header class="app-header">
+  <a class="brand" href="#map">ぬい憑き</a>
+  <p class="tagline">置いていかれたぬいを、街で鎮める</p>
 </header>
 
-<main>
+<main class="app-main">
 
   <!-- ============ 地図と推薦地点（フロントA） ============ -->
   <section id="map" class="screen">
-    <h2>どこへ連れて行く？</h2>
-    <div id="map-canvas"></div>
-    <p id="map-status" role="status"></p>
-    <p>
-      <button type="button" id="map-locate">現在地を取り直す</button>
-      <button type="button" id="map-record-here">ここ（現在地）で記録する</button>
-    </p>
-    <p id="map-hint">ピンを押すと推薦の理由が出ます。地図を押すと、その場所を現在地にします。</p>
-    <h3>推薦された地点</h3>
-    <ul id="spot-list"></ul>
+    <h2 class="screen-title">どこへ連れて行く？</h2>
+    <p class="lead" id="map-hint">地図を押すと、その場所を現在地にします。番号のピンは推薦の順位です。</p>
+
+    <div class="map-frame">
+      <div id="map-canvas"></div>
+    </div>
+    <p id="map-status" class="status" role="status"></p>
+
+    <div class="actions">
+      <button type="button" id="map-locate" class="button">現在地を取り直す</button>
+      <button type="button" id="map-record-here" class="button">ここ（現在地）で記録する</button>
+    </div>
+
+    <h3 class="list-title">推薦された地点</h3>
+    <p class="list-note">推薦された地点で記録すると、怨念が多く鎮まります。</p>
+    <ol id="spot-list" class="spot-list"></ol>
 
     <!-- data/README.md の「出典の表示」のとおり。文言は変えない。 -->
     <p class="attribution">
@@ -63,50 +65,53 @@
 
   <!-- ============ 訪問の記録（フロントA） ============ -->
   <section id="visit" class="screen">
-    <h2>訪問を記録する</h2>
+    <h2 class="screen-title">訪問を記録する</h2>
 
-    <div id="visit-place"></div>
+    <div id="visit-place" class="place-card"></div>
 
-    <form id="visit-form">
-      <p>
-        <label for="visit-nui">連れて行くぬい</label><br>
+    <form id="visit-form" class="form">
+      <label class="field" for="visit-nui">
+        <span class="field-label">連れて行くぬい</span>
         <select id="visit-nui" name="nui_id" required></select>
-      </p>
-      <p>
-        <label for="visit-photo">写真</label><br>
+        <span class="field-note">怨念の強い順に並んでいます。</span>
+      </label>
+      <label class="field" for="visit-photo">
+        <span class="field-label">ぬいと撮った写真 <span class="optional">任意</span></span>
         <input type="file" id="visit-photo" name="photo" accept="image/*" capture>
-      </p>
-      <p id="visit-error" role="alert" class="hidden"></p>
-      <p>
-        <button type="submit" id="visit-submit">記録する</button>
-        <a href="#map">地図に戻る</a>
-      </p>
+      </label>
+      <p id="visit-error" role="alert" class="error hidden"></p>
+      <div class="actions">
+        <button type="submit" id="visit-submit" class="button is-primary">記録する</button>
+        <a class="text-link" href="#map">地図に戻る</a>
+      </div>
     </form>
 
-    <div id="visit-result" class="hidden" role="status"></div>
+    <div id="visit-result" class="visit-result hidden" role="status"></div>
   </section>
 
   <!-- ============ ぬいの一覧（フロントB：js/nuis.js の showNuis()） ============ -->
   <section id="nuis" class="screen">
-    <h2>ぬいの一覧</h2>
+    <h2 class="screen-title">ぬいの一覧</h2>
+    <p class="lead">最後に連れ出した日から、怨念がたまっていきます。</p>
     <p data-pending>ここはフロントB の担当です。<code>js/nuis.js</code> に <code>showNuis()</code> を作ると、この文は消えます。</p>
   </section>
 
   <!-- ============ ぬいの思い出（フロントB：js/nuis.js の showNuiDetail(id)） ============ -->
   <section id="nui" class="screen">
-    <h2>ぬいの思い出</h2>
+    <h2 class="screen-title">ぬいの思い出</h2>
     <p data-pending>ここはフロントB の担当です。<code>js/nuis.js</code> に <code>showNuiDetail(id)</code> を作ると、この文は消えます。</p>
   </section>
 
   <!-- ============ ぬいの登録（フロントB：js/register.js の showRegister()） ============ -->
   <section id="register" class="screen">
-    <h2>ぬいの登録</h2>
+    <h2 class="screen-title">ぬいの登録</h2>
+    <p class="lead">家に置いたままのぬいを登録します。</p>
     <p data-pending>ここはフロントB の担当です。<code>js/register.js</code> に <code>showRegister()</code> を作ると、この文は消えます。</p>
   </section>
 
 </main>
 
-<nav class="navbar">
+<nav class="navbar" aria-label="画面の切り替え">
   <a href="#map" data-route="map">地図</a>
   <a href="#nuis" data-route="nuis">ぬい</a>
   <a href="#register" data-route="register">登録</a>

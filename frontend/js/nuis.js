@@ -3,15 +3,7 @@
 // 画面の切り替え（どの # を表示するか）は main.js が行います。
 
 import { getNuis, getVisits } from './api.js';
-
-// 怨念の強さから、段階の名前と CSS のクラス名を決めます。
-// 段階の分け方は docs/design.md の「怨念の段階」と同じです。
-function grudgeStage(grudge) {
-  if (grudge <= 0) return { label: '鎮まった', key: 'calm' }; // 0
-  if (grudge <= 39) return { label: '弱い', key: 'weak' }; // 1〜39
-  if (grudge <= 69) return { label: '中くらい', key: 'medium' }; // 40〜69
-  return { label: '強い', key: 'strong' }; // 70〜100
-}
+import { clampGrudge, grudgeGauge, grudgeStage, nuiFace, seal } from './ui.js';
 
 // 画面の中に、中身を入れる箱を1つ用意します。
 // すでにあるときは中身だけ空にして、作り直せるようにします。
@@ -34,13 +26,14 @@ function hidePending(section) {
   if (pending) pending.classList.add('hidden');
 }
 
-// 写真がないときに出す、ぬいの代わり表示を作ります。
-function createPhotoPlaceholder(className) {
-  const placeholder = document.createElement('div');
-  placeholder.className = `${className} photo-placeholder`;
-  placeholder.setAttribute('aria-hidden', 'true'); // 写真の説明は別に出す
-  placeholder.textContent = '🧸';
-  return placeholder;
+// ぬいの写真。photo_url が null のときは、怨念の段階に合わせた顔を出します。
+function createNuiPhoto(nui, stageKey, className) {
+  if (!nui.photo_url) return nuiFace(stageKey, className);
+  const photo = document.createElement('img');
+  photo.className = className;
+  photo.src = nui.photo_url;
+  photo.alt = `${nui.name}の写真`;
+  return photo;
 }
 
 // エラーの文を画面に出すための <p> を作ります。
@@ -55,68 +48,53 @@ function createError(message) {
 // 思い出画面から一覧へ戻るリンクを作ります。
 function createBackLink() {
   const link = document.createElement('a');
-  link.className = 'back-link';
+  link.className = 'text-link back-link';
   link.href = '#nuis';
-  link.textContent = '← ぬいの一覧に戻る';
+  link.textContent = 'ぬいの一覧に戻る';
   return link;
+}
+
+// 日時の文字列（2026-11-01T15:20:00）を、画面用の日付（2026/11/01）にします。
+function formatDate(value) {
+  const text = String(value || '');
+  const date = text.slice(0, 10).replace(/-/g, '/');
+  return date || '日付なし';
 }
 
 // ぬい1体分のカードを作ります。
 function createNuiCard(nui) {
-  // 怨念を 0〜100 の数値にそろえます（API は整数で返します）。
-  const grudge = Math.max(0, Math.min(100, Number(nui.grudge) || 0));
+  const grudge = clampGrudge(nui.grudge);
   const stage = grudgeStage(grudge);
 
-  // カード全体をリンクにします。
-  // 押すと URL が #nui/1 のようになり、main.js が思い出の画面を開きます。
+  // カード全体をリンクにします。押すと #nui/1 のようになり、思い出の画面を開きます。
   const card = document.createElement('a');
-  card.className = 'nui-card';
+  card.className = `nui-card is-${stage.key}`;
   card.href = `#nui/${nui.id}`;
 
-  // 写真。photo_url が null のときは、代わりに 🧸 を出します。
-  if (nui.photo_url) {
-    const photo = document.createElement('img');
-    photo.className = 'nui-photo';
-    photo.src = nui.photo_url;
-    photo.alt = `${nui.name}の写真`;
-    card.appendChild(photo);
-  } else {
-    card.appendChild(createPhotoPlaceholder('nui-photo'));
-  }
+  card.appendChild(createNuiPhoto(nui, stage.key, 'nui-photo'));
 
-  // 名前
+  const body = document.createElement('div');
+  body.className = 'nui-body';
+
   const name = document.createElement('h3');
   name.className = 'nui-name';
   name.textContent = nui.name; // textContent なら名前に記号があっても安全
-  card.appendChild(name);
 
-  // 怨念のゲージ（横棒）。幅で強さを表し、色は CSS の is-... で変えます。
-  const gauge = document.createElement('div');
-  gauge.className = 'grudge-gauge';
-  gauge.setAttribute('role', 'progressbar');
-  gauge.setAttribute('aria-label', `${nui.name}の怨念`);
-  gauge.setAttribute('aria-valuemin', '0');
-  gauge.setAttribute('aria-valuemax', '100');
-  gauge.setAttribute('aria-valuenow', String(grudge));
-
-  const gaugeFill = document.createElement('div');
-  gaugeFill.className = `grudge-gauge-fill is-${stage.key}`;
-  gaugeFill.style.width = `${grudge}%`; // 怨念の数だけ棒を伸ばす
-  gauge.appendChild(gaugeFill);
-
-  card.appendChild(gauge);
-
-  // 怨念の数・段階と、訪問の数
-  const info = document.createElement('p');
-  info.className = 'nui-info';
-  info.textContent = `怨念 ${grudge} / 100（${stage.label}）`;
-
+  const meta = document.createElement('p');
+  meta.className = 'nui-meta';
+  const value = document.createElement('span');
+  value.className = 'grudge-value';
+  value.textContent = `怨念 ${grudge}`;
+  const label = document.createElement('span');
+  label.className = `stage-label is-${stage.key}`;
+  label.textContent = stage.label;
   const visits = document.createElement('span');
   visits.className = 'nui-visits';
   visits.textContent = `訪問 ${nui.visit_count ?? 0}回`;
-  info.appendChild(visits);
+  meta.append(value, label, visits);
 
-  card.appendChild(info);
+  body.append(name, grudgeGauge(grudge, `${nui.name}の怨念`), meta);
+  card.appendChild(body);
   return card;
 }
 
@@ -132,7 +110,6 @@ export async function showNuis() {
 
   try {
     // api.js の getNuis() で、ぬいの一覧を取ります。
-    // API がまだのときは、mock/nuis.json の仮データが返ります。
     const nuis = await getNuis();
     const list = Array.isArray(nuis) ? nuis : [];
 
@@ -144,66 +121,96 @@ export async function showNuis() {
       empty.className = 'empty';
       empty.textContent = 'まだぬいが登録されていません。「登録」から追加してください。';
       container.appendChild(empty);
-      return;
     }
 
     // 取ってきた順番（登録した順）にカードを並べます。
     for (const nui of list) {
       container.appendChild(createNuiCard(nui));
     }
+
+    const add = document.createElement('a');
+    add.className = 'button add-nui';
+    add.href = '#register';
+    add.textContent = 'ぬいを登録する';
+    container.appendChild(add);
   } catch (error) {
     container.replaceChildren();
     container.appendChild(createError(`ぬいの一覧を読み込めませんでした：${error.message}`));
   }
 }
 
-// 日時の文字列（2026-11-01T15:20:00）を、画面用の日付（2026/11/01）にします。
-function formatDate(value) {
-  const text = String(value || '');
-  const date = text.slice(0, 10).replace(/-/g, '/');
-  return date || '日付なし';
+// 思い出の画面の上に出す、そのぬいの名前と怨念。
+function createNuiHeader(nui) {
+  const grudge = clampGrudge(nui.grudge);
+  const stage = grudgeStage(grudge);
+
+  const header = document.createElement('div');
+  header.className = `nui-header is-${stage.key}`;
+  header.appendChild(createNuiPhoto(nui, stage.key, 'nui-photo is-large'));
+
+  const body = document.createElement('div');
+  body.className = 'nui-body';
+  const name = document.createElement('h3');
+  name.className = 'nui-name is-large';
+  name.textContent = nui.name;
+
+  const meta = document.createElement('p');
+  meta.className = 'nui-meta';
+  const value = document.createElement('span');
+  value.className = 'grudge-value';
+  value.textContent = `怨念 ${grudge}`;
+  const label = document.createElement('span');
+  label.className = `stage-label is-${stage.key}`;
+  label.textContent = stage.label;
+  meta.append(value, label);
+
+  const since = document.createElement('p');
+  since.className = 'nui-since';
+  since.textContent = `最後に連れ出した日 ${formatDate(nui.last_outing_date)}`;
+
+  body.append(name, grudgeGauge(grudge, `${nui.name}の怨念`), meta, since);
+  header.appendChild(body);
+  return header;
 }
 
-// 訪問の記録1件分のカードを作ります。
+// 訪問の記録1件分。御朱印帳の1ページのように、推薦地点の記録には朱印を押します。
 function createVisitCard(visit) {
   const card = document.createElement('article');
-  card.className = 'visit-card';
+  card.className = `visit-card${visit.recommended ? ' is-recommended' : ''}`;
 
-  // 写真。photo_url が null のときは、代わりに 🧸 を出します。
+  const frame = document.createElement('div');
+  frame.className = 'visit-photo-frame';
   if (visit.photo_url) {
     const photo = document.createElement('img');
     photo.className = 'visit-photo';
     photo.src = visit.photo_url;
     photo.alt = `${visit.spot_name || '訪問先'}の写真`;
-    card.appendChild(photo);
+    frame.appendChild(photo);
   } else {
-    card.appendChild(createPhotoPlaceholder('visit-photo'));
+    const blank = document.createElement('p');
+    blank.className = 'visit-photo-blank';
+    blank.textContent = '写真なし';
+    frame.appendChild(blank);
   }
+  card.appendChild(frame);
 
   const body = document.createElement('div');
   body.className = 'visit-body';
 
-  // 地点の名前
   const place = document.createElement('h3');
   place.className = 'visit-place';
   place.textContent = visit.spot_name || '場所の記録';
-  body.appendChild(place);
 
-  // 推薦地点で記録したときは、目印を付けます。
-  if (visit.recommended) {
-    const badge = document.createElement('span');
-    badge.className = 'visit-badge';
-    badge.textContent = '推薦地点';
-    body.appendChild(badge);
-  }
-
-  // 日付
   const date = document.createElement('p');
   date.className = 'visit-date';
   date.textContent = formatDate(visit.created_at);
-  body.appendChild(date);
 
-  card.appendChild(body);
+  const kind = document.createElement('p');
+  kind.className = 'visit-kind';
+  kind.textContent = visit.recommended ? '推薦された地点' : '推薦地点の外';
+
+  body.append(place, date, kind);
+  card.append(body, seal(visit.recommended ? '鎮' : '記', visit.recommended));
   return card;
 }
 
@@ -227,12 +234,14 @@ export async function showNuiDetail(id) {
   container.textContent = '読み込み中…';
 
   try {
-    // api.js の getVisits(id) で、そのぬいの訪問の記録を取ります。
-    const visits = await getVisits(nuiId);
+    // そのぬいの名前と怨念（getNuis）と、訪問の記録（getVisits）を一緒に取ります。
+    const [nuis, visits] = await Promise.all([getNuis(), getVisits(nuiId)]);
+    const nui = (Array.isArray(nuis) ? nuis : []).find((n) => n.id === nuiId);
     const list = Array.isArray(visits) ? visits : [];
 
     container.replaceChildren();
     container.appendChild(createBackLink());
+    if (nui) container.appendChild(createNuiHeader(nui));
 
     // 記録がまだないときの案内
     if (list.length === 0) {
@@ -248,18 +257,17 @@ export async function showNuiDetail(id) {
       String(b.created_at).localeCompare(String(a.created_at))
     );
 
-    const summary = document.createElement('p');
-    summary.className = 'detail-summary';
-    summary.textContent = `思い出 ${sorted.length}件`;
+    const summary = document.createElement('h3');
+    summary.className = 'list-title';
+    const sealed = sorted.filter((v) => v.recommended).length;
+    summary.textContent = `思い出 ${sorted.length}件（朱印 ${sealed}）`;
     container.appendChild(summary);
 
     const visitList = document.createElement('div');
     visitList.className = 'visit-list';
-
     for (const visit of sorted) {
       visitList.appendChild(createVisitCard(visit));
     }
-
     container.appendChild(visitList);
   } catch (error) {
     container.replaceChildren();
