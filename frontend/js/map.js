@@ -2,15 +2,16 @@
 
 import { getRecommend } from './api.js';
 
-// デモの対象地域。位置情報が取れないときは、ここを現在地とみなす。
-const DEFAULT_CENTER = { lat: 35.5308, lng: 139.7029 }; // 川崎駅のあたり
+// 対象地域は神奈川県川崎市（docs/tasks/frontend-main.md）。
+// 最初の現在地は川崎駅にする。ブラウザーの位置情報は、ボタンを押したときだけ取る
+// （会場で川崎市の外にいると推薦地点が出ないため、自動では求めない）。
+const DEFAULT_CENTER = { lat: 35.5314, lng: 139.6968 }; // 川崎駅
 const DEFAULT_ZOOM = 15;
 
 let map = null;
 let spotLayer = null;      // 推薦地点のピンをまとめて消せるようにする
 let currentMarker = null;  // 現在地の印
 let current = { ...DEFAULT_CENTER };
-let askedGeolocation = false;
 
 // ほかの JS（visit.js）が現在地を知るために使う
 export function getCurrentLocation() {
@@ -22,10 +23,6 @@ export function showMap() {
   if (!map) initMap();
   // 隠れている間に地図を作ると大きさがずれるので、表示のたびに直す
   map.invalidateSize();
-  if (!askedGeolocation) {
-    askedGeolocation = true;
-    locate();
-  }
 }
 
 function initMap() {

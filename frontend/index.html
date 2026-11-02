@@ -21,6 +21,7 @@
   .screen.is-active { display: block; }
   /* 地図は高さがないと表示されないので、ここで指定しておく */
   #map-canvas { height: 55vh; min-height: 240px; width: 100%; }
+  .attribution { font-size: 0.75em; opacity: 0.7; }
   /* 下の移動ボタン。画面の中身がボタンに隠れないよう body に余白を取る */
   body { padding-bottom: 64px; }
   .navbar {
@@ -53,6 +54,11 @@
     <p id="map-hint">ピンを押すと推薦の理由が出ます。地図を押すと、その場所を現在地にします。</p>
     <h3>推薦された地点</h3>
     <ul id="spot-list"></ul>
+
+    <!-- data/README.md の「出典の表示」のとおり。文言は変えない。 -->
+    <p class="attribution">
+      出典：国土交通省「3D都市モデル（Project PLATEAU）川崎市（2022年度）」、川崎市「公共施設一覧」、国土交通省「国土数値情報（駅別乗降客数データ）」を加工して作成
+    </p>
   </section>
 
   <!-- ============ 訪問の記録（フロントA） ============ -->
