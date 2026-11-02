@@ -62,7 +62,15 @@ def test_recommend_mixes_categories():
 def test_facility_reason_uses_type():
     result = recommend(SPOTS, *KAWASAKI_STATION)
     muza = next(r for r in result if r["name"] == "ミューザ川崎シンフォニーホール")
-    assert muza["reason"] == "音楽ホール。川崎駅から徒歩3分"
+    assert muza["reason"] == "現在地から約200mと近い。音楽ホール。川崎駅から徒歩3分"
+
+
+def test_reason_puts_main_factor_first():
+    """点数を押し上げた要素から順に書き、広い公園には順位を書く。"""
+    result = recommend(SPOTS, *MUSASHI_KOSUGI)
+    tamagawa = next(r for r in result if r["name"] == "多摩川緑地")
+    assert tamagawa["reason"].startswith("広さ72.1haの運動公園で、半径3km以内の公園で一番広い。")
+    assert "現在地から約1.3km。" in tamagawa["reason"]
 
 
 def test_attrs_change_result():
@@ -84,7 +92,7 @@ def test_extra_rules(monkeypatch):
     )
     result = recommend(spots, *KAWASAKI_STATION)
     assert result[0]["id"] == last
-    assert result[0]["reason"].endswith("。近くに10件")
+    assert "近くに10件" in result[0]["reason"].split("。")
     assert all(0 <= r["score"] <= 1 for r in result)
 
 
