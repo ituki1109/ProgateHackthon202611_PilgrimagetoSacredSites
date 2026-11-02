@@ -1,0 +1,614 @@
+/* アプリ全体の見た目です。
+   怨念がテーマなので、暗い紫と青を基本にしています。
+   スマートフォンの幅（375px くらい）でも崩れないようにしています。 */
+
+:root {
+  --bg: #120e22;
+  --bg-deep: #0b0817;
+  --panel: #211a38;
+  --panel-strong: #2b2248;
+  --text: #f5f1ff;
+  --muted: #b9afd6;
+  --accent: #b69cff;
+  --accent-strong: #7c4dff;
+  --border: rgba(182, 156, 255, 0.18);
+  --danger: #ff8fa3;
+  --danger-bg: rgba(255, 90, 120, 0.12);
+  --calm: #4ade80;
+  --weak: #c084fc;
+  --medium: #fbbf24;
+  --strong: #f87171;
+  --radius: 18px;
+  --shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+}
+
+/* 日付の入力欄なども暗い色でそろえる */
+html {
+  min-height: 100%;
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding-bottom: calc(78px + env(safe-area-inset-bottom));
+  color: var(--text);
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic",
+    "Segoe UI", sans-serif;
+  line-height: 1.7;
+  background:
+    radial-gradient(circle at 10% -10%, rgba(124, 77, 255, 0.35), transparent 42%),
+    radial-gradient(circle at 100% 0%, rgba(41, 121, 255, 0.18), transparent 38%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+}
+
+::selection {
+  color: #fff;
+  background: rgba(124, 77, 255, 0.75);
+}
+
+a {
+  color: var(--accent);
+}
+
+h2 {
+  margin: 0 0 8px;
+  font-size: clamp(1.35rem, 5vw, 1.75rem);
+  letter-spacing: 0.04em;
+}
+
+h3,
+p {
+  overflow-wrap: anywhere;
+}
+
+/* 画面全体の幅。375px でも左右に余白が残るようにする */
+header,
+main {
+  width: min(100% - 32px, 760px);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+header {
+  padding: 22px 0 0;
+}
+
+header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  letter-spacing: 0.12em;
+}
+
+/* タイトルの下の光る線 */
+header h1::after {
+  display: block;
+  width: 58px;
+  height: 3px;
+  margin-top: 10px;
+  content: "";
+  background: linear-gradient(90deg, var(--accent-strong), var(--accent));
+  border-radius: 999px;
+  box-shadow: 0 0 18px rgba(182, 156, 255, 0.65);
+}
+
+/* index.html の .screen の padding を上書きして、幅をそろえる */
+.screen {
+  padding: 14px 0 24px;
+}
+
+/* hidden 属性と .hidden クラスは、どちらでも非表示にする */
+.hidden,
+[hidden] {
+  display: none !important;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+/* フロントA の画面（地図・訪問）も含めて、ボタンを暗い色にそろえる */
+button {
+  padding: 10px 16px;
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(182, 156, 255, 0.14);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: background 0.18s ease, border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+button:hover:not(:disabled) {
+  background: rgba(182, 156, 255, 0.24);
+  border-color: rgba(182, 156, 255, 0.45);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(182, 156, 255, 0.8);
+  outline-offset: 3px;
+}
+
+/* ============ ぬいの一覧 ============ */
+
+.nui-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.nui-card {
+  display: block;
+  padding: 14px;
+  overflow: hidden;
+  color: var(--text);
+  text-decoration: none;
+  background: linear-gradient(160deg, var(--panel-strong), var(--panel));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.nui-card:hover {
+  border-color: rgba(182, 156, 255, 0.5);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.42);
+  transform: translateY(-3px);
+}
+
+.nui-card:active {
+  transform: translateY(0);
+}
+
+.nui-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #19132c;
+  border-radius: 12px;
+}
+
+/* 写真がないときの 🧸 の表示 */
+.photo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d8ccff;
+  font-size: clamp(2.4rem, 10vw, 3.6rem);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(182, 156, 255, 0.28), transparent 62%),
+    #19132c;
+}
+
+.nui-name {
+  margin: 12px 0 8px;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+/* 怨念のゲージ */
+.grudge-gauge {
+  height: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.grudge-gauge-fill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.35s ease;
+}
+
+/* 怨念の段階ごとの色（docs/design.md の「怨念の段階」） */
+.grudge-gauge-fill.is-calm {
+  background: linear-gradient(90deg, #34d399, var(--calm));
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.45);
+}
+
+.grudge-gauge-fill.is-weak {
+  background: linear-gradient(90deg, #a855f7, var(--weak));
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.45);
+}
+
+.grudge-gauge-fill.is-medium {
+  background: linear-gradient(90deg, #f59e0b, var(--medium));
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.45);
+}
+
+.grudge-gauge-fill.is-strong {
+  background: linear-gradient(90deg, #ef4444, var(--strong));
+  box-shadow: 0 0 12px rgba(248, 113, 113, 0.5);
+}
+
+.nui-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  justify-content: space-between;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.nui-visits {
+  color: var(--accent);
+}
+
+/* ============ ぬいの思い出 ============ */
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 14px;
+  color: var(--accent);
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.detail-summary {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.visit-list {
+  display: grid;
+  gap: 12px;
+}
+
+.visit-card {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 12px;
+  background: linear-gradient(160deg, var(--panel-strong), var(--panel));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.visit-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: #19132c;
+  border-radius: 10px;
+}
+
+.visit-body {
+  min-width: 0;
+}
+
+.visit-place {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.visit-badge {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 8px;
+  color: #d8ccff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(124, 77, 255, 0.22);
+  border: 1px solid rgba(182, 156, 255, 0.35);
+  border-radius: 999px;
+}
+
+.visit-date {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ============ ぬいの登録 ============ */
+
+.register-wrap {
+  margin-top: 18px;
+}
+
+.register-form {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  background: linear-gradient(160deg, var(--panel-strong), var(--panel));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+  font-size: 0.95rem;
+}
+
+.field-label {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+}
+
+.required,
+.optional {
+  padding: 1px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 999px;
+}
+
+.required {
+  color: #ffd1da;
+  background: rgba(255, 90, 120, 0.18);
+}
+
+.optional {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+input[type="text"],
+input[type="date"],
+input[type="file"],
+select {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  color: var(--text);
+  font-size: 16px; /* iPhone で入力時に画面が拡大されないようにする */
+  background: #17112a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="file"]:focus,
+select:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.25);
+}
+
+input::placeholder {
+  color: #8076a3;
+}
+
+input[type="file"] {
+  padding: 8px;
+}
+
+input[type="file"]::file-selector-button {
+  margin-right: 10px;
+  padding: 7px 12px;
+  color: var(--text);
+  background: rgba(182, 156, 255, 0.16);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primary-button {
+  width: 100%;
+  min-height: 48px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, #8b5cf6, #5b8cff);
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(91, 140, 255, 0.25);
+  transition: filter 0.18s ease, transform 0.18s ease;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #8b5cf6, #5b8cff);
+  filter: brightness(1.08);
+}
+
+.primary-button:active {
+  transform: translateY(1px);
+}
+
+.primary-button:disabled {
+  cursor: wait;
+  filter: grayscale(0.35);
+  opacity: 0.7;
+}
+
+/* ============ 訪問の記録（フロントA の画面） ============ */
+
+#visit-form {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  margin-top: 14px;
+  background: linear-gradient(160deg, var(--panel-strong), var(--panel));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+#visit-place,
+#visit-result {
+  padding: 14px;
+  margin-bottom: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+#visit-place:empty {
+  display: none;
+}
+
+#visit-error {
+  padding: 12px 14px;
+  margin: 0;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border: 1px solid rgba(255, 143, 163, 0.3);
+  border-radius: 12px;
+}
+
+#spot-list {
+  padding-left: 1.2em;
+}
+
+#spot-list li {
+  margin-bottom: 14px;
+}
+
+#spot-list p {
+  margin: 0 0 6px;
+}
+
+#map-status,
+#map-hint {
+  color: var(--muted);
+}
+
+/* ============ 共通のメッセージ ============ */
+
+.empty {
+  padding: 20px;
+  color: var(--muted);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+}
+
+.error,
+.form-error {
+  padding: 12px 14px;
+  margin: 0 0 12px;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border: 1px solid rgba(255, 143, 163, 0.3);
+  border-radius: 12px;
+}
+
+/* ============ 下の移動ボタン ============ */
+
+.navbar {
+  z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom);
+  color: var(--text);
+  background: rgba(18, 14, 34, 0.94);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+
+.navbar a {
+  padding: 12px 0 10px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.18s ease, text-shadow 0.18s ease;
+}
+
+.navbar a.is-current {
+  color: var(--accent);
+  text-shadow: 0 0 14px rgba(182, 156, 255, 0.7);
+}
+
+.navbar a:hover {
+  color: var(--text);
+}
+
+/* ============ 地図まわり ============ */
+
+.leaflet-container {
+  font: inherit;
+  background: #1c1630;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.leaflet-control-attribution,
+.leaflet-control-attribution a {
+  color: #2b2248;
+}
+
+.attribution {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ============ 画面の幅に合わせた調整 ============ */
+
+@media (min-width: 560px) {
+  .nui-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  header {
+    padding-top: 18px;
+  }
+
+  .screen {
+    padding-top: 10px;
+  }
+
+  .nui-card {
+    padding: 12px;
+  }
+
+  .nui-info {
+    font-size: 0.82rem;
+  }
+
+  .visit-card {
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .register-form {
+    padding: 14px;
+  }
+}
+
+/* アニメーションを減らす設定にしている人には、動きを止める */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
