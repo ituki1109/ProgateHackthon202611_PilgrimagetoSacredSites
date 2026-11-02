@@ -2,6 +2,7 @@
 
 import { getNuis, createVisit } from './api.js';
 import { getCurrentLocation } from './map.js';
+import { grudgeGauge, grudgeStage, seal } from './ui.js';
 
 // 記録する場所。map.js で「ここで記録する」を押すと入る。
 // { spot: 推薦地点か null, lat, lng }
@@ -26,6 +27,7 @@ export async function showVisit() {
   }
 
   document.getElementById('visit-result').classList.add('hidden');
+  document.getElementById('visit-form').classList.remove('hidden');
   hideError();
   renderPlace();
   await renderNuiOptions();
@@ -37,20 +39,36 @@ function renderPlace() {
   box.replaceChildren();
 
   if (place.spot) {
-    const name = document.createElement('p');
-    name.textContent = `記録する場所：${place.spot.name}`;
+    box.classList.add('is-recommended');
+
+    const kind = document.createElement('p');
+    kind.className = 'place-kind';
+    kind.textContent = '推薦された地点';
+
+    const name = document.createElement('h3');
+    name.className = 'place-name';
+    name.textContent = place.spot.name;
 
     const reason = document.createElement('p');
+    reason.className = 'place-reason';
     reason.textContent = place.spot.reason;
 
     const mark = document.createElement('p');
-    mark.textContent = '推薦された地点です。怨念が多く鎮まります。';
+    mark.className = 'place-note';
+    mark.textContent = 'ここで記録すると、怨念が多く鎮まります。';
 
-    box.append(name, reason, mark);
+    box.append(kind, name, reason, mark);
     return;
   }
 
+  box.classList.remove('is-recommended');
+
+  const kind = document.createElement('p');
+  kind.className = 'place-kind';
+  kind.textContent = '推薦地点の外';
+
   const label = document.createElement('label');
+  label.className = 'field-label';
   label.htmlFor = 'visit-spot-name';
   label.textContent = '地点の名前';
 
@@ -61,11 +79,13 @@ function renderPlace() {
   input.required = true;
 
   const where = document.createElement('p');
+  where.className = 'field-note';
   where.textContent = `位置：${place.lat.toFixed(5)}, ${place.lng.toFixed(5)}`;
 
-  const p = document.createElement('p');
-  p.append(label, document.createElement('br'), input);
-  box.append(p, where);
+  const field = document.createElement('div');
+  field.className = 'field';
+  field.append(label, input, where);
+  box.append(kind, field);
 }
 
 // 連れて行くぬいを、怨念の強い順に並べる
@@ -150,36 +170,56 @@ async function submit(event) {
 function renderResult(result, nuiName, placeName) {
   const before = result.grudge_before;
   const after = result.grudge_after;
+  const recommended = Boolean(result.visit.recommended);
   const box = document.getElementById('visit-result');
   box.replaceChildren();
 
-  const title = document.createElement('p');
-  title.textContent = '記録しました。';
-
-  const grudge = document.createElement('p');
-  grudge.textContent = `怨念が ${before} → ${after} に鎮まった`;
-
-  const diff = document.createElement('p');
-  diff.textContent = after < before
-    ? `${before - after} 下がりました。`
-    : 'これ以上は鎮まりません。';
+  // 押した朱印。推薦地点なら朱色の「鎮」、それ以外は墨色の「記」。
+  const stamp = seal(recommended ? '鎮' : '記', recommended);
+  stamp.classList.add('is-stamped');
 
   const where = document.createElement('p');
+  where.className = 'result-where';
   // 地点の名前は API が返すものを使う。モックでは返らないので、画面で選んだ名前を使う。
-  where.textContent = `${nuiName} と ${result.visit.spot_name || placeName}`
-    + (result.visit.recommended ? '（推薦された地点）' : '');
+  where.textContent = `${nuiName}と ${result.visit.spot_name || placeName}`
+    + (recommended ? '（推薦された地点）' : '');
 
-  const links = document.createElement('p');
-  const toMap = document.createElement('a');
-  toMap.href = '#map';
-  toMap.textContent = '地図に戻る';
+  const grudge = document.createElement('p');
+  grudge.className = 'result-grudge';
+  const from = document.createElement('span');
+  from.className = 'result-from';
+  from.textContent = String(before);
+  const to = document.createElement('span');
+  to.className = 'result-to';
+  to.textContent = String(after);
+  grudge.append('怨念 ', from, ' から ', to, ' へ');
+
+  const diff = document.createElement('p');
+  diff.className = 'result-diff';
+  if (after >= before) {
+    diff.textContent = 'これ以上は鎮まりません。';
+  } else if (after === 0) {
+    diff.textContent = `${before - after} 鎮まり、怨念がすっかり消えました。`;
+  } else {
+    diff.textContent = `${before - after} 鎮まりました。いまの怨念は「${grudgeStage(after).label}」です。`;
+  }
+
+  const links = document.createElement('div');
+  links.className = 'actions';
   const toNuis = document.createElement('a');
+  toNuis.className = 'button is-primary';
   toNuis.href = '#nuis';
   toNuis.textContent = 'ぬいの一覧を見る';
-  links.append(toMap, ' / ', toNuis);
+  const toMap = document.createElement('a');
+  toMap.className = 'text-link';
+  toMap.href = '#map';
+  toMap.textContent = '地図に戻る';
+  links.append(toNuis, toMap);
 
-  box.append(title, grudge, diff, where, links);
+  box.append(stamp, where, grudge, grudgeGauge(after, `${nuiName}の怨念`, before), diff, links);
   box.classList.remove('hidden');
+  document.getElementById('visit-form').classList.add('hidden');
+  box.scrollIntoView({ block: 'start' });
 
   // 同じ場所で続けて記録しないよう、選んだ場所を忘れる
   place = null;

@@ -73,7 +73,9 @@ function setCurrent(lat, lng, message) {
   if (currentMarker) {
     currentMarker.setLatLng([lat, lng]);
   } else {
-    currentMarker = L.circleMarker([lat, lng], { radius: 8, weight: 3 })
+    currentMarker = L.circleMarker([lat, lng], {
+      radius: 9, weight: 3, color: '#2A2140', fillColor: '#A796EC', fillOpacity: 0.9,
+    })
       .bindTooltip('現在地')
       .addTo(map);
   }
@@ -100,30 +102,50 @@ function drawSpots(spots) {
   const list = document.getElementById('spot-list');
   list.replaceChildren();
 
-  for (const spot of spots) {
-    L.marker([spot.lat, spot.lng])
+  spots.forEach((spot, i) => {
+    // ピンには推薦の順位を出す。一覧の番号と同じ。
+    const icon = L.divIcon({
+      className: 'spot-pin',
+      html: `<span>${i + 1}</span>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+      popupAnchor: [0, -18],
+    });
+    L.marker([spot.lat, spot.lng], { icon, title: spot.name })
       .bindPopup(popupFor(spot))
       .addTo(spotLayer);
 
-    list.appendChild(listItemFor(spot));
+    list.appendChild(listItemFor(spot, i + 1));
+  });
+
+  // 現在地と推薦地点がすべて見えるように寄せる
+  if (spots.length > 0) {
+    const bounds = L.latLngBounds(spots.map((spot) => [spot.lat, spot.lng]));
+    bounds.extend([current.lat, current.lng]);
+    map.fitBounds(bounds, { padding: [36, 36], maxZoom: 16 });
   }
 }
 
 // ピンを押したときに出る中身
 function popupFor(spot) {
   const box = document.createElement('div');
+  box.className = 'popup';
 
   const name = document.createElement('strong');
+  name.className = 'popup-name';
   name.textContent = spot.name;
 
   const reason = document.createElement('p');
+  reason.className = 'popup-reason';
   reason.textContent = spot.reason;
 
   const score = document.createElement('p');
+  score.className = 'popup-score';
   score.textContent = `推薦の点数 ${spot.score}`;
 
   const button = document.createElement('button');
   button.type = 'button';
+  button.className = 'button is-shu is-small';
   button.textContent = 'ここで記録する';
   button.addEventListener('click', () => selectPlace(spot, spot.lat, spot.lng));
 
@@ -131,22 +153,32 @@ function popupFor(spot) {
   return box;
 }
 
-function listItemFor(spot) {
+function listItemFor(spot, rank) {
   const li = document.createElement('li');
+  li.className = 'spot-item';
 
+  const number = document.createElement('span');
+  number.className = 'spot-rank';
+  number.textContent = String(rank);
+
+  const body = document.createElement('div');
+  body.className = 'spot-body';
   const name = document.createElement('strong');
+  name.className = 'spot-name';
   name.textContent = spot.name;
-
-  const reason = document.createElement('span');
   // 現在地からの距離は推薦理由（API）に入っている
-  reason.textContent = ` — ${spot.reason}`;
+  const reason = document.createElement('p');
+  reason.className = 'spot-reason';
+  reason.textContent = spot.reason;
+  body.append(name, reason);
 
   const button = document.createElement('button');
   button.type = 'button';
+  button.className = 'button is-shu is-small';
   button.textContent = 'ここで記録する';
   button.addEventListener('click', () => selectPlace(spot, spot.lat, spot.lng));
 
-  li.append(name, reason, ' ', button);
+  li.append(number, body, button);
   return li;
 }
 
@@ -157,23 +189,6 @@ function selectPlace(spot, lat, lng) {
     detail: { spot, lat, lng },
   }));
   location.hash = '#visit';
-}
-
-function distanceText(spot) {
-  const meters = distanceMeters(current.lat, current.lng, spot.lat, spot.lng);
-  if (meters < 1000) return `${Math.round(meters / 10) * 10} m`;
-  return `${(meters / 1000).toFixed(1)} km`;
-}
-
-// 2点の距離（m）。表示のためだけに使う。推薦の点数は API が出す。
-function distanceMeters(lat1, lng1, lat2, lng2) {
-  const R = 6371000;
-  const toRad = (deg) => (deg * Math.PI) / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLng = toRad(lng2 - lng1);
-  const a = Math.sin(dLat / 2) ** 2
-    + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(a));
 }
 
 function status(text) {
