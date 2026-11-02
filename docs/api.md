@@ -178,7 +178,8 @@
       "station_distance_m": 956,
       "station_passengers": 55204,
       "area_m2": 365886,
-      "park_type": "総合公園"
+      "park_type": "総合公園",
+      "facility_type": null
     }
   },
   {
@@ -192,7 +193,8 @@
       "station_distance_m": 196,
       "station_passengers": 388782,
       "area_m2": null,
-      "park_type": null
+      "park_type": null,
+      "facility_type": "音楽ホール"
     }
   }
 ]
@@ -209,5 +211,8 @@
 | `attrs.station_passengers` | 整数 | その駅の1日の乗降客数（2024年度、路線の合計） |
 | `attrs.area_m2` | 整数か null | 公園の面積（㎡）。施設は null |
 | `attrs.park_type` | 文字列か null | 公園の種類（街区公園、総合公園など）。施設は null |
+| `attrs.facility_type` | 文字列か null | 施設の種類（博物館・美術館、図書館など）。公園は null |
+
+中間発表で配られるデータを足すと、`attrs` に項目が増えます（[data/README.md](../data/README.md) の「あとから足すデータ」）。`GET /recommend` の返す形は変わりません。
 
 データの出典と作り方は [data/README.md](../data/README.md) にあります。

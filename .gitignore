@@ -4,3 +4,4 @@ backend/uploads/
 backend/*.db
 __pycache__/
 .venv/
+.pytest_cache/

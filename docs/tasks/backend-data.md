@@ -11,6 +11,8 @@
 
 ## must
 
+must の1〜4は作成済みです（`data/prepare.py`、`backend/data/spots.json`、`backend/app/recommend.py`）。
+
 ### 1. データを読む（最初に）
 
 使うデータと対象地域（神奈川県川崎市）は決まっています。まず [data/README.md](../../data/README.md) を読み、3つのファイルをダウンロードして `data/raw/` に置きます。
@@ -41,7 +43,7 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
 ```
 
 - 返す形は [api.md](../api.md) の `GET /recommend` と同じにする（`id`、`name`、`lat`、`lng`、`score`、`reason`）
-- 点数は、[data/README.md](../../data/README.md) の「推薦のルール（案）」から始め、デモを見ながら重みを調整する
+- 点数は、[data/README.md](../../data/README.md) の「推薦のルール」に従う。重みはデモを見ながら調整する
 - `score` は 0〜1 にそろえる
 - 同じ入力なら同じ結果を返す（乱数を使わない）
 
@@ -56,7 +58,8 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
 
 ## should
 
-- **中間発表で配られるデータの取り込み。** 本番前日に配られるデータを `prepare.py` に足し、`attrs` を増やす。`prepare.py` は、データの読み込みと `spots.json` への書き出しを関数で分けておくと足しやすい。
+- **推薦の重みと推薦地点の種類の調整。** 作成済みです。施設の種類ごとの値、同じ建物の除外、カテゴリの偏りの抑え方は [data/README.md](../../data/README.md) の「推薦のルール」にあります。
+- **中間発表で配られるデータの取り込み。** 足すための仕組みは作成済みです。データが配られたら、[data/README.md](../../data/README.md) の「あとから足すデータ」の手順で `EXTRA_SOURCES` と `EXTRA_RULES` に1つずつ足します。
 
 ## 注意
 
