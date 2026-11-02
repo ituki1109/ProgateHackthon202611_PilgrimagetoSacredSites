@@ -58,10 +58,10 @@
 {
   "id": 5,
   "nui_id": 1,
-  "spot_id": "park_012",
-  "spot_name": "○○公園",
-  "lat": 35.53,
-  "lng": 139.70,
+  "spot_id": "park_0798",
+  "spot_name": "富士見公園",
+  "lat": 35.529843,
+  "lng": 139.710875,
   "photo_url": "/uploads/visit_5.jpg",
   "recommended": true,
   "created_at": "2026-11-07T14:30:00"
@@ -111,12 +111,12 @@
 ```json
 [
   {
-    "id": "park_012",
-    "name": "○○公園",
-    "lat": 35.53,
-    "lng": 139.70,
-    "score": 0.82,
-    "reason": "駅から徒歩5分の公園"
+    "id": "park_0798",
+    "name": "富士見公園",
+    "lat": 35.529843,
+    "lng": 139.710875,
+    "score": 0.63,
+    "reason": "広さ11.7haの総合公園。港町駅から徒歩8分"
   }
 ]
 ```
@@ -168,22 +168,46 @@
 ```json
 [
   {
-    "id": "park_012",
-    "name": "○○公園",
-    "lat": 35.53,
-    "lng": 139.70,
-    "category": "park",
-    "attrs": { "station_distance_m": 400 }
+    "id": "park_0799",
+    "name": "等々力緑地",
+    "lat": 35.584789,
+    "lng": 139.65134,
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "武蔵中原",
+      "station_distance_m": 956,
+      "station_passengers": 55204,
+      "area_m2": 365886,
+      "park_type": "総合公園"
+    }
+  },
+  {
+    "id": "facility_141305000015",
+    "name": "ミューザ川崎シンフォニーホール",
+    "lat": 35.530981,
+    "lng": 139.694692,
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 196,
+      "station_passengers": 388782,
+      "area_m2": null,
+      "park_type": null
+    }
   }
 ]
 ```
 
 | 項目 | 型 | 内容 |
 |---|---|---|
-| `id` | 文字列 | 地点の ID。データの中で重ならない値 |
+| `id` | 文字列 | 地点の ID。公園は `park_` ＋並び順の4桁、施設は `facility_` ＋川崎市公共施設一覧の `ID` |
 | `name` | 文字列 | 地点の名前 |
 | `lat`、`lng` | 数値 | 緯度と経度（世界測地系 WGS84） |
-| `category` | 文字列 | 地点の種類 |
-| `attrs` | オブジェクト | 推薦に使う値。中身は採用するデータで決める |
+| `category` | 文字列 | `公園・緑地` か `文化・生涯学習` |
+| `attrs.nearest_station` | 文字列 | いちばん近い駅の名前 |
+| `attrs.station_distance_m` | 整数 | その駅までの直線距離（メートル） |
+| `attrs.station_passengers` | 整数 | その駅の1日の乗降客数（2024年度、路線の合計） |
+| `attrs.area_m2` | 整数か null | 公園の面積（㎡）。施設は null |
+| `attrs.park_type` | 文字列か null | 公園の種類（街区公園、総合公園など）。施設は null |
 
-`attrs` の中身は、バックエンドA がデータを決めたあとに、この表へ書き足してください。
+データの出典と作り方は [data/README.md](../data/README.md) にあります。

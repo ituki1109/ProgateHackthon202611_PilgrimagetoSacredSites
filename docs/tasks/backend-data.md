@@ -11,25 +11,23 @@
 
 ## must
 
-### 1. データセットと対象地域を決める（最初に）
+### 1. データを読む（最初に）
 
-ほかの3人の作業より先に決めます。
+使うデータと対象地域（神奈川県川崎市）は決まっています。まず [data/README.md](../../data/README.md) を読み、3つのファイルをダウンロードして `data/raw/` に置きます。
 
-- 地点の座標があるデータを選ぶ（公園、公共施設、駅など）
-- ダウンロードでき、列の中身とライセンスを確かめられるものにする
-- 対象地域は1つに絞る（会場の川崎市など）
-- 決めたら `data/README.md` に、データの名前、提供元、URL、ライセンス、使う列を書く
+- PLATEAU 川崎市の関連データセット（`14130_kawasaki-shi_2022_related.zip`）
+- 国土数値情報 駅別乗降客数（`S12-25_GML.zip`）
+- 川崎市 公共施設一覧（`141305_public_facility.csv`）
 
-**できあがり:** 使うデータと地域がチームに共有されている。
+**できあがり:** 3つのファイルを読み込み、`data/README.md` に書いた列があることを確かめた。
 
 ### 2. spots.json を作る
 
-`data/prepare.py` で元のデータを読み、[api.md](../api.md) の「spots.json の形」に合わせて書き出します。
+`data/prepare.py` で、[data/README.md](../../data/README.md) の「spots.json の作り方」のとおりに、[api.md](../api.md) の「spots.json の形」で書き出します。
 
 - 元のデータは `data/raw/` に置き、git には入れない
 - 座標は緯度と経度（WGS84）にそろえる
-- `attrs` に推薦で使う値を入れ、中身を [api.md](../api.md) に書き足す
-- 地点は数十〜数百件あれば足りる
+- 公共施設一覧は Shift_JIS で読む
 
 **できあがり:** `python data/prepare.py` で `backend/data/spots.json` ができる。
 
@@ -43,7 +41,7 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
 ```
 
 - 返す形は [api.md](../api.md) の `GET /recommend` と同じにする（`id`、`name`、`lat`、`lng`、`score`、`reason`）
-- 点数は、現在地からの距離と `attrs` の値の組み合わせで決める
+- 点数は、[data/README.md](../../data/README.md) の「推薦のルール（案）」から始め、デモを見ながら重みを調整する
 - `score` は 0〜1 にそろえる
 - 同じ入力なら同じ結果を返す（乱数を使わない）
 
@@ -51,7 +49,7 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
 
 ### 4. 推薦理由を書く
 
-`reason` には、データから分かる事実だけを書きます。「駅から徒歩5分の公園」のように、決まった文の型に値を差し込めば十分です。
+`reason` には、データから分かる事実だけを書きます。[data/README.md](../../data/README.md) の推薦理由の例のように、決まった文の型に値を差し込めば十分です。
 
 - データから分からないこと（混雑、撮影のしやすさ、安全さ）は書かない
 - 「怨念が強い場所」のように、データにない意味を付けない
@@ -67,4 +65,4 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
 
 ## AI への最初の指示の例
 
-> docs/design.md、docs/api.md、docs/tasks/backend-data.md を読んでください。私はバックエンドA の担当です。使うデータは（データ名）で、data/raw/（ファイル名）に置きました。まずこのファイルの列を調べて一覧にしてください。列を確かめる前に spots.json を作るコードは書かないでください。
+> docs/design.md、docs/api.md、docs/tasks/backend-data.md、data/README.md を読んでください。私はバックエンドA の担当です。data/raw/ に3つのファイルを置きました。まず各ファイルの列を調べ、data/README.md に書いた列があるかを確かめてください。列を確かめる前に spots.json を作るコードは書かないでください。
