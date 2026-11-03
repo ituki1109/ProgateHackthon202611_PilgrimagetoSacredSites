@@ -2,12 +2,16 @@
 
 import { getNuis, createVisit } from './api.js';
 import { getCurrentLocation } from './map.js';
-import { grudgeGauge, grudgeStage, seal } from './ui.js';
+import { grudgeGauge, grudgeStage, nuiAvatar, reasonList, seal } from './ui.js';
+
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // 記録する場所。map.js で「ここで記録する」を押すと入る。
 // { spot: 推薦地点か null, lat, lng }
 let place = null;
 let formReady = false;
+let nuisById = new Map(); // 選べるぬい。結果の画面で写真と名前を使う
+let previewUrl = null;    // 選んだ写真の仮の URL（使い終わったら消す）
 
 document.addEventListener('nuituki:place-selected', (e) => {
   place = e.detail;
@@ -15,8 +19,10 @@ document.addEventListener('nuituki:place-selected', (e) => {
 
 // #visit を表示するたびに呼ばれる（main.js から）
 export async function showVisit() {
+  const form = document.getElementById('visit-form');
   if (!formReady) {
-    document.getElementById('visit-form').addEventListener('submit', submit);
+    form.addEventListener('submit', submit);
+    document.getElementById('visit-photo').addEventListener('change', showPreview);
     formReady = true;
   }
 
@@ -26,8 +32,11 @@ export async function showVisit() {
     place = { spot: null, lat: here.lat, lng: here.lng };
   }
 
+  form.reset();
+  showPreview();
   document.getElementById('visit-result').classList.add('hidden');
-  document.getElementById('visit-form').classList.remove('hidden');
+  document.getElementById('visit-place').classList.remove('hidden');
+  form.classList.remove('hidden');
   hideError();
   renderPlace();
   await renderNuiOptions();
@@ -37,35 +46,27 @@ export async function showVisit() {
 function renderPlace() {
   const box = document.getElementById('visit-place');
   box.replaceChildren();
+  box.classList.toggle('is-recommended', Boolean(place.spot));
+
+  const badge = document.createElement('p');
+  badge.className = `place-badge${place.spot ? '' : ' is-outside'}`;
 
   if (place.spot) {
-    box.classList.add('is-recommended');
-
-    const kind = document.createElement('p');
-    kind.className = 'place-kind';
-    kind.textContent = '推薦された地点';
+    badge.textContent = '推薦された地点';
 
     const name = document.createElement('h3');
     name.className = 'place-name';
     name.textContent = place.spot.name;
 
-    const reason = document.createElement('p');
-    reason.className = 'place-reason';
-    reason.textContent = place.spot.reason;
+    const note = document.createElement('p');
+    note.className = 'place-note';
+    note.textContent = 'ここで記録すると、怨念が多く鎮まります。';
 
-    const mark = document.createElement('p');
-    mark.className = 'place-note';
-    mark.textContent = 'ここで記録すると、怨念が多く鎮まります。';
-
-    box.append(kind, name, reason, mark);
+    box.append(badge, name, reasonList(place.spot.reason, 'place-facts'), note);
     return;
   }
 
-  box.classList.remove('is-recommended');
-
-  const kind = document.createElement('p');
-  kind.className = 'place-kind';
-  kind.textContent = '推薦地点の外';
+  badge.textContent = '推薦地点の外';
 
   const label = document.createElement('label');
   label.className = 'field-label';
@@ -85,28 +86,48 @@ function renderPlace() {
   const field = document.createElement('div');
   field.className = 'field';
   field.append(label, input, where);
-  box.append(kind, field);
+  box.append(badge, field);
 }
 
-// 連れて行くぬいを、怨念の強い順に並べる
+// 連れて行くぬいを、怨念の強い順に、顔つきのボタンで並べる
 async function renderNuiOptions() {
-  const select = document.getElementById('visit-nui');
-  select.replaceChildren();
+  const group = document.getElementById('visit-nui');
+  group.replaceChildren();
+  nuisById = new Map();
 
   try {
     const nuis = await getNuis();
     const sorted = [...nuis].sort((a, b) => b.grudge - a.grudge);
 
-    for (const nui of sorted) {
-      const option = document.createElement('option');
-      option.value = String(nui.id);
-      option.dataset.name = nui.name;
-      option.textContent = `${nui.name}（怨念 ${nui.grudge}）`;
-      select.appendChild(option);
-    }
+    sorted.forEach((nui, i) => {
+      nuisById.set(String(nui.id), nui);
+
+      const option = document.createElement('label');
+      option.className = 'nui-option';
+
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'nui_id';
+      input.value = String(nui.id);
+      input.className = 'visually-hidden';
+      input.checked = i === 0; // いちばん怨念の強いぬいを、初めから選んでおく
+
+      const name = document.createElement('span');
+      name.className = 'nui-option-name';
+      name.textContent = nui.name;
+      const grudge = document.createElement('span');
+      grudge.className = 'nui-option-grudge';
+      grudge.textContent = `怨念 ${nui.grudge}`;
+
+      option.append(input, nuiAvatar(nui, 'nui-option-avatar'), name, grudge);
+      group.appendChild(option);
+    });
+
+    markSelected();
+    group.onchange = markSelected;
 
     if (sorted.length === 0) {
-      showError('ぬいがまだ登録されていません。先に登録してください。');
+      showError('ぬいがまだ登録されていません。先に「登録」から追加してください。');
     }
   } catch (err) {
     console.error('[visit] ぬいの一覧が取れませんでした:', err);
@@ -114,28 +135,53 @@ async function renderNuiOptions() {
   }
 }
 
+// 選んでいるぬいのボタンに枠を付ける
+function markSelected() {
+  for (const option of document.querySelectorAll('#visit-nui .nui-option')) {
+    option.classList.toggle('is-selected', option.querySelector('input').checked);
+  }
+}
+
+// 選んだ写真を、その場で見せる
+function showPreview() {
+  const input = document.getElementById('visit-photo');
+  const drop = input.closest('.photo-drop');
+  const img = drop.querySelector('.photo-drop-preview');
+  const file = input.files && input.files[0];
+
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = file ? URL.createObjectURL(file) : null;
+
+  drop.classList.toggle('has-photo', Boolean(file));
+  drop.querySelector('.photo-drop-empty').classList.toggle('hidden', Boolean(file));
+  img.classList.toggle('hidden', !file);
+  if (file) img.src = previewUrl;
+  else img.removeAttribute('src');
+}
+
 async function submit(event) {
   event.preventDefault();
   hideError();
 
-  const select = document.getElementById('visit-nui');
-  const nuiId = select.value;
-  if (!nuiId) {
+  const checked = document.querySelector('#visit-nui input[name="nui_id"]:checked');
+  if (!checked) {
     showError('連れて行くぬいを選んでください。');
     return;
   }
+  const nui = nuisById.get(checked.value);
 
   const nameInput = document.getElementById('visit-spot-name');
   if (!place.spot) {
     const name = nameInput ? nameInput.value.trim() : '';
     if (!name) {
       showError('地点の名前を入れてください。');
+      nameInput?.focus();
       return;
     }
   }
 
   const formData = new FormData();
-  formData.append('nui_id', nuiId);
+  formData.append('nui_id', checked.value);
   formData.append('lat', String(place.lat));
   formData.append('lng', String(place.lng));
   if (place.spot) {
@@ -154,9 +200,8 @@ async function submit(event) {
 
   try {
     const result = await createVisit(formData);
-    const nuiName = select.selectedOptions[0].dataset.name;
     const placeName = place.spot ? place.spot.name : nameInput.value.trim();
-    renderResult(result, nuiName, placeName);
+    renderResult(result, nui, placeName);
   } catch (err) {
     console.error('[visit] 記録に失敗しました:', err);
     showError(`記録に失敗しました（${err.message}）`);
@@ -166,33 +211,52 @@ async function submit(event) {
   }
 }
 
-// 怨念が before から after に下がったことを出す
-function renderResult(result, nuiName, placeName) {
+// 怨念が before から after に下がったことを、朱印を押して見せる
+function renderResult(result, nui, placeName) {
   const before = result.grudge_before;
   const after = result.grudge_after;
   const recommended = Boolean(result.visit.recommended);
   const box = document.getElementById('visit-result');
   box.replaceChildren();
 
+  // ぬいの顔は、記録する前の怨念で出しておき、朱印が押されたあとで今の顔に変える
+  const hero = document.createElement('div');
+  hero.className = 'result-hero';
+  const avatar = nuiAvatar({ ...nui, grudge: before }, 'result-avatar');
   // 押した朱印。推薦地点なら朱色の「鎮」、それ以外は墨色の「記」。
   const stamp = seal(recommended ? '鎮' : '記', recommended);
   stamp.classList.add('is-stamped');
+  hero.append(avatar, stamp);
+
+  const title = document.createElement('h3');
+  title.className = 'result-title';
+  if (after >= before) title.textContent = `${nui.name}と記録しました`;
+  else if (after === 0) title.textContent = `${nui.name}の怨念が消えました`;
+  else title.textContent = `${nui.name}の怨念が鎮まりました`;
 
   const where = document.createElement('p');
   where.className = 'result-where';
   // 地点の名前は API が返すものを使う。モックでは返らないので、画面で選んだ名前を使う。
-  where.textContent = `${nuiName}と ${result.visit.spot_name || placeName}`
-    + (recommended ? '（推薦された地点）' : '');
+  where.textContent = (result.visit.spot_name || placeName) + (recommended ? '（推薦された地点）' : '');
 
   const grudge = document.createElement('p');
   grudge.className = 'result-grudge';
+  const label = document.createElement('span');
+  label.className = 'result-label';
+  label.textContent = '怨念';
   const from = document.createElement('span');
   from.className = 'result-from';
   from.textContent = String(before);
+  const arrow = document.createElement('span');
+  arrow.className = 'result-arrow';
+  arrow.setAttribute('aria-hidden', 'true');
+  arrow.textContent = '→';
   const to = document.createElement('span');
   to.className = 'result-to';
-  to.textContent = String(after);
-  grudge.append('怨念 ', from, ' から ', to, ' へ');
+  to.textContent = String(before);
+  grudge.append(label, from, arrow, to);
+
+  const gauge = grudgeGauge(before, `${nui.name}の怨念`, before);
 
   const diff = document.createElement('p');
   diff.className = 'result-diff';
@@ -205,24 +269,63 @@ function renderResult(result, nuiName, placeName) {
   }
 
   const links = document.createElement('div');
-  links.className = 'actions';
-  const toNuis = document.createElement('a');
-  toNuis.className = 'button is-primary';
-  toNuis.href = '#nuis';
-  toNuis.textContent = 'ぬいの一覧を見る';
+  links.className = 'result-actions';
+  const toMemories = document.createElement('a');
+  toMemories.className = 'button is-primary is-block';
+  toMemories.href = `#nui/${nui.id}`;
+  toMemories.textContent = '思い出を見る';
   const toMap = document.createElement('a');
-  toMap.className = 'text-link';
+  toMap.className = 'button is-block';
   toMap.href = '#map';
   toMap.textContent = '地図に戻る';
-  links.append(toNuis, toMap);
+  links.append(toMemories, toMap);
 
-  box.append(stamp, where, grudge, grudgeGauge(after, `${nuiName}の怨念`, before), diff, links);
+  box.append(hero, title, where, grudge, gauge, diff, links);
   box.classList.remove('hidden');
   document.getElementById('visit-form').classList.add('hidden');
-  box.scrollIntoView({ block: 'start' });
+  document.getElementById('visit-place').classList.add('hidden');
+  window.scrollTo(0, 0);
+
+  settle(avatar, nui, gauge, to, before, after);
 
   // 同じ場所で続けて記録しないよう、選んだ場所を忘れる
   place = null;
+}
+
+// 朱印が押されたあとで、数字とゲージを after まで下げ、顔を今の怨念に合わせる
+function settle(avatar, nui, gauge, to, before, after) {
+  const fill = gauge.querySelector('.grudge-gauge-fill');
+  const finish = () => {
+    to.textContent = String(after);
+    fill.style.width = `${after}%`;
+    gauge.className = `grudge-gauge is-${grudgeStage(after).key}`;
+    gauge.setAttribute('aria-valuenow', String(after));
+    if (!nui.photo_url) {
+      const calmer = nuiAvatar({ ...nui, grudge: after }, 'result-avatar is-settled');
+      avatar.replaceWith(calmer);
+    }
+  };
+
+  if (REDUCED_MOTION.matches || after >= before) {
+    finish();
+    return;
+  }
+
+  const DELAY = 550;    // 朱印が押されるまで待つ
+  const DURATION = 900; // 数字を下げる時間
+  setTimeout(() => {
+    // 数字とゲージを同じ速さで下げる
+    const start = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - start) / DURATION);
+      const value = before - (before - after) * (1 - (1 - t) ** 3);
+      to.textContent = String(Math.round(value));
+      fill.style.width = `${value}%`;
+      if (t < 1) requestAnimationFrame(step);
+      else finish();
+    };
+    requestAnimationFrame(step);
+  }, DELAY);
 }
 
 function showError(text) {

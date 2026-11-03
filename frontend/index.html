@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#E9E4EF">
+<meta name="theme-color" content="#F4F1FA">
 <title>ぬい憑き</title>
 
 <!-- 地図（Leaflet）と文字は CDN から読み込む。npm やビルドは使わない。 -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Noto+Serif+JP:wght@600;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<!-- 朱印の「鎮」「記」の2文字だけ明朝で読み込む -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&text=%E9%8E%AE%E8%A8%98&display=swap">
 
 <!--
   骨組みを動かすのに必要な最小限のスタイルだけを置いています（フロントA）。
@@ -22,8 +24,6 @@
   /* 画面の切り替え。表示中の <section> だけに is-active が付く（main.js） */
   .screen { display: none; }
   .screen.is-active { display: block; }
-  /* 地図は高さがないと表示されないので、ここで指定しておく */
-  #map-canvas { height: 46vh; min-height: 260px; width: 100%; }
   .hidden { display: none !important; }
 </style>
 
@@ -31,90 +31,135 @@
 </head>
 <body>
 
-<header class="app-header">
-  <a class="brand" href="#map">ぬい憑き</a>
-  <p class="tagline">置いていかれたぬいを、街で鎮める</p>
-</header>
-
 <main class="app-main">
 
   <!-- ============ 地図と推薦地点（フロントA） ============ -->
-  <section id="map" class="screen">
-    <h2 class="screen-title">どこへ連れて行く？</h2>
-    <p class="lead" id="map-hint">地図を押すと、その場所を現在地にします。番号のピンは推薦の順位です。</p>
+  <!-- 地図を画面いっぱいに出し、推薦地点は下のシート（PC では左のパネル）に並べる -->
+  <section id="map" class="screen screen-map" aria-labelledby="map-title">
+    <div id="map-canvas" class="map-canvas"></div>
 
-    <div class="map-frame">
-      <div id="map-canvas"></div>
+    <div class="map-top">
+      <div class="map-search">
+        <a class="brand" href="#map">ぬい憑き</a>
+        <p id="map-status" class="map-status" role="status">地図を押すと、そこを現在地にします</p>
+      </div>
+      <button type="button" id="map-locate" class="fab" aria-label="現在地を取り直す">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="8"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5"/></svg>
+      </button>
     </div>
-    <p id="map-status" class="status" role="status"></p>
 
-    <div class="actions">
-      <button type="button" id="map-locate" class="button">現在地を取り直す</button>
-      <button type="button" id="map-record-here" class="button">ここ（現在地）で記録する</button>
+    <div id="map-sheet" class="sheet">
+      <button type="button" id="map-sheet-toggle" class="sheet-handle" aria-expanded="true" aria-controls="spot-list" aria-label="推薦地点の一覧をたたむ"></button>
+
+      <!-- 読み込む前から場所を取っておき、シートの高さが変わらないようにする -->
+      <a id="map-buddy" class="buddy is-loading" href="#nuis" aria-busy="true"></a>
+
+      <div class="sheet-head">
+        <h2 id="map-title" class="sheet-title">近くの推薦地点</h2>
+        <button type="button" id="map-record-here" class="chip-button">いまの場所で記録</button>
+      </div>
+
+      <ol id="spot-list" class="spot-list"></ol>
+
+      <!-- data/README.md の「出典の表示」のとおり。文言は変えない。 -->
+      <p class="attribution">
+        出典：国土交通省「3D都市モデル（Project PLATEAU）川崎市（2022年度）」、川崎市「公共施設一覧」、国土交通省「国土数値情報（駅別乗降客数データ）」を加工して作成
+        <br>地図：&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors
+      </p>
     </div>
-
-    <h3 class="list-title">推薦された地点</h3>
-    <p class="list-note">推薦された地点で記録すると、怨念が多く鎮まります。</p>
-    <ol id="spot-list" class="spot-list"></ol>
-
-    <!-- data/README.md の「出典の表示」のとおり。文言は変えない。 -->
-    <p class="attribution">
-      出典：国土交通省「3D都市モデル（Project PLATEAU）川崎市（2022年度）」、川崎市「公共施設一覧」、国土交通省「国土数値情報（駅別乗降客数データ）」を加工して作成
-    </p>
   </section>
 
   <!-- ============ 訪問の記録（フロントA） ============ -->
-  <section id="visit" class="screen">
-    <h2 class="screen-title">訪問を記録する</h2>
+  <section id="visit" class="screen" aria-labelledby="visit-title">
+    <header class="top-bar">
+      <a class="icon-button" href="#map" aria-label="地図に戻る">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </a>
+      <h2 id="visit-title" class="top-bar-title">訪問を記録</h2>
+    </header>
 
-    <div id="visit-place" class="place-card"></div>
+    <div class="page">
+      <div id="visit-place" class="place-card"></div>
 
-    <form id="visit-form" class="form">
-      <label class="field" for="visit-nui">
-        <span class="field-label">連れて行くぬい</span>
-        <select id="visit-nui" name="nui_id" required></select>
-        <span class="field-note">怨念の強い順に並んでいます。</span>
-      </label>
-      <label class="field" for="visit-photo">
-        <span class="field-label">ぬいと撮った写真 <span class="optional">任意</span></span>
-        <input type="file" id="visit-photo" name="photo" accept="image/*" capture>
-      </label>
-      <p id="visit-error" role="alert" class="error hidden"></p>
-      <div class="actions">
-        <button type="submit" id="visit-submit" class="button is-primary">記録する</button>
-        <a class="text-link" href="#map">地図に戻る</a>
-      </div>
-    </form>
+      <form id="visit-form" class="form">
+        <fieldset class="field">
+          <legend class="field-label">連れてきたぬい</legend>
+          <div id="visit-nui" class="nui-picker"></div>
+          <p class="field-note">怨念の強い順に並んでいます。</p>
+        </fieldset>
 
-    <div id="visit-result" class="visit-result hidden" role="status"></div>
+        <div class="field">
+          <span class="field-label">ぬいと撮った写真 <span class="optional">任意</span></span>
+          <label class="photo-drop" for="visit-photo">
+            <input type="file" id="visit-photo" name="photo" accept="image/*" class="visually-hidden">
+            <span class="photo-drop-empty">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.5h3.5l2-3h6l2 3h3.5v11h-17z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
+              写真を撮る、または選ぶ
+            </span>
+            <img class="photo-drop-preview hidden" alt="選んだ写真">
+          </label>
+        </div>
+
+        <p id="visit-error" role="alert" class="error hidden"></p>
+        <div class="bottom-cta">
+          <button type="submit" id="visit-submit" class="button is-primary is-block">記録する</button>
+        </div>
+      </form>
+
+      <div id="visit-result" class="visit-result hidden" role="status"></div>
+    </div>
   </section>
 
   <!-- ============ ぬいの一覧（フロントB：js/nuis.js の showNuis()） ============ -->
-  <section id="nuis" class="screen">
-    <h2 class="screen-title">ぬいの一覧</h2>
-    <p class="lead">最後に連れ出した日から、怨念がたまっていきます。</p>
-    <p data-pending>ここはフロントB の担当です。<code>js/nuis.js</code> に <code>showNuis()</code> を作ると、この文は消えます。</p>
+  <section id="nuis" class="screen" aria-labelledby="nuis-title">
+    <div class="page">
+      <header class="page-head">
+        <h2 id="nuis-title" class="large-title">ぬい</h2>
+        <p class="lead">最後に連れ出した日から、怨念がたまっていきます。</p>
+      </header>
+      <p data-pending>ここはフロントB の担当です。<code>js/nuis.js</code> に <code>showNuis()</code> を作ると、この文は消えます。</p>
+    </div>
   </section>
 
   <!-- ============ ぬいの思い出（フロントB：js/nuis.js の showNuiDetail(id)） ============ -->
-  <section id="nui" class="screen">
-    <h2 class="screen-title">ぬいの思い出</h2>
-    <p data-pending>ここはフロントB の担当です。<code>js/nuis.js</code> に <code>showNuiDetail(id)</code> を作ると、この文は消えます。</p>
+  <section id="nui" class="screen" aria-labelledby="nui-title">
+    <header class="top-bar">
+      <a class="icon-button" href="#nuis" aria-label="ぬいの一覧に戻る">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      </a>
+      <h2 id="nui-title" class="top-bar-title">ぬいの思い出</h2>
+    </header>
+    <div class="page">
+      <p data-pending>ここはフロントB の担当です。<code>js/nuis.js</code> に <code>showNuiDetail(id)</code> を作ると、この文は消えます。</p>
+    </div>
   </section>
 
   <!-- ============ ぬいの登録（フロントB：js/register.js の showRegister()） ============ -->
-  <section id="register" class="screen">
-    <h2 class="screen-title">ぬいの登録</h2>
-    <p class="lead">家に置いたままのぬいを登録します。</p>
-    <p data-pending>ここはフロントB の担当です。<code>js/register.js</code> に <code>showRegister()</code> を作ると、この文は消えます。</p>
+  <section id="register" class="screen" aria-labelledby="register-title">
+    <div class="page">
+      <header class="page-head">
+        <h2 id="register-title" class="large-title">ぬいを登録</h2>
+        <p class="lead">家に置いたままのぬいを登録します。</p>
+      </header>
+      <p data-pending>ここはフロントB の担当です。<code>js/register.js</code> に <code>showRegister()</code> を作ると、この文は消えます。</p>
+    </div>
   </section>
 
 </main>
 
 <nav class="navbar" aria-label="画面の切り替え">
-  <a href="#map" data-route="map">地図</a>
-  <a href="#nuis" data-route="nuis">ぬい</a>
-  <a href="#register" data-route="register">登録</a>
+  <a href="#map" data-route="map">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5 3.5 6.5v13l5.5-2 6 2 5.5-2v-13l-5.5 2z"/><path d="M9 4.5v13M15 6.5v13"/></svg>
+    <span>地図</span>
+  </a>
+  <a href="#nuis" data-route="nuis">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6.5" cy="7" r="2.8"/><circle cx="17.5" cy="7" r="2.8"/><ellipse cx="12" cy="13.8" rx="7.8" ry="6.7"/><path d="M9.5 13.5v.5M14.5 13.5v.5M10.5 16.5q1.5 1 3 0"/></svg>
+    <span>ぬい</span>
+  </a>
+  <a href="#register" data-route="register">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/></svg>
+    <span>登録</span>
+  </a>
 </nav>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

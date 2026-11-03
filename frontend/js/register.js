@@ -2,18 +2,25 @@
 // 入力内容を api.js の createNui() に送り、成功したら一覧（#nuis）へ戻ります。
 
 import { createNui } from './api.js';
+import { nuiFace } from './ui.js';
 
 // 登録フォームの HTML です。入力欄の名前は docs/api.md の POST /nuis に合わせています。
 const FORM_HTML = `
   <form class="form register-form" novalidate>
-    <label class="field">
-      <span class="field-label">名前 <span class="required">必須</span></span>
-      <input type="text" name="name" maxlength="40" autocomplete="off" placeholder="例：もちもち">
+    <label class="avatar-pick">
+      <input type="file" name="photo" accept="image/*" class="visually-hidden">
+      <span class="avatar-pick-circle">
+        <img class="avatar-pick-preview" alt="選んだ写真" hidden>
+        <span class="avatar-pick-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3.5 8.5h3.5l2-3h6l2 3h3.5v11h-17z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
+        </span>
+      </span>
+      <span class="avatar-pick-label">写真を選ぶ <span class="optional">任意</span></span>
     </label>
 
     <label class="field">
-      <span class="field-label">写真 <span class="optional">任意</span></span>
-      <input type="file" name="photo" accept="image/*">
+      <span class="field-label">名前 <span class="required">必須</span></span>
+      <input type="text" name="name" maxlength="40" autocomplete="off" placeholder="例：もちもち">
     </label>
 
     <label class="field">
@@ -23,7 +30,7 @@ const FORM_HTML = `
     </label>
 
     <p class="form-error error" role="alert" hidden></p>
-    <button type="submit" class="button is-primary">登録する</button>
+    <button type="submit" class="button is-primary is-block">登録する</button>
   </form>
 `;
 
@@ -40,6 +47,22 @@ function setError(form, message) {
 
   box.textContent = message;
   box.hidden = !message;
+}
+
+// 選んだ写真を丸の中に出します。選んでいないときは、ぬいの顔の絵を出します。
+let previewUrl = null;
+function showPreview(form) {
+  const file = form.photo.files && form.photo.files[0];
+  const img = form.querySelector('.avatar-pick-preview');
+  const face = form.querySelector('.avatar-pick-face');
+
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = file ? URL.createObjectURL(file) : null;
+
+  img.hidden = !file;
+  if (file) img.src = previewUrl;
+  else img.removeAttribute('src');
+  if (face) face.classList.toggle('hidden', Boolean(file));
 }
 
 // 「登録する」を押したときの処理です。
@@ -77,6 +100,7 @@ async function submitForm(event, form) {
     await createNui(formData);
 
     form.reset();
+    showPreview(form);
     button.disabled = false;
     button.textContent = buttonText;
 
@@ -102,10 +126,14 @@ export function showRegister() {
     container = document.createElement('div');
     container.className = 'register-wrap';
     container.innerHTML = FORM_HTML;
-    section.appendChild(container);
+    (section.querySelector('.page') || section).appendChild(container);
 
     const form = container.querySelector('form');
     form.addEventListener('submit', (event) => submitForm(event, form));
+
+    // 写真を選ぶまでは、丸の中にぬいの顔の絵を出しておきます。
+    form.querySelector('.avatar-pick-circle').prepend(nuiFace('weak', 'avatar-pick-face'));
+    form.photo.addEventListener('change', () => showPreview(form));
 
     // 最後に連れ出した日は、今日より後を選べないようにします。
     const today = new Date();

@@ -35,9 +35,16 @@ function showSection(name) {
     const section = document.getElementById(route);
     if (section) section.classList.toggle('is-active', route === name);
   }
+  // ぬいの思い出（#nui/1）を開いているときは、下の「ぬい」を選んだままにする
+  const tab = name === 'nui' ? 'nuis' : name;
   for (const link of document.querySelectorAll('.navbar a')) {
-    link.classList.toggle('is-current', link.dataset.route === name);
+    const current = link.dataset.route === tab;
+    link.classList.toggle('is-current', current);
+    if (current) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
   }
+  // 画面ごとの見た目（記録の画面では下のメニューを隠す、など）は CSS で決める
+  document.body.dataset.route = name;
   window.scrollTo(0, 0);
 }
 
