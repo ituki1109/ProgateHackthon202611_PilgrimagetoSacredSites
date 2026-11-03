@@ -48,6 +48,42 @@ export function nuiFace(stageKey, className) {
   return wrap;
 }
 
+// ぬいの丸い写真。photo_url が null のときは、怨念の段階に合わせた顔を出します。
+// 縁の色も段階で変わるので、一覧を見ただけで怨念の強さが分かります。
+export function nuiAvatar(nui, className) {
+  const stage = grudgeStage(clampGrudge(nui.grudge));
+  const classes = `avatar ${className} is-${stage.key}`;
+  if (!nui.photo_url) return nuiFace(stage.key, classes);
+
+  const photo = document.createElement('img');
+  photo.className = classes;
+  photo.src = nui.photo_url;
+  photo.alt = `${nui.name}の写真`;
+  return photo;
+}
+
+// 怨念の段階を表す小さな札（「強い」など）。
+export function stageChip(grudge) {
+  const stage = grudgeStage(clampGrudge(grudge));
+  const chip = document.createElement('span');
+  chip.className = `stage-chip is-${stage.key}`;
+  chip.textContent = stage.label;
+  return chip;
+}
+
+// 推薦理由（「。」で区切った文）を、1つずつの行にします。
+export function reasonList(reason, className) {
+  const list = document.createElement('ul');
+  list.className = className;
+  for (const fact of String(reason || '').split('。')) {
+    if (!fact.trim()) continue;
+    const item = document.createElement('li');
+    item.textContent = fact.trim();
+    list.appendChild(item);
+  }
+  return list;
+}
+
 // 怨念のゲージ。before を渡すと、鎮まった分を薄く残して見せます。
 export function grudgeGauge(grudge, label, before) {
   const value = clampGrudge(grudge);
