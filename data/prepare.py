@@ -61,6 +61,23 @@ FACILITY_TYPES = {
     "1512": "図書館",
 }
 
+# 地点の詳細（details.amenities）に出す、公共施設一覧の設備の列と、画面に出す名前。
+# 値が「有」「可」で始まるか「有」で終わる列だけを出す（「無」「否」や空は出さない）。
+AMENITY_COLUMNS = {
+    "車椅子可": "車椅子で入れる",
+    "車椅子貸出": "車椅子の貸出",
+    "スロープ、エレベータ、エスカレータ": "スロープ・エレベーター",
+    "バリアフリートイレ": "バリアフリートイレ",
+    "オストメイト対応トイレ": "オストメイト対応トイレ",
+    "優先駐車場": "優先駐車場",
+    "盲導犬・介助犬、聴導犬同伴": "補助犬と入れる",
+    "筆談対応": "筆談できる",
+    "授乳室": "授乳室",
+    "おむつ替えコーナー": "おむつ替え",
+    "ベビーカー利用": "ベビーカーで入れる",
+    "ベビーカー貸出": "ベビーカーの貸出",
+}
+
 # 川崎市の周りの駅だけを使う（東京都や横浜市の駅も含む）
 STATION_BOUNDS = {"lat": (35.45, 35.70), "lng": (139.40, 139.82)}
 STATION_PASSENGERS_COLUMN = "S12_061"  # 2024年度の乗降客数
@@ -117,6 +134,7 @@ def load_parks() -> pd.DataFrame:
                 "category": "公園・緑地",
                 "area_m2": int(float(p["供用済面積"] or 0)),
                 "park_type": PARK_TYPES.get(str(p["公園種別"]), "その他"),
+                "opened_year": _year(p.get("供用開始年")),
             }
         )
     parks = pd.DataFrame(rows)
@@ -139,8 +157,51 @@ def load_facilities() -> pd.DataFrame:
             "area_m2": None,
             "park_type": None,
             "facility_type": df["POIコード"].map(FACILITY_TYPES),
+            "address": df["所在地_連結表記"].map(_text),
+            "phone": df["電話番号"].map(_text),
+            "hours": [_hours(a, b) for a, b in zip(df["開始時間"], df["終了時間"])],
+            "hours_note": df["利用可能時間特記事項"].map(_text),
+            "description": df["説明"].map(_text),
+            "url": df["URL"].map(_text),
+            "amenities": [_amenities(row) for _, row in df.iterrows()],
         }
     )
+
+
+def _text(value) -> str | None:
+    """前後の空白を除いた文字列。空なら None。"""
+    if value is None or pd.isna(value):
+        return None
+    text = str(value).strip()
+    return text or None
+
+
+def _year(value) -> int | None:
+    """「2002」のような年。年として読めなければ None。"""
+    text = _text(value)
+    return int(text) if text and text.isdigit() and 1800 <= int(text) <= 2100 else None
+
+
+def _hours(start, end) -> str | None:
+    """開始と終了の時間（9:00:00 や 09:30）を「9:00〜22:00」にする。"""
+    times = []
+    for value in (start, end):
+        text = _text(value)
+        if not text:
+            return None
+        hour, minute = text.split(":")[:2]
+        times.append(f"{int(hour)}:{minute}")
+    return "〜".join(times)
+
+
+def _amenities(row: pd.Series) -> list[str]:
+    """AMENITY_COLUMNS のうち、その施設にある設備の名前。"""
+    names = []
+    for column, name in AMENITY_COLUMNS.items():
+        value = _text(row.get(column)) or ""
+        if value.startswith(("有", "可")) or value.endswith("有"):
+            names.append(name)
+    return names
 
 
 def load_stations() -> pd.DataFrame:
@@ -327,6 +388,18 @@ def to_spot(row: dict, extra_keys: list[str] = ()) -> dict:
             "park_type": None if pd.isna(row["park_type"]) else row["park_type"],
             "facility_type": None if pd.isna(row["facility_type"]) else row["facility_type"],
             **{key: _plain(row[key]) for key in extra_keys},
+        },
+        # 画面に出すだけの情報。推薦の点数には使わない
+        "details": {
+            "address": _plain(row.get("address")),
+            "phone": _plain(row.get("phone")),
+            "hours": _plain(row.get("hours")),
+            "hours_note": _plain(row.get("hours_note")),
+            "description": _plain(row.get("description")),
+            "url": _plain(row.get("url")),
+            # 施設と並べると列が小数になるので、整数に戻す
+            "opened_year": None if pd.isna(row.get("opened_year")) else int(row["opened_year"]),
+            "amenities": row["amenities"] if isinstance(row.get("amenities"), list) else [],
         },
     }
 

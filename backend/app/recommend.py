@@ -194,6 +194,10 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
             "lng": spot["lng"],
             "score": score,
             "reason": make_reason(spot, lat, lng, ranks.get(spot["id"])),
+            # 画面の「地点の詳細」に出すため、spots.json の値をそのまま渡す
+            "category": spot["category"],
+            "attrs": spot["attrs"],
+            "details": spot.get("details"),
         }
         for score, spot in picked
     ]
