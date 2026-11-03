@@ -5,7 +5,36 @@
     "lat": 35.531938,
     "lng": 139.698569,
     "score": 0.92,
-    "reason": "現在地から約170mと近い。博物館・美術館。川崎駅から徒歩3分"
+    "reason": "現在地から約170mと近い。博物館・美術館。川崎駅から徒歩3分",
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 171,
+      "station_passengers": 388782,
+      "area_m2": null,
+      "park_type": null,
+      "facility_type": "博物館・美術館"
+    },
+    "details": {
+      "address": "神奈川県川崎市川崎区駅前本町12-1川崎駅前タワー・リバーク3階",
+      "phone": "044-272-7366",
+      "hours": "10:00〜19:00",
+      "hours_note": "休館日は月曜日、年末年始",
+      "description": "美術作品の展示等のための文化施設です。",
+      "url": "http://www.kbz.or.jp/facility/artgarden/",
+      "opened_year": null,
+      "amenities": [
+        "車椅子で入れる",
+        "車椅子の貸出",
+        "スロープ・エレベーター",
+        "バリアフリートイレ",
+        "オストメイト対応トイレ",
+        "補助犬と入れる",
+        "筆談できる",
+        "おむつ替え",
+        "ベビーカーで入れる"
+      ]
+    }
   },
   {
     "id": "facility_141305000015",
@@ -13,7 +42,36 @@
     "lat": 35.530981,
     "lng": 139.694692,
     "score": 0.85,
-    "reason": "現在地から約200mと近い。音楽ホール。川崎駅から徒歩3分"
+    "reason": "現在地から約200mと近い。音楽ホール。川崎駅から徒歩3分",
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 196,
+      "station_passengers": 388782,
+      "area_m2": null,
+      "park_type": null,
+      "facility_type": "音楽ホール"
+    },
+    "details": {
+      "address": "神奈川県川崎市幸区大宮町1310",
+      "phone": "044-520-0100",
+      "hours": "9:00〜22:00",
+      "hours_note": "休館日は年末年始（12/29～1/3）、保守点検日",
+      "description": "2004年7月にオープン。国内最大級のパイプオルガンを備え、ホールは、らせん状の客席が360度ステージを囲むワインヤード方式を採用。ステージと客席に一体感が生まれます。世界水準のオーケストラ演奏など、多彩なジャンルのコンサートが行われています。",
+      "url": "http://www.kawasaki-sym-hall.jp/",
+      "opened_year": null,
+      "amenities": [
+        "車椅子で入れる",
+        "車椅子の貸出",
+        "スロープ・エレベーター",
+        "バリアフリートイレ",
+        "オストメイト対応トイレ",
+        "優先駐車場",
+        "補助犬と入れる",
+        "筆談できる",
+        "おむつ替え"
+      ]
+    }
   },
   {
     "id": "facility_141305000016",
@@ -21,7 +79,33 @@
     "lat": 35.533212,
     "lng": 139.69563,
     "score": 0.8,
-    "reason": "現在地から約230mと近い。ホール。川崎駅から徒歩3分"
+    "reason": "現在地から約230mと近い。ホール。川崎駅から徒歩3分",
+    "category": "文化・生涯学習",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 231,
+      "station_passengers": 388782,
+      "area_m2": null,
+      "park_type": null,
+      "facility_type": "ホール"
+    },
+    "details": {
+      "address": "神奈川県川崎市幸区堀川町72-1ラゾーナ川崎プラザ5F",
+      "phone": "044-874-8501",
+      "hours": "10:00〜22:00",
+      "hours_note": "ホール利用の無い日の終了時刻は20:00。原則年中無休※施設保守点検日等は休館",
+      "description": "劇場用LED照明設備と８段式のロールバックチェアシステムを有する、レイアウト自在の多目的ホールで、音楽、演劇等の発表・鑑賞のための文化施設です。",
+      "url": "http://www.plazasol.jp/",
+      "opened_year": null,
+      "amenities": [
+        "車椅子で入れる",
+        "スロープ・エレベーター",
+        "バリアフリートイレ",
+        "補助犬と入れる",
+        "おむつ替え",
+        "ベビーカーで入れる"
+      ]
+    }
   },
   {
     "id": "park_0798",
@@ -29,7 +113,26 @@
     "lat": 35.529843,
     "lng": 139.710875,
     "score": 0.64,
-    "reason": "現在地から約1.3km。広さ11.7haの総合公園で、半径3km以内の公園で一番広い。港町駅から徒歩8分"
+    "reason": "現在地から約1.3km。広さ11.7haの総合公園で、半径3km以内の公園で一番広い。港町駅から徒歩8分",
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "港町",
+      "station_distance_m": 602,
+      "station_passengers": 7737,
+      "area_m2": 116584,
+      "park_type": "総合公園",
+      "facility_type": null
+    },
+    "details": {
+      "address": null,
+      "phone": null,
+      "hours": null,
+      "hours_note": null,
+      "description": null,
+      "url": null,
+      "opened_year": 1957,
+      "amenities": []
+    }
   },
   {
     "id": "park_0866",
@@ -37,6 +140,25 @@
     "lat": 35.538711,
     "lng": 139.694389,
     "score": 0.6,
-    "reason": "現在地から約840mと近い。広さ2.2haの緑道。川崎駅から徒歩11分"
+    "reason": "現在地から約840mと近い。広さ2.2haの緑道。川崎駅から徒歩11分",
+    "category": "公園・緑地",
+    "attrs": {
+      "nearest_station": "川崎",
+      "station_distance_m": 846,
+      "station_passengers": 388782,
+      "area_m2": 21847,
+      "park_type": "緑道",
+      "facility_type": null
+    },
+    "details": {
+      "address": null,
+      "phone": null,
+      "hours": null,
+      "hours_note": null,
+      "description": null,
+      "url": null,
+      "opened_year": 1977,
+      "amenities": []
+    }
   }
 ]

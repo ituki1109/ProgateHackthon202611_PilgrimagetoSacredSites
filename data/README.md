@@ -94,6 +94,18 @@
 | `attrs.area_m2` | 面積（㎡） | `null` |
 | `attrs.park_type` | 公園の種類（総合公園など） | `null` |
 | `attrs.facility_type` | `null` | 施設の種類（博物館・美術館など） |
+| `details.address` | `null` | `所在地_連結表記` |
+| `details.phone` | `null` | `電話番号` |
+| `details.hours` | `null` | `開始時間` と `終了時間`（例: `9:00〜22:00`） |
+| `details.hours_note` | `null` | `利用可能時間特記事項`（休館日など） |
+| `details.description` | `null` | `説明` |
+| `details.url` | `null` | `URL` |
+| `details.opened_year` | 開園した年（`供用開始年`） | `null` |
+| `details.amenities` | `[]` | 車椅子やおむつ替えなど、施設にある設備の名前 |
+
+`details` は画面の「地点の詳細」に出すだけの値で、推薦の点数には使いません。公共施設一覧に値がない項目は `null` にします。`利用可能曜日` は、休館日の文（`利用可能時間特記事項`）と食い違う施設があるので使いません。
+
+`details.amenities` には、公共施設一覧の設備の列のうち、値が「有」「可」で始まるか「有」で終わるものだけを入れます。列と名前の対応は `data/prepare.py` の `AMENITY_COLUMNS` にあります。
 
 ## 推薦のルール
 

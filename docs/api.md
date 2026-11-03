@@ -116,7 +116,10 @@
     "lat": 35.529843,
     "lng": 139.710875,
     "score": 0.64,
-    "reason": "現在地から約1.3km。広さ11.7haの総合公園で、半径3km以内の公園で一番広い。港町駅から徒歩8分"
+    "reason": "現在地から約1.3km。広さ11.7haの総合公園で、半径3km以内の公園で一番広い。港町駅から徒歩8分",
+    "category": "公園・緑地",
+    "attrs": { "nearest_station": "港町", "station_distance_m": 602, "...": "spots.json の attrs と同じ" },
+    "details": { "address": null, "opened_year": 1957, "...": "spots.json の details と同じ" }
   }
 ]
 ```
@@ -128,6 +131,9 @@
 | `lat`、`lng` | 数値 | 地点の位置 |
 | `score` | 数値（0〜1） | 推薦の点数 |
 | `reason` | 文字列 | 推薦の理由。その地点を選んだわけを、点数への寄与が大きい要素から順に書く。どれもデータから分かる事実（書き方は [data/README.md](../data/README.md) の「推薦理由」） |
+| `category` | 文字列 | 地点のカテゴリ。`spots.json` の `category` と同じ |
+| `attrs` | オブジェクト | 地点の属性。`spots.json` の `attrs` と同じ |
+| `details` | オブジェクト | 地点の詳細（住所、時間など）。`spots.json` の `details` と同じ。画面の「地点の詳細」に出す |
 
 ## POST /visits
 
@@ -180,6 +186,16 @@
       "area_m2": 365886,
       "park_type": "総合公園",
       "facility_type": null
+    },
+    "details": {
+      "address": null,
+      "phone": null,
+      "hours": null,
+      "hours_note": null,
+      "description": null,
+      "url": null,
+      "opened_year": 1965,
+      "amenities": []
     }
   },
   {
@@ -195,10 +211,22 @@
       "area_m2": null,
       "park_type": null,
       "facility_type": "音楽ホール"
+    },
+    "details": {
+      "address": "神奈川県川崎市幸区大宮町1310",
+      "phone": "044-520-0100",
+      "hours": "9:00〜22:00",
+      "hours_note": "休館日は年末年始（12/29～1/3）、保守点検日",
+      "description": "2004年7月にオープン。国内最大級のパイプオルガンを備え、…",
+      "url": "http://www.kawasaki-sym-hall.jp/",
+      "opened_year": null,
+      "amenities": ["車椅子で入れる", "バリアフリートイレ", "おむつ替え"]
     }
   }
 ]
 ```
+
+`attrs` は推薦の点数と理由に使う値、`details` は画面に出すだけの値です。`details` の項目は [data/README.md](../data/README.md) の「spots.json の作り方」に書いています。
 
 | 項目 | 型 | 内容 |
 |---|---|---|

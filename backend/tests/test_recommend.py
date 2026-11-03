@@ -36,6 +36,38 @@ def test_spots_json():
     assert "川崎市市民ミュージアム" not in {s["name"] for s in SPOTS}
 
 
+def test_spots_json_details():
+    """施設には住所や時間などの詳細が入り、公園には開園した年が入る。"""
+    keys = {"address", "phone", "hours", "hours_note", "description", "url", "opened_year", "amenities"}
+    assert all(set(s["details"]) == keys for s in SPOTS)
+    muza = next(s for s in SPOTS if s["name"] == "ミューザ川崎シンフォニーホール")["details"]
+    assert muza["address"] == "神奈川県川崎市幸区大宮町1310"
+    assert muza["hours"] == "9:00〜22:00"
+    assert "バリアフリートイレ" in muza["amenities"]
+    fujimi = next(s for s in SPOTS if s["name"] == "富士見公園")["details"]
+    assert fujimi["opened_year"] == 1957 and isinstance(fujimi["opened_year"], int)
+    assert fujimi["address"] is None and fujimi["amenities"] == []
+
+
+def test_prepare_details_helpers():
+    prepare = load_prepare()
+    assert prepare._hours("9:00:00", "21:30:00") == "9:00〜21:30"
+    assert prepare._hours("09:30", "19:00") == "9:30〜19:00"
+    assert prepare._hours("", "19:00") is None
+    assert prepare._year("2002") == 2002
+    assert prepare._year("") is None
+    row = pd.Series({"バリアフリートイレ": "有", "授乳室": "無", "車椅子可": "可（1F）", "スロープ、エレベータ、エスカレータ": "エレベータ有"})
+    assert prepare._amenities(row) == ["車椅子で入れる", "スロープ・エレベーター", "バリアフリートイレ"]
+
+
+def test_recommend_returns_details():
+    result = recommend(SPOTS, *KAWASAKI_STATION)
+    by_id = {s["id"]: s for s in SPOTS}
+    for item in result:
+        assert item["category"] == by_id[item["id"]]["category"]
+        assert item["details"] == by_id[item["id"]]["details"]
+
+
 def test_recommend_changes_with_location():
     near_kawasaki = recommend(SPOTS, *KAWASAKI_STATION)
     near_kosugi = recommend(SPOTS, *MUSASHI_KOSUGI)
@@ -164,7 +196,7 @@ def test_recommend_api(client):
     assert res.status_code == 200
     body = res.json()
     assert len(body) == 5
-    assert set(body[0]) == {"id", "name", "lat", "lng", "score", "reason"}
+    assert set(body[0]) == {"id", "name", "lat", "lng", "score", "reason", "category", "attrs", "details"}
     assert body == sorted(body, key=lambda s: -s["score"])
 
 

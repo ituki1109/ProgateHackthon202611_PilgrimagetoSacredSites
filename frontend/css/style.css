@@ -588,7 +588,72 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 .spot-facts li:first-child::before,
 .place-facts li:first-child::before { background: var(--shu); }
 
-.spot-card .button { justify-self: stretch; }
+.spot-actions { display: grid; grid-template-columns: auto 1fr; gap: 8px; }
+.spot-actions .button { padding: 0 14px; }
+
+/* 地点の詳細。スマホでは下から出るシート、PC では真ん中に出す */
+.spot-detail {
+  width: 100%;
+  max-width: 560px;
+  max-height: 88vh;
+  max-height: 88dvh;
+  margin: auto auto 0;
+  padding: 0;
+  overflow-y: auto;
+  border: 0;
+  border-radius: 26px 26px 0 0;
+  background: var(--surface);
+  color: var(--ink);
+  overscroll-behavior: contain;
+}
+.spot-detail::backdrop { background: rgba(26, 20, 42, 0.45); }
+.spot-detail[open] { animation: sheet-up 0.25s ease-out; }
+@keyframes sheet-up { from { transform: translateY(40px); } }
+
+.detail-body { display: grid; gap: 18px; padding: 20px 20px 8px; }
+.detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.detail-kind { color: var(--ink-faint); font-size: 12.5px; font-weight: 700; }
+.detail-name { font-size: 23px; font-weight: 900; line-height: 1.35; }
+.detail-close { flex: none; margin: -6px -10px 0 0; background: var(--surface-2); }
+.detail-description { color: var(--ink-soft); font-size: 14px; line-height: 1.85; }
+.detail-section { display: grid; gap: 8px; }
+.detail-section-title { color: var(--ink-faint); font-size: 12.5px; font-weight: 700; }
+
+.detail-info { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.detail-row {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.detail-row svg { width: 22px; height: 22px; margin-top: 1px; color: var(--primary); }
+.detail-row div { display: grid; gap: 1px; min-width: 0; }
+.detail-label { color: var(--ink-faint); font-size: 11.5px; font-weight: 700; }
+.detail-value { font-size: 14.5px; font-weight: 700; overflow-wrap: anywhere; }
+.detail-value a { color: var(--primary-deep); }
+.detail-sub { color: var(--ink-soft); font-size: 12.5px; }
+
+.detail-amenities { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.detail-amenities li {
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.detail-actions {
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px 20px calc(16px + env(safe-area-inset-bottom));
+  background: var(--surface);
+  box-shadow: 0 -1px 0 var(--line);
+}
 
 .attribution {
   padding: 2px 16px 0;
@@ -1082,6 +1147,8 @@ input[type="date"]:focus {
   }
   .spot-card { flex: none; }
   .spot-card.is-empty { flex-basis: auto; }
+
+  .spot-detail { margin: auto; border-radius: 26px; }
 
   .navbar {
     left: auto;

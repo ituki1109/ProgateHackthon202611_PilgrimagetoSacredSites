@@ -3,6 +3,7 @@
 // ピンとカードは連動する（ピンを押すとカードが出て、カードを送るとピンが光る）。
 
 import { getNuis, getRecommend } from './api.js';
+import { openSpotDetail } from './spot-detail.js';
 import { clampGrudge, grudgeGauge, grudgeStage, nuiAvatar, reasonList, stageChip } from './ui.js';
 
 // 対象地域は神奈川県川崎市（docs/tasks/frontend-main.md）。
@@ -197,7 +198,11 @@ function cardFor(spot, index) {
   const li = document.createElement('li');
   li.className = 'spot-card';
 
-  // 名前の部分を押すと、地図をその地点に寄せる
+  // 名前の部分を押すと、地図をその地点に寄せて、詳細を開く
+  const showDetail = () => {
+    setActive(index, { pan: true, scrollCard: true });
+    openSpotDetail(spot, () => selectPlace(spot, spot.lat, spot.lng));
+  };
   const head = document.createElement('button');
   head.type = 'button';
   head.className = 'spot-head';
@@ -208,18 +213,26 @@ function cardFor(spot, index) {
   name.className = 'spot-name';
   name.textContent = spot.name;
   head.append(rank, name);
-  head.addEventListener('click', () => setActive(index, { pan: true, scrollCard: true }));
+  head.addEventListener('click', showDetail);
 
   // 現在地からの距離は推薦理由（API）に入っている
   const facts = reasonList(spot.reason, 'spot-facts');
 
+  const actions = document.createElement('div');
+  actions.className = 'spot-actions';
+  const more = document.createElement('button');
+  more.type = 'button';
+  more.className = 'button is-small';
+  more.textContent = '詳しく見る';
+  more.addEventListener('click', showDetail);
   const record = document.createElement('button');
   record.type = 'button';
   record.className = 'button is-shu is-small';
   record.textContent = 'ここで記録する';
   record.addEventListener('click', () => selectPlace(spot, spot.lat, spot.lng));
+  actions.append(more, record);
 
-  li.append(head, facts, record);
+  li.append(head, facts, actions);
   return li;
 }
 
