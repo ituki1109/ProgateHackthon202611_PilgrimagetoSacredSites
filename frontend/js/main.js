@@ -11,6 +11,29 @@ import { showVisit } from './visit.js';
 
 const DEFAULT_ROUTE = 'map';
 
+// 文字のフォントは合わせて約680KBあり、地図のタイルと回線を取り合う。
+// 地図の画面ではタイルを読み終えてから読む。それまでは端末の文字で表示する。
+const FONT_STYLESHEETS = [
+  'https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap',
+  // 朱印の「鎮」「記」の2文字だけ明朝で読み込む
+  'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&text=%E9%8E%AE%E8%A8%98&display=swap',
+];
+const FONT_WAIT_MS = 5000; // タイルが遅いときも、ここまで待ったらフォントを読む
+
+let fontsRequested = false;
+function loadFonts() {
+  if (fontsRequested) return;
+  fontsRequested = true;
+  for (const href of FONT_STYLESHEETS) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+}
+document.addEventListener('nuituki:map-ready', loadFonts);
+setTimeout(loadFonts, FONT_WAIT_MS);
+
 // フロントB のファイルは、できるまで読み込みに失敗する。
 // そのときに画面全体が止まらないよう、必要になってから import() で読み込む。
 const LAZY_SCREENS = {
@@ -68,6 +91,9 @@ async function callLazyScreen(name, param) {
 async function render() {
   const { name, param } = parseHash(location.hash);
   showSection(name);
+
+  // 地図のない画面から開いたときは、待たずにフォントを読む
+  if (name !== 'map') loadFonts();
 
   if (name === 'map') showMap();
   else if (name === 'visit') showVisit();

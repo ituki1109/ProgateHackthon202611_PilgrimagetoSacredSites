@@ -11,12 +11,14 @@ import { clampGrudge, grudgeGauge, grudgeStage, nuiAvatar, reasonList, stageChip
 // （会場で川崎市の外にいると推薦地点が出ないため、自動では求めない）。
 const DEFAULT_CENTER = { lat: 35.5314, lng: 139.6968 }; // 川崎駅
 const DEFAULT_ZOOM = 15;
+const TILE_WAIT_MS = 3000; // 推薦地点を待たずにタイルを出すまでの時間
 
 // これより広い画面では、シートを左のパネルにする（style.css と同じ値）
 const WIDE = window.matchMedia('(min-width: 900px)');
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 let map = null;
+let tiles = null;          // 地図のタイル
 let spotLayer = null;      // 推薦地点のピンをまとめて消せるようにする
 let currentMarker = null;  // 現在地の印
 let current = { ...DEFAULT_CENTER };
@@ -39,13 +41,21 @@ export function showMap() {
 }
 
 function initMap() {
-  map = L.map('map-canvas', { zoomControl: false, attributionControl: false })
+  map = L.map('map-canvas', { zoomControl: false })
     .setView([current.lat, current.lng], DEFAULT_ZOOM);
+  // OpenStreetMap のタイルの決まりで、出典は地図の上に見えるように出す
+  map.attributionControl.setPrefix(false).setPosition('topright');
 
-  // 地図の出典はシートの下に書いている（index.html の .attribution）
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  // タイルはまだ地図に足さない。推薦地点に地図を寄せてから足すと、
+  // 寄せる前のズームのタイルを読まずに済む（showTiles）。
+  tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-  }).addTo(map);
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  });
+  // タイルを読み終えたら、main.js が文字のフォントを読み始める
+  tiles.once('load', () => document.dispatchEvent(new CustomEvent('nuituki:map-ready')));
+  // API の返事が遅くても、地図が空のままにならないようにする
+  setTimeout(showTiles, TILE_WAIT_MS);
 
   spotLayer = L.layerGroup().addTo(map);
 
@@ -63,6 +73,11 @@ function initMap() {
   document.getElementById('spot-list').addEventListener('scroll', onListScroll, { passive: true });
 
   setCurrent(current.lat, current.lng);
+}
+
+// 地図のタイルを出す。2回目からは何もしない。
+function showTiles() {
+  if (!map.hasLayer(tiles)) tiles.addTo(map);
 }
 
 // シートをたたむと、地図を広く見られる
@@ -123,6 +138,7 @@ async function loadRecommend(lat, lng) {
     console.error('[map] 推薦地点が取れませんでした:', err);
     document.getElementById('spot-list').replaceChildren(emptyCard(`推薦地点が取れませんでした（${err.message}）`));
     status('推薦地点が取れませんでした');
+    showTiles();
   }
 }
 
@@ -156,6 +172,7 @@ function drawSpots(spots) {
   if (spots.length === 0) {
     list.appendChild(emptyCard('3km 以内に推薦地点がありません。地図を押して、川崎市の中を現在地にしてください。'));
     map.panTo([current.lat, current.lng]);
+    showTiles();
     return;
   }
 
@@ -178,7 +195,9 @@ function drawSpots(spots) {
   // 現在地と推薦地点がすべて、シートに隠れずに見えるように寄せる
   const bounds = L.latLngBounds(spots.map((spot) => [spot.lat, spot.lng]));
   bounds.extend([current.lat, current.lng]);
-  map.fitBounds(bounds, { ...mapPadding(), maxZoom: 16 });
+  // 最初はタイルがまだないので、動かさずに寄せる
+  map.fitBounds(bounds, { ...mapPadding(), maxZoom: 16, animate: map.hasLayer(tiles) });
+  showTiles();
 
   setActive(0);
 }

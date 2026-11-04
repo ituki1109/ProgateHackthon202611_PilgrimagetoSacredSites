@@ -6,13 +6,8 @@
 <meta name="theme-color" content="#F4F1FA">
 <title>ぬい憑き</title>
 
-<!-- 地図（Leaflet）と文字は CDN から読み込む。npm やビルドは使わない。 -->
+<!-- 地図（Leaflet）は CDN から読み込む。npm やビルドは使わない。文字のフォントは js/main.js が読み込む。 -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
-<!-- 朱印の「鎮」「記」の2文字だけ明朝で読み込む -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&text=%E9%8E%AE%E8%A8%98&display=swap">
 
 <!--
   骨組みを動かすのに必要な最小限のスタイルだけを置いています（フロントA）。
@@ -28,6 +23,14 @@
 </style>
 
 <link rel="stylesheet" href="css/style.css">
+
+<!-- 地図の画面で使う JS を最初にまとめて読み、import をたどる往復を減らす -->
+<link rel="modulepreload" href="js/main.js">
+<link rel="modulepreload" href="js/map.js">
+<link rel="modulepreload" href="js/visit.js">
+<link rel="modulepreload" href="js/api.js">
+<link rel="modulepreload" href="js/ui.js">
+<link rel="modulepreload" href="js/spot-detail.js">
 </head>
 <body>
 
@@ -64,7 +67,6 @@
       <!-- data/README.md の「出典の表示」のとおり。文言は変えない。 -->
       <p class="attribution">
         出典：国土交通省「3D都市モデル（Project PLATEAU）川崎市（2022年度）」、川崎市「公共施設一覧」、国土交通省「国土数値情報（駅別乗降客数データ）」を加工して作成
-        <br>地図：&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors
       </p>
     </div>
   </section>
