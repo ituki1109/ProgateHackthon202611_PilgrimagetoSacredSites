@@ -314,6 +314,17 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 .leaflet-container { font-family: var(--font); }
 /* 地図の色を少し落として、ピンとシートを目立たせる */
 .map-canvas .leaflet-tile-pane { filter: saturate(0.55) brightness(1.04) contrast(0.92); }
+/* 地図の出典。右上のボタンの下に、地図に重ねて出す */
+.map-canvas .leaflet-top.leaflet-right { top: calc(72px + env(safe-area-inset-top)); }
+.map-canvas .leaflet-control-attribution {
+  margin: 0 12px 0 0;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink-soft);
+  font-size: 10.5px;
+}
+.map-canvas .leaflet-control-attribution a { color: inherit; }
 
 .map-top {
   position: absolute;
