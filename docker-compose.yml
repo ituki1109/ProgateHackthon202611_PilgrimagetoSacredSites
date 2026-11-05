@@ -1,0 +1,30 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nuitsuki:local
+    ports:
+      # ホストの 8000 番をコンテナの 8000 番につなぐ
+      - "8000:8000"
+    environment:
+      # 怨念の日数と created_at を日本時間で計算する
+      TZ: Asia/Tokyo
+      # 起動時に初期データを投入する
+      SEED_ON_START: "1"
+    volumes:
+      - uploads:/app/backend/uploads
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/nuis').status == 200 else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  uploads:
