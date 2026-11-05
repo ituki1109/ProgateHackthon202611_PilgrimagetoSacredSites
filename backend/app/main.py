@@ -240,12 +240,25 @@ def get_nui_visits(nui_id: int):
     return [_visit_to_dict(visit) for visit in db.list_visits(nui_id)]
 
 
+class FrontendFiles(StaticFiles):
+    """画面のファイルを配る。
+
+    指定がないとブラウザーは古い JS を使い回し、新しい JS と混ざると画面が止まる。
+    no-cache で、使う前に毎回、変わっていないかをサーバーに確かめさせる。
+    """
+
+    async def get_response(self, path: str, scope):
+        response = await super().get_response(path, scope)
+        response.headers["Cache-Control"] = "no-cache"
+        return response
+
+
 # 写真と画面を配る。API のルートを先に登録してから、最後に / へ置く。
 db.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=str(db.UPLOAD_DIR)), name="uploads")
 
 if FRONTEND_DIR.is_dir():
-    app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+    app.mount("/", FrontendFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
 else:
 
     @app.get("/")

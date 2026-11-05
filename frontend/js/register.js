@@ -26,7 +26,6 @@ const FORM_HTML = `
     <label class="field">
       <span class="field-label">最後に連れ出した日 <span class="required">必須</span></span>
       <input type="date" name="last_outing_date">
-      <span class="field-note">この日から、1日ごとに怨念が 2 ずつたまります。</span>
     </label>
 
     <p class="form-error error" role="alert" hidden></p>

@@ -82,7 +82,7 @@ export async function getVisits(nuiId) {}
 
 ## should
 
-- **AR の組み込み。** 試作は `tkg28/ar-marker-prototype` ブランチの `ar/` にあります。記録が終わった画面に「憑依を見る」ボタンを置き、`ar/index.html` を開く。まずはリンクで開くだけで十分です。
+- **AR の組み込み。** `frontend/ar/` に入れ、記録が終わった画面の「憑依を見る」から開けるようにしました。動かし方は [frontend/ar/README.md](../../frontend/ar/README.md) にあります。
 
 ## 注意
 
