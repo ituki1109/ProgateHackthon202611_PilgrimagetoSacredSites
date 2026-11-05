@@ -16,6 +16,7 @@
 
 - AR は、ぬいに付ける印刷した名札を目印にします。ぬいの顔には反応しません。
 - AR のカメラは HTTPS か localhost でしか使えません。デモは PC のカメラと localhost で動かす想定です。
+- 中間発表では AR を見せないので、結果画面の AR のボタンを隠しています。最終発表の前に `frontend/js/visit.js` の `SHOW_AR` を `true` に戻します。
 - 怨念の強さで変わるセリフは、AR のページにだけ出ます。
 - GeoPandas は使っていません。`data/prepare.py` が使うのは pandas と NumPy です。
 - デモ用のデータの写真は仮のイラストです。
