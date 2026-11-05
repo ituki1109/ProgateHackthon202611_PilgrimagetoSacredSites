@@ -3,7 +3,7 @@
 // 画面の切り替え（どの # を表示するか）は main.js が行います。
 
 import { getNuis, getVisits } from './api.js';
-import { clampGrudge, grudgeGauge, grudgeStage, nuiAvatar, nuiFace, openPhoto, seal, stageChip } from './ui.js';
+import { arLink, clampGrudge, grudgeGauge, grudgeStage, nuiAvatar, nuiFace, openPhoto, seal, stageChip } from './ui.js';
 
 // 画面の中に、中身を入れる箱を1つ用意します。
 // すでにあるときは中身だけ空にして、作り直せるようにします。
@@ -57,7 +57,7 @@ function formatDate(value) {
   return date || '日付なし';
 }
 
-// 一覧のいちばん上に出す、いちばん怨念の強いぬい。連れ出すボタンも付けます。
+// 一覧のいちばん上に出す、いちばん怨念の強いぬい。連れ出すボタンと AR のボタンも付けます。
 function createHero(nui) {
   const grudge = clampGrudge(nui.grudge);
   const stage = grudgeStage(grudge);
@@ -89,7 +89,7 @@ function createHero(nui) {
   go.href = '#map';
   go.textContent = grudge > 0 ? `${nui.name}を連れ出す場所を探す` : '連れ出す場所を探す';
 
-  hero.append(main, go);
+  hero.append(main, go, arLink(nui, grudge, 'button is-block'));
   return hero;
 }
 

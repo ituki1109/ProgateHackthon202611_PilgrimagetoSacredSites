@@ -84,7 +84,7 @@ export async function getVisits(nuiId) {}
 
 ## should
 
-- **AR の組み込み。** `frontend/ar/` に入れ、記録が終わった画面の「憑依を見る」から開けるようにしました。動かし方は [frontend/ar/README.md](../../frontend/ar/README.md) にあります。
+- **AR の組み込み。** `frontend/ar/` に入れ、記録が終わった画面と、ぬいの一覧のカードにある「憑依を見る」から開けるようにしました。動かし方は [frontend/ar/README.md](../../frontend/ar/README.md) にあります。
 
 ## 注意
 

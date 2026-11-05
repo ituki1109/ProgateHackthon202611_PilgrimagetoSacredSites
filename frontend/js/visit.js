@@ -2,7 +2,7 @@
 
 import { getNuis, createVisit } from './api.js';
 import { getCurrentLocation } from './map.js';
-import { grudgeGauge, grudgeStage, nuiAvatar, reasonList, seal } from './ui.js';
+import { arLink, grudgeGauge, grudgeStage, nuiAvatar, reasonList, seal } from './ui.js';
 
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -270,11 +270,7 @@ function renderResult(result, nui, placeName) {
 
   const links = document.createElement('div');
   links.className = 'result-actions';
-  // AR は別のページ（ar/）。いまの怨念で演出を変えるので、値を URL で渡す
-  const toAr = document.createElement('a');
-  toAr.className = 'button is-primary is-block';
-  toAr.href = `ar/?${new URLSearchParams({ nui: nui.id, name: nui.name, grudge: after })}`;
-  toAr.textContent = after > 0 ? '憑依を見る' : '鎮まった様子を見る';
+  const toAr = arLink(nui, after, 'button is-primary is-block');
   const toMemories = document.createElement('a');
   toMemories.className = 'button is-block';
   toMemories.href = `#nui/${nui.id}`;

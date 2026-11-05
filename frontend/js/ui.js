@@ -15,6 +15,15 @@ export function clampGrudge(value) {
   return Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
 }
 
+// AR のページ（ar/）を開くボタン。いまの怨念で演出が変わるので、値を URL で渡します。
+export function arLink(nui, grudge, className) {
+  const link = document.createElement('a');
+  link.className = className;
+  link.href = `ar/?${new URLSearchParams({ nui: nui.id, name: nui.name, grudge })}`;
+  link.textContent = grudge > 0 ? '憑依を見る' : '鎮まった様子を見る';
+  return link;
+}
+
 // 段階ごとの目と口。強いほど目が据わり、額にどんより線が出ます。
 const FACES = {
   calm: `
