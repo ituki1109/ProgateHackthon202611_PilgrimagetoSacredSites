@@ -12,7 +12,7 @@ Progateハッカソン powered by ProjectLINKS（2026年11月）で開発する�
 
 ## 推し技術
 
-PythonとpandasでProject LINKSなどのオープンデータを整え、地点の一覧を作ります。現在地からの距離とデータの値でルールベースの点数を付け、出かける先を理由つきで推薦します。推薦の処理はデータの前処理と分けて作るので、中間発表で配られる新しいデータもすぐ足せます。画面はWebで作っています。ARでぬいに怨念が憑依する演出は試作の段階で、まだ組み込んでいません。
+PythonとpandasでProject LINKSなどのオープンデータを整え、地点の一覧を作ります。現在地からの距離とデータの値でルールベースの点数を付け、出かける先を理由つきで推薦します。推薦の処理はデータの前処理と分けて作るので、中間発表で配られる新しいデータもすぐ足せます。画面はWebで作っています。ARでぬいに怨念が憑依する演出は、記録の結果画面から開きます。
 
 ## 技術スタック
 
@@ -21,7 +21,7 @@ PythonとpandasでProject LINKSなどのオープンデータを整え、地点�
 | データの前処理と推薦 | Python、pandas、NumPy |
 | API | FastAPI、SQLite |
 | 画面 | HTML、CSS、JavaScript、Leaflet |
-| AR（試作。まだ組み込んでいません） | MindAR、Three.js（`tkg28/ar-marker-prototype` ブランチ） |
+| AR | MindAR、Three.js |
 
 ## デモの動かし方
 
