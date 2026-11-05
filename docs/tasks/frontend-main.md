@@ -8,7 +8,9 @@
 - `frontend/js/api.js`
 - `frontend/js/main.js`
 - `frontend/js/map.js`
+- `frontend/js/spot-detail.js`
 - `frontend/js/visit.js`
+- `frontend/ar/`
 
 ## must
 
