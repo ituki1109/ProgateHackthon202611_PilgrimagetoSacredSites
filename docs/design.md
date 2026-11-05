@@ -65,7 +65,7 @@ backend/
   scripts/
     seed.py         デモ用のデータを入れる（B）
     demo_photos/    デモ用のデータで使う仮のイラスト
-  tests/            推薦のテスト
+  tests/            推薦と、画面のファイルの配信のテスト
   requirements.txt
   requirements-dev.txt  テストに使うもの
 data/
