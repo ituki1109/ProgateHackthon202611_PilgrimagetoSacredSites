@@ -12,6 +12,9 @@ import { clampGrudge, grudgeGauge, grudgeStage, nuiAvatar, reasonList, stageChip
 const DEFAULT_CENTER = { lat: 35.5314, lng: 139.6968 }; // 川崎駅
 const DEFAULT_ZOOM = 15;
 const TILE_WAIT_MS = 3000; // 推薦地点を待たずにタイルを出すまでの時間
+// スマホで画面の解像度がこの倍率以上なら、1段細かいタイルを半分の大きさで出して、ぼやけないようにする。
+// 地図の文字は小さくなり、タイルの数も増えるので、広い画面（WIDE）では通常のタイルのままにする。
+const SHARP_TILE_MIN_RATIO = 2;
 
 // これより広い画面では、シートを左のパネルにする（style.css と同じ値）
 const WIDE = window.matchMedia('(min-width: 900px)');
@@ -50,6 +53,7 @@ function initMap() {
   // 寄せる前のズームのタイルを読まずに済む（showTiles）。
   tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
+    detectRetina: window.devicePixelRatio >= SHARP_TILE_MIN_RATIO && !WIDE.matches,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   });
   // タイルを読み終えたら、main.js が文字のフォントを読み始める
