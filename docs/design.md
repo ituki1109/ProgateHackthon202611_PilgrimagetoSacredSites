@@ -40,7 +40,7 @@
 
 | 部分 | 使うもの | 担当 |
 |---|---|---|
-| データの前処理 | Python、pandas、GeoPandas | バックエンドA |
+| データの前処理 | Python、pandas、NumPy | バックエンドA |
 | 推薦の処理 | Python | バックエンドA |
 | API | Python、FastAPI、SQLite | バックエンドB |
 | 画面 | HTML、CSS、JavaScript、Leaflet | フロントA、フロントB |
@@ -64,6 +64,7 @@ backend/
   uploads/          保存した写真（git に入れない）
   scripts/
     seed.py         デモ用のデータを入れる（B）
+    demo_photos/    デモ用のデータで使う仮のイラスト
   tests/            推薦のテスト
   requirements.txt
   requirements-dev.txt  テストに使うもの
@@ -78,9 +79,11 @@ frontend/
   js/api.js         API の呼び出し。仮の JSON との切り替え（A）
   js/main.js        画面の切り替え（A）
   js/map.js         地図と推薦地点（A）
+  js/spot-detail.js 地点の詳細（A）
   js/visit.js       訪問の記録（A）
   js/nuis.js        ぬいの一覧と思い出（B）
   js/register.js    ぬいの登録（B）
+  js/ui.js          ぬいの顔、怨念のゲージ、朱印など、画面で共通の部品（A、B）
   mock/             API の代わりに使う仮の JSON
   ar/               AR の憑依。記録の結果画面から開く別のページ（A）
 docs/               設計の文書
