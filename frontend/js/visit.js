@@ -270,15 +270,20 @@ function renderResult(result, nui, placeName) {
 
   const links = document.createElement('div');
   links.className = 'result-actions';
+  // AR は別のページ（ar/）。いまの怨念で演出を変えるので、値を URL で渡す
+  const toAr = document.createElement('a');
+  toAr.className = 'button is-primary is-block';
+  toAr.href = `ar/?${new URLSearchParams({ nui: nui.id, name: nui.name, grudge: after })}`;
+  toAr.textContent = after > 0 ? '憑依を見る' : '鎮まった様子を見る';
   const toMemories = document.createElement('a');
-  toMemories.className = 'button is-primary is-block';
+  toMemories.className = 'button is-block';
   toMemories.href = `#nui/${nui.id}`;
   toMemories.textContent = '思い出を見る';
   const toMap = document.createElement('a');
   toMap.className = 'button is-block';
   toMap.href = '#map';
   toMap.textContent = '地図に戻る';
-  links.append(toMemories, toMap);
+  links.append(toAr, toMemories, toMap);
 
   box.append(hero, title, where, grudge, gauge, diff, links);
   box.classList.remove('hidden');

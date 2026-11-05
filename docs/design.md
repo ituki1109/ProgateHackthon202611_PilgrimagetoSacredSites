@@ -44,7 +44,7 @@
 | 推薦の処理 | Python | バックエンドA |
 | API | Python、FastAPI、SQLite | バックエンドB |
 | 画面 | HTML、CSS、JavaScript、Leaflet | フロントA、フロントB |
-| AR | 既存の試作（MindAR、Three.js） | should で組み込む |
+| AR | MindAR、Three.js | フロントA |
 
 画面はビルドの要らない素の HTML と JavaScript で書きます。React などのフレームワークや npm は使いません。外部のライブラリは CDN から読み込みます。
 
@@ -82,7 +82,7 @@ frontend/
   js/nuis.js        ぬいの一覧と思い出（B）
   js/register.js    ぬいの登録（B）
   mock/             API の代わりに使う仮の JSON
-ar/                 AR の試作（tkg28/ar-marker-prototype ブランチ）
+  ar/               AR の憑依。記録の結果画面から開く別のページ（A）
 docs/               設計の文書
 ```
 

@@ -1,13 +1,13 @@
 // いくつかの画面で使う見た目の部品です（ぬいの顔、怨念のゲージ、朱印）。
 // データは受け取るだけで、怨念の計算はしません（計算は API）。
 
-// 怨念の強さから、段階の名前と CSS のクラス名を決めます。
-// 段階の分け方は docs/design.md の「怨念の段階」と同じです。
+// 怨念の強さから、段階の名前、CSS のクラス名、ぬいのセリフを決めます。
+// 段階の分け方とセリフは docs/design.md の「怨念の段階」と同じです。
 export function grudgeStage(grudge) {
-  if (grudge <= 0) return { label: '鎮まった', key: 'calm' }; // 0
-  if (grudge <= 39) return { label: '弱い', key: 'weak' }; // 1〜39
-  if (grudge <= 69) return { label: '中くらい', key: 'medium' }; // 40〜69
-  return { label: '強い', key: 'strong' }; // 70〜100
+  if (grudge <= 0) return { label: '鎮まった', key: 'calm', line: 'また連れてってね' }; // 0
+  if (grudge <= 39) return { label: '弱い', key: 'weak', line: '…まあ、許してあげてもいい' }; // 1〜39
+  if (grudge <= 69) return { label: '中くらい', key: 'medium', line: '最近ずっと置いていくよね' }; // 40〜69
+  return { label: '強い', key: 'strong', line: 'ゆるさない…' }; // 70〜100
 }
 
 // 怨念を 0〜100 の整数にそろえます。
