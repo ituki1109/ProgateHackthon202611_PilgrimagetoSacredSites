@@ -12,16 +12,16 @@ Progateハッカソン powered by ProjectLINKS（2026年11月）で開発する�
 
 ## 推し技術
 
-PythonとpandasでProject LINKSなどのオープンデータを整え、地点の一覧を作ります。現在地からの距離とデータの値でルールベースの点数を付け、出かける先を理由つきで推薦します。推薦の処理はデータの前処理と分けて作るので、中間発表で配られる新しいデータもすぐ足せます。画面はWebで作り、ARでぬいに怨念が憑依する演出を重ねます。
+PythonとpandasでProject LINKSなどのオープンデータを整え、地点の一覧を作ります。現在地からの距離とデータの値でルールベースの点数を付け、出かける先を理由つきで推薦します。推薦の処理はデータの前処理と分けて作るので、中間発表で配られる新しいデータもすぐ足せます。画面はWebで作っています。ARでぬいに怨念が憑依する演出は試作の段階で、まだ組み込んでいません。
 
 ## 技術スタック
 
 | 部分 | 使うもの |
 |---|---|
-| データの前処理と推薦 | Python、pandas、GeoPandas |
+| データの前処理と推薦 | Python、pandas、NumPy |
 | API | FastAPI、SQLite |
 | 画面 | HTML、CSS、JavaScript、Leaflet |
-| AR | MindAR、Three.js |
+| AR（試作。まだ組み込んでいません） | MindAR、Three.js（`tkg28/ar-marker-prototype` ブランチ） |
 
 ## デモの動かし方
 
@@ -39,6 +39,7 @@ uvicorn app.main:app --port 8000
 
 設計と分担は [docs/](docs/) にまとめています。AI に実装を頼むときは、[AGENTS.md](AGENTS.md) の手順で文書を読ませてください。
 
+- [技術と機能のまとめ](docs/overview.md)
 - [全体設計](docs/design.md)
 - [API 仕様](docs/api.md)
 - 担当ごとの作業：[バックエンドA](docs/tasks/backend-data.md)、[バックエンドB](docs/tasks/backend-api.md)、[フロントA](docs/tasks/frontend-main.md)、[フロントB](docs/tasks/frontend-nui.md)
