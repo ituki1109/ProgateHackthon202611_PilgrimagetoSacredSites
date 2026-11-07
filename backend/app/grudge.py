@@ -21,9 +21,9 @@ REPEAT_DECAY = 10
 CALM_MIN = 10
 
 # 記録した位置と推薦地点の距離による減衰。
-# 300m 以内は減衰なし、3km 以上は除霊なし、その間は直線で減る。
-DISTANCE_FULL_M = 300
-DISTANCE_ZERO_M = 3000
+# 100m 以内は減衰なし、2km 以上は除霊なし、その間は直線で減る。
+DISTANCE_FULL_M = 100
+DISTANCE_ZERO_M = 2000
 
 
 def _is_recommended(visit: dict) -> bool:
@@ -54,30 +54,38 @@ def _distance_m(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
     return 2 * r * math.asin(math.sqrt(h))
 
 
-def _distance_factor(visit: dict, spots_by_id: dict | None) -> float:
-    """記録した位置が推薦地点にどれだけ近いか（0〜1）。
+def _distance_detail(
+    visit: dict, spots_by_id: dict | None
+) -> tuple[int | None, float]:
+    """推薦地点までの距離（m）と距離係数（0〜1）を返す。
 
     推薦地点以外の記録と、spots.json を渡していないときは減衰させない。
+    距離が取れないときは distance_m を None にする。
     """
     if spots_by_id is None or not visit.get("spot_id"):
-        return 1.0
+        return None, 1.0
 
     spot = spots_by_id.get(visit["spot_id"])
     if spot is None:
-        return 0.0
+        # 地点の情報がないときは、推薦地点として扱わず鎮めない。
+        return None, 0.0
 
     lat, lng = visit.get("lat"), visit.get("lng")
     if lat is None or lng is None:
-        return 1.0
+        return None, 1.0
 
     distance = _distance_m(
         float(lat), float(lng), float(spot["lat"]), float(spot["lng"])
     )
+    distance_m = int(distance + 0.5)
     if distance <= DISTANCE_FULL_M:
-        return 1.0
+        return distance_m, 1.0
     if distance >= DISTANCE_ZERO_M:
-        return 0.0
-    return 1 - (distance - DISTANCE_FULL_M) / (DISTANCE_ZERO_M - DISTANCE_FULL_M)
+        return distance_m, 0.0
+    factor = 1 - (distance - DISTANCE_FULL_M) / (
+        DISTANCE_ZERO_M - DISTANCE_FULL_M
+    )
+    return distance_m, factor
 
 
 def _ordered(visits: list[dict]) -> list[dict]:
@@ -89,6 +97,63 @@ def _ordered(visits: list[dict]) -> list[dict]:
             int(visit.get("id") or 0),
         ),
     )
+
+
+def _calm_of(
+    visit: dict,
+    previous_key: tuple | None,
+    streak: int,
+    spots_by_id: dict | None,
+) -> dict:
+    """直前までの記録を踏まえ、この記録の除霊量を返す。
+
+    amount は呼び出し側で、残っている怨念に合わせて直す。
+    """
+    repeat_count = streak + 1 if _place_key(visit) == previous_key else 0
+    base = CALM_RECOMMENDED if _is_recommended(visit) else CALM_OTHER
+    repeat_penalty = REPEAT_DECAY * repeat_count
+    before_distance = max(CALM_MIN, base - repeat_penalty)
+    distance_m, distance_factor = _distance_detail(visit, spots_by_id)
+    # 画面のモック（Math.round）と同じく、0.5 は切り上げる。
+    computed = int(before_distance * distance_factor + 0.5)
+    return {
+        "amount": computed,
+        "computed": computed,
+        "base": base,
+        "repeat_count": repeat_count,
+        "repeat_penalty": repeat_penalty,
+        "before_distance": before_distance,
+        "distance_m": distance_m,
+        "distance_factor": distance_factor,
+        "capped": False,
+    }
+
+
+def _calc(
+    last_outing_date: date,
+    visits: list[dict],
+    today: date,
+    spots_by_id: dict | None = None,
+) -> tuple[int, list[dict]]:
+    """怨念と、記録1件ごとの除霊量を返す。"""
+    days = max(0, (today - last_outing_date).days)
+    grudge = min(100, days * GRUDGE_PER_DAY)
+    details: list[dict] = []
+
+    previous_key = None
+    streak = 0
+    for visit in _ordered(visits):
+        calm = _calm_of(visit, previous_key, streak, spots_by_id)
+        applied = max(0, min(grudge, calm["computed"]))
+        grudge -= applied
+        calm["amount"] = applied
+        calm["capped"] = applied < calm["computed"]
+        details.append(calm)
+
+        previous_key = _place_key(visit)
+        streak = calm["repeat_count"]
+
+    return max(0, grudge), details
 
 
 def calc_grudge(
@@ -103,24 +168,39 @@ def calc_grudge(
     today を引数で受けるので、日付を変えて確かめやすい。
     spots_by_id を渡すと、記録した位置と推薦地点の距離で除霊量を減らす。
     """
-    days = max(0, (today - last_outing_date).days)
-    grudge = min(100, days * GRUDGE_PER_DAY)
+    return _calc(last_outing_date, visits, today, spots_by_id)[0]
 
+
+def _last_place(visits: list[dict]) -> tuple[tuple | None, int]:
+    """いちばん新しい記録の場所キーと、その場所が何回続いているかを返す。"""
     previous_key = None
     streak = 0
     for visit in _ordered(visits):
         key = _place_key(visit)
-        if key == previous_key:
-            streak += 1
-        else:
-            streak = 0
-
-        base = CALM_RECOMMENDED if _is_recommended(visit) else CALM_OTHER
-        calm = max(CALM_MIN, base - REPEAT_DECAY * streak)
-        calm *= _distance_factor(visit, spots_by_id)
-        # 画面のモック（Math.round）と同じく、0.5 は切り上げる。
-        grudge -= int(calm + 0.5)
-
+        streak = streak + 1 if key == previous_key else 0
         previous_key = key
+    return previous_key, streak
 
-    return max(0, grudge)
+
+def calc_next_calm(
+    last_outing_date: date,
+    visits: list[dict],
+    visit: dict,
+    today: date,
+    spots_by_id: dict | None = None,
+) -> dict:
+    """まだ保存していない記録1件の除霊量を返す。プレビュー用。
+
+    返り値は grudge_before、grudge_after、calm。
+    """
+    before = calc_grudge(last_outing_date, visits, today, spots_by_id)
+    previous_key, streak = _last_place(visits)
+    calm = _calm_of(visit, previous_key, streak, spots_by_id)
+    applied = max(0, min(before, calm["computed"]))
+    calm["amount"] = applied
+    calm["capped"] = applied < calm["computed"]
+    return {
+        "grudge_before": before,
+        "grudge_after": before - applied,
+        "calm": calm,
+    }

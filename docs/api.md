@@ -149,13 +149,63 @@
 
 `spot_id` を送ったときは、地点の名前を `spots.json` から取ります。`lat`、`lng` は、推薦地点までの距離による除霊量の減衰に使います。推薦地点から3km以上離れていると、除霊量は0になります。
 
-記録と、記録の前後の怨念を返します（状態コード 201）。画面はこの値で、鎮まった演出を出します。`grudge_after` が `grudge_before` と同じときは、除霊量が0だったか、すでに怨念が0だったことを表します。
+記録と、記録の前後の怨念、除霊量の内訳を返します（状態コード 201）。画面はこの値で、鎮まった演出を出します。`grudge_after` が `grudge_before` と同じときは、除霊量が0だったか、すでに怨念が0だったことを表します。
 
 ```json
 {
   "visit": { "id": 5, "...": "Visit の形" },
   "grudge_before": 82,
-  "grudge_after": 52
+  "grudge_after": 52,
+  "calm": {
+    "amount": 30,
+    "computed": 30,
+    "base": 50,
+    "repeat_count": 0,
+    "repeat_penalty": 0,
+    "before_distance": 50,
+    "distance_m": 285,
+    "distance_factor": 1.0,
+    "capped": false
+  }
+}
+```
+
+`calm` の各項目は次の通りです。
+
+| 項目 | 型 | 内容 |
+|---|---|---|
+| `amount` | 整数 | 実際に怨念が減った量（`grudge_before - grudge_after`） |
+| `computed` | 整数 | 距離係数まで反映した除霊量。怨念の残りで制限する前の値 |
+| `base` | 整数 | 推薦地点なら 50、それ以外は 10 |
+| `repeat_count` | 整数 | 同じ場所に続けて記録した回数。初回は 0、2回目は 1 |
+| `repeat_penalty` | 整数 | `repeat_count × 10` |
+| `before_distance` | 整数 | `max(10, base - repeat_penalty)`。距離係数を掛ける前の値 |
+| `distance_m` | 整数か null | 推薦地点までの距離（m）。推薦地点以外は null |
+| `distance_factor` | 小数（0〜1） | 距離係数。推薦地点以外は 1 |
+| `capped` | 真偽値 | `amount < computed` のとき true。怨念が足りなかった |
+
+## GET /visits/preview
+
+`POST /visits` と同じ計算を、保存せずに試します。記録前の画面で「この記録の除霊量」を出すのに使います。
+
+```text
+GET /visits/preview?nui_id=2&spot_id=park_0798&lat=35.529843&lng=139.710875
+```
+
+| クエリ | 必須 | 内容 |
+|---|---|---|
+| `nui_id` | 必須 | 連れて行ったぬい |
+| `lat`、`lng` | 必須 | 記録した位置 |
+| `spot_id` | `spot_name` がないとき必須 | 推薦地点の ID |
+| `spot_name` | `spot_id` がないとき必須 | 地点の名前 |
+
+`POST /visits` と同じバリデーション、404 / 422 の返し方をします。訪問の記録、写真の保存、データベースの更新はしません。
+
+```json
+{
+  "grudge_before": 82,
+  "grudge_after": 52,
+  "calm": { "...": "POST /visits の calm と同じ形" }
 }
 ```
 

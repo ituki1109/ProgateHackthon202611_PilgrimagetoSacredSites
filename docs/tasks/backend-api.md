@@ -33,11 +33,12 @@
 
 ### 4. 訪問の API
 
-`POST /visits` と `GET /nuis/{id}/visits` を作ります。
+`POST /visits`、`GET /visits/preview`、`GET /nuis/{id}/visits` を作ります。
 
 - `spot_id` があれば、地点の名前を `spots.json` から取り、`recommended` を true にする
 - `spot_id` が `spots.json` にないときは 404 を返す
-- 返り値に、記録の前後の怨念（`grudge_before`、`grudge_after`）を入れる
+- `POST /visits` の返り値に、記録の前後の怨念（`grudge_before`、`grudge_after`）と除霊量の内訳（`calm`）を入れる
+- `GET /visits/preview` は `POST /visits` と同じ計算を、保存せずに返す。記録前の画面で「この記録の除霊量」を出すのに使う
 
 ### 5. 怨念の計算
 
@@ -63,6 +64,8 @@ def calc_grudge(
 
 `today` を引数で受けると、日付を変えて確かめやすくなります。`spots_by_id` を渡すと、記録した位置と推薦地点の距離で除霊量を減らせます。同じ場所に続けて記録したときの減衰と、距離による減衰の式は [design.md](../design.md) の「怨念の計算」にあります。
 
+さらに、1件ごとの除霊量の内訳を返す `calc_next_calm()` を作ります。`POST /visits` と `GET /visits/preview` はこれを使います。内訳の項目は [api.md](../api.md) の `calm` を参照してください。既存の `calc_grudge()` の返り値は変えず、合計の怨念だけを返し続けます。
+
 ### 6. デモ用のデータ
 
 `backend/scripts/seed.py` で、データベースを空にしてから、ぬい3体と訪問の記録を入れます。
@@ -74,6 +77,7 @@ def calc_grudge(
 
 ## should
 
+- **除霊量の内訳。** `POST /visits` と `GET /visits/preview` の `calm` で、画面が欲しい項目があれば、画面の担当と相談して足す（足すときは先に [api.md](../api.md) を直す）。
 - **鎮まったときの演出の値。** `POST /visits` の返り値で足りないものがあれば、画面の担当と相談して足す（足すときは先に [api.md](../api.md) を直す）。
 
 ## 注意

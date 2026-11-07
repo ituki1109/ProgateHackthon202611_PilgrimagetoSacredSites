@@ -44,7 +44,10 @@ export async function createNui(formData) {}
 export async function getRecommend(lat, lng) {}
 export async function createVisit(formData) {}
 export async function getVisits(nuiId) {}
+export async function getCalmPreview({ nuiId, spotId, spotName, lat, lng }) {}
 ```
+
+`getCalmPreview` は `GET /visits/preview` を呼び、記録前の除霊量を返します。
 
 `USE_MOCK` が true のときは、`frontend/mock/` の JSON を返します。`createNui` と `createVisit` は、仮の値を返すだけで構いません。
 
@@ -74,16 +77,19 @@ export async function getVisits(nuiId) {}
 
 `frontend/js/visit.js` で、記録の画面を作ります。
 
-1. 連れて行くぬいを選ぶ（怨念の強い順に並べる）
+1. 連れて行くぬいを選ぶ（怨念の強い順に並べる）。選ぶたびに `GET /visits/preview` を呼び、記録前の除霊量を `.stats` のカードで出す
 2. 写真を選ぶか撮る（`<input type="file" accept="image/*" capture>`）
 3. 送る
 4. 返ってきた `grudge_before` と `grudge_after` を出す（例: 「怨念が 82 → 52 に鎮まった」）
+5. 返ってきた `calm` の `amount` と内訳を出す（例: 「除霊量 30 / 基本 50 / 距離 285m」）
 
-推薦地点では、地点までの距離と、同じ場所に続けて記録した回数で鎮まる量が減ることを画面に出す。距離が遠すぎて鎮まらなかったときは、その旨を出す。
+推薦地点では、地点までの距離と、同じ場所に続けて記録した回数で鎮まる量が減ることを画面に出す。距離が遠すぎて鎮まらなかったときは、その旨を出す。怨念が残りより少ないときは、「怨念が残り X のため、X 鎮まりました」と出す。
 
-推薦地点を選ばずに記録するときは、地点の名前を入力させます。
+推薦地点を選ばずに記録するときは、地点の名前を入力させます。名前が空の間は「地点の名前を入れると除霊量が出ます」と出します。
 
-**できあがり:** 地図で地点を選び、ぬいと写真を送ると、怨念が減ったことが分かる。
+新しい CSS クラスは作らず、既存の `.stats`、`.result-grudge`、`.result-diff`、`.field-note` を使います。`#visit-calm` は `visit.js` が動的に作り、`index.html` は触りません。
+
+**できあがり:** 地図で地点を選び、ぬいと写真を送ると、記録前と記録後に除霊量とその内訳が分かる。
 
 ## should
 
@@ -93,6 +99,7 @@ export async function getVisits(nuiId) {}
 
 - ビルドの要るツール（npm、React など）は使わない。Leaflet は CDN から読み込む。
 - フロントB の JS には、画面を表示する関数（例: `showNuis()`）を用意してもらい、`main.js` から呼ぶ。
+- 他の担当が調整中の `frontend/css/style.css` と `frontend/index.html` は変えない。追加の要素は既存の CSS クラスを使い、HTML は JavaScript で動的に作る。
 
 ## AI への最初の指示の例
 
