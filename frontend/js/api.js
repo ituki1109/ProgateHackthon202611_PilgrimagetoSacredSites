@@ -48,7 +48,14 @@ export async function createNui(formData) {
   return postForm('/nuis', formData);
 }
 
-// GET /recommend?lat=&lng= — 推薦地点（点数の高い順に5件）
+// POST /nuis/{id}/neglect — デモ用。放置した日数を増やす
+export async function neglectNui(nuiId) {
+  if (USE_MOCK) return neglectMockNui(nuiId);
+  return postForm(`/nuis/${nuiId}/neglect`, new FormData());
+}
+
+// GET /recommend?lat=&lng= — 推薦地点（点数の高い順に5件）。
+// 怨念が 100 を超えたぬいがいると、事故地点5件と遠征先（空き家の駅）2件を返す。
 export async function getRecommend(lat, lng) {
   if (USE_MOCK) return getJson(mockUrl('recommend.json'));
   const query = new URLSearchParams({ lat: String(lat), lng: String(lng) });
@@ -88,6 +95,8 @@ export async function getCalmPreview({ nuiId, spotId, spotName, lat, lng }) {
 // backend/app/grudge.py と同じ値。変えるときは両方そろえる。
 const MOCK_GRUDGE = {
   perDay: 2,            // GRUDGE_PER_DAY
+  max: 200,             // GRUDGE_MAX
+  neglectDays: 60,      // main.py の NEGLECT_DAYS
   calmRecommended: 50,  // CALM_RECOMMENDED
   calmOther: 10,        // CALM_OTHER
   repeatDecay: 10,      // REPEAT_DECAY
@@ -208,7 +217,7 @@ function _calmOf(visit, previousKey, streak, spotsById) {
 
 // 怨念と、記録1件ごとの除霊量を返す。
 function _calcMock(lastOutingDate, visits, spotsById) {
-  let grudge = Math.min(100, daysBetween(lastOutingDate) * MOCK_GRUDGE.perDay);
+  let grudge = Math.min(MOCK_GRUDGE.max, daysBetween(lastOutingDate) * MOCK_GRUDGE.perDay);
   const ordered = [...visits].sort(visitOrder);
   const details = [];
 
@@ -286,6 +295,16 @@ async function createMockNui(formData) {
     grudge: calcMockGrudge(nui.last_outing_date, [], spotsById),
     visit_count: 0,
   };
+}
+
+async function neglectMockNui(nuiId) {
+  const { nuis } = await loadMockData();
+  const nui = nuis.find((item) => item.id === Number(nuiId));
+  const moved = parseDate(nui.last_outing_date);
+  moved.setDate(moved.getDate() - MOCK_GRUDGE.neglectDays);
+  const pad = (value) => String(value).padStart(2, '0');
+  nui.last_outing_date = `${moved.getFullYear()}-${pad(moved.getMonth() + 1)}-${pad(moved.getDate())}`;
+  return (await getMockNuis()).find((item) => item.id === nui.id);
 }
 
 async function getMockVisits(nuiId) {

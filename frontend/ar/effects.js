@@ -10,10 +10,11 @@ const EFFECT_SCALE = NUI_HEIGHT / 1.5;
 
 // 怨念の段階ごとの見せ方。aura と wisp は光の色、wisps は人魂の数、shake は震えの強さ、deform はぬいの動きの大きさ
 const LOOKS = {
-  strong: { aura: 'rgba(225, 40, 70, 1)', wisp: 'rgba(255, 130, 90, 1)', wisps: 3, shake: 1, deform: 1 },
+  possessed: { aura: 'rgba(255, 20, 30, 1)', wisp: 'rgba(255, 60, 40, 1)', wisps: 5, shake: 1.6, deform: 1.3 },
+  strong: { aura: 'rgba(225, 40, 70, 1)', wisp: 'rgba(255, 130, 90, 1)', wisps: 2.5, shake: 1, deform: 1 },
   medium: { aura: 'rgba(160, 60, 255, 1)', wisp: 'rgba(110, 200, 255, 1)', wisps: 3, shake: 0.6, deform: 0.75 },
-  weak: { aura: 'rgba(90, 140, 255, 1)', wisp: 'rgba(110, 200, 255, 1)', wisps: 2, shake: 0.25, deform: 0.5 },
-  calm: { aura: 'rgba(255, 225, 140, 1)', wisp: 'rgba(255, 225, 140, 1)', wisps: 0, shake: 0, deform: 0.3 },
+  weak: { aura: 'rgba(90, 140, 255, 1)', wisp: 'rgba(110, 200, 255, 1)', wisps: 2, shake: 0.3, deform: 0.5 },
+  calm: { aura: 'rgba(255, 225, 140, 1)', wisp: 'rgba(255, 225, 140, 1)', wisps: 0, shake: 0.25, deform: 0.3 },
 };
 
 // 吹き出しの位置。頭の上に出す。顔に重ならないよう、ぬいの上端（0.75）より少し上に置く
@@ -60,6 +61,7 @@ function keepOnScreen(sprite, camera) {
     sprite.updateWorldMatrix(true, false);
     return new THREE.Vector3().setFromMatrixPosition(sprite.matrixWorld).project(camera);
   };
+  
   const home = project(0, 0);
   const perX = project(1, 0).x - home.x;
   const perY = project(0, 1).y - home.y;

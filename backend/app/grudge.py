@@ -13,6 +13,8 @@ from datetime import date
 
 # デモを見ながら調整する値。docs/design.md の「怨念の計算」と同じ。
 GRUDGE_PER_DAY = 2
+GRUDGE_MAX = 200  # 100日放置で上限になる
+GRUDGE_OVERFLOW = 100  # これを超えると暴走し、推薦地点と記録できる場所が変わる
 CALM_RECOMMENDED = 50
 CALM_OTHER = 10
 
@@ -137,7 +139,7 @@ def _calc(
 ) -> tuple[int, list[dict]]:
     """怨念と、記録1件ごとの除霊量を返す。"""
     days = max(0, (today - last_outing_date).days)
-    grudge = min(100, days * GRUDGE_PER_DAY)
+    grudge = min(GRUDGE_MAX, days * GRUDGE_PER_DAY)
     details: list[dict] = []
 
     previous_key = None
@@ -162,13 +164,18 @@ def calc_grudge(
     today: date,
     spots_by_id: dict | None = None,
 ) -> int:
-    """0〜100 の怨念を返す。
+    """0〜200 の怨念を返す。
 
     放置の点から、訪問で鎮めた点を引く。0 より小さくなれば 0 にする。
     today を引数で受けるので、日付を変えて確かめやすい。
     spots_by_id を渡すと、記録した位置と推薦地点の距離で除霊量を減らす。
     """
     return _calc(last_outing_date, visits, today, spots_by_id)[0]
+
+
+def is_overflow(grudge: int) -> bool:
+    """怨念が 100 を超えて、暴走しているかどうか。"""
+    return grudge > GRUDGE_OVERFLOW
 
 
 def _last_place(visits: list[dict]) -> tuple[tuple | None, int]:

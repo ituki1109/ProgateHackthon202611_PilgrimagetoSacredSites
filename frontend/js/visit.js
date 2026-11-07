@@ -1,8 +1,9 @@
 // 訪問の記録。ぬいと写真を送り、怨念がどれだけ鎮まったかを出す。
 
 import { getNuis, createVisit, getCalmPreview } from './api.js';
+import { checkHaunt } from './haunt.js';
 import { getCurrentLocation } from './map.js';
-import { arLink, grudgeGauge, grudgeStage, nuiAvatar, reasonList, seal } from './ui.js';
+import { arLink, gaugeWidth, grudgeGauge, grudgeStage, isHauntedSpot, isOverflow, nuiAvatar, reasonList, seal } from './ui.js';
 
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -54,7 +55,8 @@ function renderPlace() {
   badge.className = `place-badge${place.spot ? '' : ' is-outside'}`;
 
   if (place.spot) {
-    badge.textContent = '推薦された地点';
+    const haunted = isHauntedSpot(place.spot);
+    badge.textContent = haunted ? '除霊できる地点' : '推薦された地点';
 
     const name = document.createElement('h3');
     name.className = 'place-name';
@@ -62,7 +64,9 @@ function renderPlace() {
 
     const note = document.createElement('p');
     note.className = 'place-note';
-    note.textContent = 'ここで記録すると、怨念が多く鎮まります。同じ場所に続けて記録すると鎮まる量は減り、地点から離れているとさらに減ります。';
+    note.textContent = haunted
+      ? '地点の近くまで行くと、怨念が多く鎮まります。車道や人の敷地には入らず、安全な場所から写真を撮ってください。'
+      : 'ここで記録すると、怨念が多く鎮まります。同じ場所に続けて記録すると鎮まる量は減り、地点から離れているとさらに減ります。';
 
     box.append(badge, name, reasonList(place.spot.reason, 'place-facts'), note);
     return;
@@ -204,8 +208,20 @@ function calmBox() {
 async function refreshCalmPreview() {
   const box = calmBox();
   const checked = document.querySelector('#visit-nui input[name="nui_id"]:checked');
+  const submitButton = document.getElementById('visit-submit');
+  submitButton.disabled = false;
   if (!checked || !place) {
     box.replaceChildren();
+    return;
+  }
+
+  // 暴走しているぬいは、事故地点と空き家の駅でしか記録できない（API も同じ決まりで断る）
+  if (isOverflow(nuisById.get(checked.value)?.grudge) && !isHauntedSpot(place.spot)) {
+    submitButton.disabled = true;
+    const note = document.createElement('p');
+    note.className = 'error';
+    note.textContent = 'このぬいは怨念が100を超えています。地図の「除霊できる地点」でしか記録できません。';
+    box.replaceChildren(note);
     return;
   }
 
@@ -322,6 +338,7 @@ async function submit(event) {
     const result = await createVisit(formData);
     const placeName = place.spot ? place.spot.name : nameInput.value.trim();
     renderResult(result, nui, placeName);
+    checkHaunt(); // 怨念が 100 以下に戻ると、アプリの色も戻る
   } catch (err) {
     console.error('[visit] 記録に失敗しました:', err);
     showError(`記録に失敗しました（${err.message}）`);
@@ -442,7 +459,7 @@ function settle(avatar, nui, gauge, to, before, after) {
   const fill = gauge.querySelector('.grudge-gauge-fill');
   const finish = () => {
     to.textContent = String(after);
-    fill.style.width = `${after}%`;
+    fill.style.width = gaugeWidth(after);
     gauge.className = `grudge-gauge is-${grudgeStage(after).key}`;
     gauge.setAttribute('aria-valuenow', String(after));
     if (!nui.photo_url) {
@@ -465,7 +482,7 @@ function settle(avatar, nui, gauge, to, before, after) {
       const t = Math.min(1, (now - start) / DURATION);
       const value = before - (before - after) * (1 - (1 - t) ** 3);
       to.textContent = String(Math.round(value));
-      fill.style.width = `${value}%`;
+      fill.style.width = gaugeWidth(value);
       if (t < 1) requestAnimationFrame(step);
       else finish();
     };

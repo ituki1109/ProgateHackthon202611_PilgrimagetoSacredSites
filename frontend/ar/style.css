@@ -1,9 +1,4 @@
-:root {
-  --bg: #151515;
-  --fg: #f5f5f5;
-  --accent: #e0483a;
-  --muted: #bdbdbd;
-}
+/* 色、文字、ボタン、札、ゲージは ../css/style.css を使う。ここには、このページだけの形を書く */
 
 * {
   box-sizing: border-box;
@@ -13,10 +8,11 @@ html,
 body {
   margin: 0;
   height: 100%;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: system-ui, -apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
   overflow: hidden;
+}
+
+h1 {
+  margin: 0;
 }
 
 #ar {
@@ -27,128 +23,128 @@ body {
 #start {
   position: fixed;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 16px;
-  padding: 24px 16px;
-  max-width: 480px;
-  margin: 0 auto;
   overflow-y: auto;
 }
 
-#start[hidden] {
-  display: none;
+.start-page {
+  padding-bottom: calc(24px + env(safe-area-inset-bottom));
 }
 
-h1 {
-  margin: 0;
-  font-size: 2.4rem;
-  letter-spacing: 0.1em;
-}
-
-#nui-grudge,
+/* ぬいのセリフ。ぬいの顔の上に吹き出しで出す */
 #nui-line {
-  margin: 0;
+  position: relative;
+  max-width: min(100%, 320px);
+  margin-bottom: 8px;
+  padding: 10px 20px;
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  font-size: 18px;
+  font-weight: 900;
 }
 
-#nui-grudge {
-  color: var(--muted);
-  font-weight: bold;
-}
-
-#nui-line {
-  font-size: 1.4rem;
-}
-
-a {
-  color: var(--fg);
-}
-
-.back {
-  text-align: center;
+#nui-line::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 0 0 4px 0;
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
 }
 
 .marker-choice {
+  width: min(100%, 320px);
+  margin-top: 14px;
   padding: 12px 16px;
-  border: 1px solid #444;
-  border-radius: 12px;
-}
-
-.marker-choice p {
-  margin: 0 0 8px;
-}
-
-.file input {
-  display: block;
-  margin-top: 6px;
-  color: var(--muted);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  color: var(--ink-soft);
+  font-size: 14px;
+  text-align: left;
 }
 
 .marker-choice summary {
-  color: var(--muted);
+  font-weight: 700;
   cursor: pointer;
 }
 
 .marker-choice p {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
-#marker-preview[hidden] {
-  display: none;
+.marker-choice a {
+  color: var(--primary-deep);
+}
+
+.file {
+  display: block;
+  margin-top: 10px;
+}
+
+.file input {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  font: inherit;
+}
+
+.file input::file-selector-button {
+  min-height: 38px;
+  margin-right: 10px;
+  padding: 0 14px;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 700 13px/1 var(--font);
+  cursor: pointer;
 }
 
 #marker-preview {
-  display: block;
   max-width: 120px;
-  margin-top: 8px;
+  margin-top: 10px;
   border-radius: 8px;
 }
 
-button {
-  font: inherit;
-  font-weight: bold;
-  border: none;
-  border-radius: 999px;
-  padding: 14px 24px;
-  background: var(--accent);
-  color: #fff;
-}
-
-button:disabled {
-  opacity: 0.5;
-}
-
+/* カメラの映像に重ねる部品。地図に重ねる部品と同じ、白い地に浮かせた形にする */
 #stop-button {
   position: fixed;
   top: calc(env(safe-area-inset-top) + 12px);
   right: 12px;
   z-index: 10;
-  padding: 8px 16px;
-  background: rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-float);
+}
+
+#debug,
+#status {
+  position: fixed;
+  z-index: 10;
+  background: var(--surface);
+  box-shadow: var(--shadow-float);
 }
 
 #debug {
-  position: fixed;
   top: calc(env(safe-area-inset-top) + 12px);
   left: 12px;
-  z-index: 10;
-  margin: 0;
-  padding: 4px 10px;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.6);
-  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 13px;
 }
 
 #status {
-  position: fixed;
   left: 16px;
   right: 16px;
   bottom: calc(env(safe-area-inset-bottom) + 24px);
-  z-index: 10;
-  margin: 0;
-  padding: 10px 16px;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.6);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 12px 18px;
+  border-radius: 18px;
+  font-size: 14px;
+  font-weight: 700;
   text-align: center;
 }

@@ -29,6 +29,14 @@ FACILITY_DEFAULT_SCORE = 0.5
 SAME_PLACE_M = 50  # これより近い地点は同じ建物とみなし、点数の高い方だけを返す
 MAX_PER_CATEGORY = 3  # 1つのカテゴリから返すのはここまで（ほかのカテゴリが足りないときは超える）
 
+# 怨念が 100 を超えたときの推薦。ふだんの推薦と同じく、歩いて行ける距離の地点を出す。
+HAUNTED_MAX_DISTANCE_M = 1000  # これより遠い事故地点は推薦しない
+HAUNTED_WEIGHT_NEAR = 0.8  # 現在地からの近さ
+HAUNTED_WEIGHT_COUNT = 0.2  # 約100m四方の事故の件数
+HAUNTED_COUNT_FULL = 3  # 件数の点が 1 になる値
+EXPEDITION_LIMIT = 2  # 近場の事故地点とは別に出す、遠征先（空き家の駅）の数
+EXPEDITION_MAX_M = 150000  # 遠征先の点が 0 になる距離
+
 # あとから足すデータ（data/prepare.py の EXTRA_SOURCES）を推薦に使うときの決まり。
 # attrs のキーごとに、重み、点数が 1 になる値、推薦理由に足す文を書く。
 # 例: {"example_count_500m": {"weight": 0.2, "full": 10, "reason": "半径500m以内に{value}件"}}
@@ -200,4 +208,55 @@ def recommend(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list
             "details": spot.get("details"),
         }
         for score, spot in picked
+    ]
+
+
+def haunted_reason(spot: dict, meters: float) -> str:
+    """怨念が 100 を超えたときの推薦理由。番地と事故の内容は書かない。"""
+    attrs = spot["attrs"]
+    near = f"現在地から{distance_text(meters)}"
+    if spot["category"] == "事故地点":
+        walk = math.ceil(attrs["station_distance_m"] / WALK_M_PER_MIN)
+        return (
+            f"{near}。2014〜2023年の事故の記録が{attrs['accident_count']}件。"
+            f"{attrs['nearest_station']}駅から徒歩{walk}分"
+        )
+    cities = "、".join(attrs["akiya_cities"])
+    return f"遠征先。{near}。空き家バンクの登録物件が{cities}に{attrs['akiya_count']}件。{attrs['akiya_line']}"
+
+
+def recommend_haunted(spots: list[dict], lat: float, lng: float, limit: int = 5) -> list[dict]:
+    """近くの事故地点を点数の高い順に limit 件返し、その後ろに遠征先（空き家の駅）を足す。
+
+    事故地点は HAUNTED_MAX_DISTANCE_M で打ち切る。重みは順番を決めるだけで、距離の上限は守れないため。
+    """
+    accidents = []
+    expeditions = []
+    for spot in spots:
+        meters = distance_m(lat, lng, spot["lat"], spot["lng"])
+        if spot["category"] == "事故地点":
+            if meters <= HAUNTED_MAX_DISTANCE_M:
+                near = 1 - meters / HAUNTED_MAX_DISTANCE_M
+                count = min(1.0, spot["attrs"]["accident_count"] / HAUNTED_COUNT_FULL)
+                score = HAUNTED_WEIGHT_NEAR * near + HAUNTED_WEIGHT_COUNT * count
+                accidents.append((round(score, 2), meters, spot))
+        else:
+            expeditions.append((round(max(0.0, 1 - meters / EXPEDITION_MAX_M) * 0.2, 2), meters, spot))
+
+    accidents.sort(key=lambda item: (-item[0], item[1], item[2]["id"]))
+    expeditions.sort(key=lambda item: (item[1], item[2]["id"]))
+
+    return [
+        {
+            "id": spot["id"],
+            "name": spot["name"],
+            "lat": spot["lat"],
+            "lng": spot["lng"],
+            "score": score,
+            "reason": haunted_reason(spot, meters),
+            "category": spot["category"],
+            "attrs": spot["attrs"],
+            "details": spot.get("details"),
+        }
+        for score, meters, spot in accidents[:limit] + expeditions[:EXPEDITION_LIMIT]
     ]

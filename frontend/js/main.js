@@ -6,6 +6,7 @@
 // #nui/1    ぬいの思い出     （フロントB：nuis.js の showNuiDetail(id)）
 // #register ぬいの登録       （フロントB：register.js の showRegister()）
 
+import { checkHaunt } from './haunt.js';
 import { showMap } from './map.js';
 import { showVisit } from './visit.js';
 
@@ -95,12 +96,15 @@ async function render() {
   // 地図のない画面から開いたときは、待たずにフォントを読む
   if (name !== 'map') loadFonts();
 
+  checkHaunt();
   if (name === 'map') showMap();
   else if (name === 'visit') showVisit();
   else await callLazyScreen(name, param);
 }
 
 window.addEventListener('hashchange', render);
+// デモの「放置する」で怨念が増えたら、いまの画面を作り直す
+document.addEventListener('nuituki:grudge-changed', render);
 
 if (document.readyState === 'loading') {
   window.addEventListener('DOMContentLoaded', render);

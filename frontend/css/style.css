@@ -1252,3 +1252,191 @@ input[type="date"]:focus {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============ 怨念が 100 を超えたとき（js/haunt.js） ============ */
+/* :root.is-possessed の色に変えるだけで、アプリ全体が暗く赤くなる */
+:root {
+  --stage-possessed: #E11D2E;
+  --tint-possessed: #FBDADD;
+}
+
+:root.is-possessed {
+  --bg: #15080D;
+  --surface: #26101A;
+  --surface-2: #341622;
+  --ink: #F9EAEC;
+  --ink-soft: #D6B3BA;
+  --ink-faint: #A98790;
+  --line: #4C2230;
+  --line-strong: #6E2E40;
+  --primary: #D3202F;
+  --primary-deep: #FF8B8B;
+  --primary-pale: #3C131D;
+  --shu: #E5342A;
+  --shu-deep: #FF9A8C;
+  --shu-pale: #3C1416;
+  --stage-weak: #8C6A74;
+  --stage-medium: #B9475C;
+  --stage-strong: #E0404F;
+  --stage-possessed: #FF2B3C;
+  --tint-calm: #1F2A24;
+  --tint-weak: #2C1A22;
+  --tint-medium: #36161F;
+  --tint-strong: #40141D;
+  --tint-possessed: #4A0F18;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 4px 14px rgba(120, 10, 25, 0.28);
+  --shadow-float: 0 6px 22px rgba(160, 15, 35, 0.4);
+}
+
+:root.is-possessed .leaflet-tile-pane {
+  filter: grayscale(1) invert(1) brightness(0.75) sepia(1) hue-rotate(-50deg) saturate(2.5);
+}
+
+:root.is-possessed .nui-hero .grudge-gauge { background: rgba(255, 255, 255, 0.14); }
+:root.is-possessed .grudge-gauge.is-possessed { box-shadow: 0 0 10px var(--stage-possessed); }
+
+.avatar.is-possessed { --ring: var(--stage-possessed); background-color: var(--tint-possessed); }
+.stage-chip.is-possessed { background: var(--stage-possessed); color: #fff; }
+.grudge-gauge.is-possessed .grudge-gauge-fill { background: var(--stage-possessed); }
+.nui-hero.is-possessed { background: var(--tint-possessed); }
+.buddy.is-possessed { background: var(--tint-possessed); }
+.face-glint { fill: #FF2B3C; }
+
+.neglect-button { justify-self: center; }
+
+/* ぬいの声。どの画面でも右下から話しかける。下にある物の操作は邪魔しない */
+.haunt-voice {
+  position: fixed;
+  right: 12px;
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 12px);
+  z-index: 1200;
+  max-width: min(70vw, 300px);
+  margin: 0;
+  padding: 8px 14px;
+  border: 1px solid var(--stage-possessed);
+  border-radius: 16px 16px 2px 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-float);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 900;
+  pointer-events: none;
+  animation: haunt-sway 2.4s ease-in-out infinite;
+}
+
+.haunt-voice[hidden] { display: none; }
+
+/* 画面を奪う。背景一面にセリフを並べ、真ん中にぬいを大きく出す */
+.haunt-jack {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: #090305;
+  color: #F9EAEC;
+}
+
+.haunt-jack::backdrop { background: #090305; }
+
+.haunt-jack-wall {
+  position: absolute;
+  inset: -10%;
+  color: #7E1020;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.5;
+  opacity: 0.6;
+  transform: rotate(-4deg);
+  animation: haunt-wall 18s linear infinite;
+}
+
+.haunt-jack-body {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 12px;
+  height: 100%;
+  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+  background: radial-gradient(circle at 50% 42%, rgba(9, 3, 5, 0.25), rgba(9, 3, 5, 0.92) 68%);
+  text-align: center;
+  overflow-y: auto;
+}
+
+.haunt-jack-avatar {
+  width: min(52vw, 240px);
+  height: min(52vw, 240px);
+  --ring: var(--stage-possessed);
+  box-shadow: 0 0 0 4px var(--stage-possessed), 0 0 48px 14px rgba(225, 29, 46, 0.65);
+  animation: haunt-shake 0.5s linear infinite;
+}
+
+.haunt-jack-line {
+  margin: 10px 0 0;
+  color: #FF4655;
+  font-size: clamp(34px, 8vw, 60px);
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.haunt-jack-name { margin: 0; font-size: 20px; font-weight: 900; }
+
+.haunt-jack-note {
+  max-width: 30em;
+  margin: 0;
+  color: #E7C8CE;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.haunt-jack-actions {
+  display: grid;
+  gap: 10px;
+  width: min(100%, 340px);
+  margin-top: 8px;
+  animation: haunt-appear 1.4s ease-out both;
+}
+
+.haunt-jack-actions .button:not(.is-primary) { background: transparent; border-color: #8C3A48; color: #F9EAEC; }
+.haunt-jack-actions .button.is-primary { background: #D3202F; border-color: #D3202F; color: #fff; }
+
+@keyframes haunt-shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  20% { transform: translate(-3px, 2px) rotate(-1.2deg); }
+  40% { transform: translate(3px, -2px) rotate(1.2deg); }
+  60% { transform: translate(-2px, -3px) rotate(-0.6deg); }
+  80% { transform: translate(2px, 3px) rotate(0.8deg); }
+}
+
+@keyframes haunt-sway {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes haunt-wall {
+  from { translate: 0 0; }
+  to { translate: 0 -8%; }
+}
+
+/* セリフを読ませてから、ボタンを出す */
+@keyframes haunt-appear {
+  0%, 60% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .haunt-voice,
+  .haunt-jack-wall,
+  .haunt-jack-avatar { animation: none; }
+  .haunt-jack-actions { animation: none; }
+}
+
+@media (min-width: 900px) {
+  .haunt-voice { bottom: 24px; right: 24px; }
+}

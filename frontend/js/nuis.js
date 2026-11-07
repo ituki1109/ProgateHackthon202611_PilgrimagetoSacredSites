@@ -2,8 +2,8 @@
 // 一覧は api.js の getNuis()、思い出は getVisits() から受け取ります。
 // 画面の切り替え（どの # を表示するか）は main.js が行います。
 
-import { getNuis, getVisits } from './api.js';
-import { arLink, clampGrudge, grudgeGauge, grudgeStage, nuiAvatar, nuiFace, openPhoto, seal, stageChip } from './ui.js';
+import { getNuis, getVisits, neglectNui } from './api.js';
+import { arLink, clampGrudge, grudgeGauge, grudgeStage, isOverflow, nuiAvatar, nuiFace, openPhoto, seal, stageChip } from './ui.js';
 
 // 画面の中に、中身を入れる箱を1つ用意します。
 // すでにあるときは中身だけ空にして、作り直せるようにします。
@@ -57,6 +57,25 @@ function formatDate(value) {
   return date || '日付なし';
 }
 
+// デモ用のボタン。放置した日数を増やして、怨念が 100 を超えた状態を見せます。
+// すでに暴走しているぬいには出しません。
+function createNeglectButton(nui) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'button is-small neglect-button';
+  button.textContent = '60日放置してみる（デモ）';
+  button.addEventListener('click', async () => {
+    button.disabled = true;
+    try {
+      await neglectNui(nui.id);
+      document.dispatchEvent(new CustomEvent('nuituki:grudge-changed'));
+    } catch (error) {
+      button.textContent = error.message;
+    }
+  });
+  return button;
+}
+
 // 一覧のいちばん上に出す、いちばん怨念の強いぬい。連れ出すボタンと AR のボタンも付けます。
 function createHero(nui) {
   const grudge = clampGrudge(nui.grudge);
@@ -73,7 +92,8 @@ function createHero(nui) {
   body.className = 'hero-body';
   const kicker = document.createElement('p');
   kicker.className = 'hero-kicker';
-  kicker.textContent = grudge > 0 ? 'いちばん怨んでいるぬい' : 'どのぬいも鎮まっています';
+  if (isOverflow(grudge)) kicker.textContent = '暴走しているぬい';
+  else kicker.textContent = grudge > 0 ? 'いちばん怨んでいるぬい' : 'どのぬいも鎮まっています';
   const name = document.createElement('h3');
   name.className = 'hero-name';
   name.textContent = nui.name;
@@ -87,9 +107,11 @@ function createHero(nui) {
   const go = document.createElement('a');
   go.className = 'button is-primary is-block';
   go.href = '#map';
-  go.textContent = grudge > 0 ? `${nui.name}を連れ出す場所を探す` : '連れ出す場所を探す';
+  if (isOverflow(grudge)) go.textContent = `${nui.name}を除霊しに行く`;
+  else go.textContent = grudge > 0 ? `${nui.name}を連れ出す場所を探す` : '連れ出す場所を探す';
 
   hero.append(main, go, arLink(nui, grudge, 'button is-block'));
+  if (!isOverflow(grudge)) hero.appendChild(createNeglectButton(nui));
   return hero;
 }
 
@@ -218,9 +240,10 @@ function createProfile(nui, visits) {
   const go = document.createElement('a');
   go.className = 'button is-primary';
   go.href = '#map';
-  go.textContent = '連れ出す場所を探す';
+  go.textContent = isOverflow(grudge) ? '除霊しに行く' : '連れ出す場所を探す';
 
   profile.append(name, meta, grudgeGauge(grudge, `${nui.name}の怨念`), stats, go);
+  if (!isOverflow(grudge)) profile.appendChild(createNeglectButton(nui));
   return profile;
 }
 

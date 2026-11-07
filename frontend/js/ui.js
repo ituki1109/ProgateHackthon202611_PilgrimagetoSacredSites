@@ -1,18 +1,32 @@
 // いくつかの画面で使う見た目の部品です（ぬいの顔、怨念のゲージ、朱印）。
 // データは受け取るだけで、怨念の計算はしません（計算は API）。
 
+const GRUDGE_OVERFLOW = 100;
+const GRUDGE_MAX = 200;
+
 // 怨念の強さから、段階の名前、CSS のクラス名、ぬいのセリフを決めます。
 // 段階の分け方とセリフは docs/design.md の「怨念の段階」と同じです。
 export function grudgeStage(grudge) {
   if (grudge <= 0) return { label: '鎮まった', key: 'calm', line: 'また連れてってね' }; // 0
-  if (grudge <= 39) return { label: '弱い', key: 'weak', line: '…まあ、許してあげてもいい' }; // 1〜39
+  if (grudge <= 39) return { label: '弱い', key: 'weak', line: '…許してあげてもいいよ' }; // 1〜39
   if (grudge <= 69) return { label: '中くらい', key: 'medium', line: '最近ずっと置いていくよね' }; // 40〜69
-  return { label: '強い', key: 'strong', line: 'ゆるさない…' }; // 70〜100
+  if (grudge <= GRUDGE_OVERFLOW) return { label: '強い', key: 'strong', line: '放置してゆるさない…' }; // 70〜100
+  return { label: '暴走', key: 'possessed', line: 'もう、逃がさない' }; // 101〜200
 }
 
-// 怨念を 0〜100 の整数にそろえます。
+// 怨念を 0〜200 の整数にそろえます。backend/app/grudge.py の GRUDGE_MAX と同じ値です。
 export function clampGrudge(value) {
-  return Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
+  return Math.max(0, Math.min(GRUDGE_MAX, Math.round(Number(value) || 0)));
+}
+
+// 怨念が 100 を超えて、暴走しているかどうか。
+export function isOverflow(grudge) {
+  return Number(grudge) > GRUDGE_OVERFLOW;
+}
+
+// 暴走したぬいを連れて行ける地点（事故地点と空き家の駅）かどうか。
+export function isHauntedSpot(spot) {
+  return spot?.category === '事故地点' || spot?.category === '空き家の駅';
 }
 
 // AR のページ（ar/）を開くボタン。いまの怨念で演出が変わるので、値を URL で渡します。
@@ -40,6 +54,12 @@ const FACES = {
     <path d="M19 36 h10 a5 4 0 0 1 -10 0 z M35 36 h10 a5 4 0 0 1 -10 0 z" class="face-fill"/>
     <path d="M28 47 q2 -2 4 0 q2 2 4 0" class="face-line"/>
     <path d="M24 17 v7 M29 15 v9 M35 15 v9 M40 17 v7" class="face-gloom"/>`,
+  possessed: `
+    <path d="M17 29 l13 5 M47 29 l-13 5" class="face-line"/>
+    <circle cx="24" cy="38" r="4.2" class="face-fill"/><circle cx="40" cy="38" r="4.2" class="face-fill"/>
+    <circle cx="24" cy="38" r="1.4" class="face-glint"/><circle cx="40" cy="38" r="1.4" class="face-glint"/>
+    <path d="M24 49 l4 -3 l4 3 l4 -3 l4 3" class="face-line"/>
+    <path d="M22 18 v8 M28 15 v10 M36 15 v10 M42 18 v8" class="face-gloom"/>`,
 };
 
 // 写真がないときのぬいの顔（SVG）。stageKey は grudgeStage().key。
@@ -93,6 +113,11 @@ export function reasonList(reason, className) {
   return list;
 }
 
+// ゲージの長さ。怨念が 100 を超えたら振り切れたままにします。
+export function gaugeWidth(grudge) {
+  return `${Math.min(GRUDGE_OVERFLOW, Math.max(0, Number(grudge) || 0))}%`;
+}
+
 // 怨念のゲージ。before を渡すと、鎮まった分を薄く残して見せます。
 export function grudgeGauge(grudge, label, before) {
   const value = clampGrudge(grudge);
@@ -101,18 +126,18 @@ export function grudgeGauge(grudge, label, before) {
   gauge.setAttribute('role', 'progressbar');
   gauge.setAttribute('aria-label', label);
   gauge.setAttribute('aria-valuemin', '0');
-  gauge.setAttribute('aria-valuemax', '100');
+  gauge.setAttribute('aria-valuemax', String(GRUDGE_MAX));
   gauge.setAttribute('aria-valuenow', String(value));
 
   if (before !== undefined) {
     const ghost = document.createElement('span');
     ghost.className = 'grudge-gauge-ghost';
-    ghost.style.width = `${clampGrudge(before)}%`;
+    ghost.style.width = gaugeWidth(before);
     gauge.appendChild(ghost);
   }
   const fill = document.createElement('span');
   fill.className = 'grudge-gauge-fill';
-  fill.style.width = `${value}%`;
+  fill.style.width = gaugeWidth(value);
   gauge.appendChild(fill);
   return gauge;
 }
