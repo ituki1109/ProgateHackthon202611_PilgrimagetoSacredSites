@@ -602,6 +602,9 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 .spot-actions { display: grid; grid-template-columns: auto 1fr; gap: 8px; }
 .spot-actions .button { padding: 0 14px; }
 
+/* カード内の除霊量見積もり。stats のデフォルト margin とカードの gap が重なるのを防ぐ */
+.spot-card .stats { margin-top: 0; }
+
 /* 地点の詳細。スマホでは下から出るシート、PC では真ん中に出す */
 .spot-detail {
   width: 100%;

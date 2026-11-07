@@ -92,8 +92,8 @@ const MOCK_GRUDGE = {
   calmOther: 10,        // CALM_OTHER
   repeatDecay: 10,      // REPEAT_DECAY
   calmMin: 10,          // CALM_MIN
-  distanceFullM: 300,   // DISTANCE_FULL_M
-  distanceZeroM: 3000,  // DISTANCE_ZERO_M
+  distanceFullM: 100,   // DISTANCE_FULL_M
+  distanceZeroM: 2000,  // DISTANCE_ZERO_M
 };
 
 // モックの JSON は1回だけ読み、そのあとは同じ配列を使い回す。

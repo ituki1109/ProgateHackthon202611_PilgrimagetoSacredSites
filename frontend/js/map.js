@@ -12,9 +12,15 @@ import { clampGrudge, grudgeGauge, grudgeStage, nuiAvatar, reasonList, stageChip
 const DEFAULT_CENTER = { lat: 35.5314, lng: 139.6968 }; // 川崎駅
 const DEFAULT_ZOOM = 15;
 const TILE_WAIT_MS = 3000; // 推薦地点を待たずにタイルを出すまでの時間
+
 // スマホで画面の解像度がこの倍率以上なら、1段細かいタイルを半分の大きさで出して、ぼやけないようにする。
 // 地図の文字は小さくなり、タイルの数も増えるので、広い画面（WIDE）では通常のタイルのままにする。
 const SHARP_TILE_MIN_RATIO = 2;
+
+// 除霊量の距離減衰。backend/app/grudge.py と同じ値。
+const DISTANCE_FULL_M = 100;   // この距離までは満額
+const DISTANCE_ZERO_M = 2000;  // この距離以上は効果なし
+const CALM_RECOMMENDED = 50;   // 推薦地点の基本除霊量
 
 // これより広い画面では、シートを左のパネルにする（style.css と同じ値）
 const WIDE = window.matchMedia('(min-width: 900px)');
@@ -217,6 +223,65 @@ function mapPadding() {
   return { paddingTopLeft: [24, 88], paddingBottomRight: [24, sheet.offsetHeight + buddy.offsetHeight + 28] };
 }
 
+// 2点間の直線距離（メートル）。ハバーサイン公式。
+function distanceM(lat1, lng1, lat2, lng2) {
+  const radius = 6371000;
+  const toRad = (value) => (Number(value) * Math.PI) / 180;
+  const p1 = toRad(lat1);
+  const p2 = toRad(lat2);
+  const dp = p2 - p1;
+  const dl = toRad(Number(lng2) - Number(lng1));
+  const h = Math.sin(dp / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) ** 2;
+  return 2 * radius * Math.asin(Math.sqrt(h));
+}
+
+// 距離減衰係数（0〜1）。backend/app/grudge.py と同じ計算。
+function distanceFactor(meters) {
+  if (meters <= DISTANCE_FULL_M) return 1;
+  if (meters >= DISTANCE_ZERO_M) return 0;
+  return 1 - (meters - DISTANCE_FULL_M) / (DISTANCE_ZERO_M - DISTANCE_FULL_M);
+}
+
+// 距離を人が読みやすい単位にする。
+function formatDistance(meters) {
+  return meters < 1000 ? `${meters}m` : `${(meters / 1000).toFixed(1)}km`;
+}
+
+// 推薦地点カードに出す「最大除霊量の見積もり」を作る。
+// 地図画面ではぬいがまだ選ばれていないので、ぬいに依存しない値だけを出す。
+function calmStatsFor(spot) {
+  const distance = Math.round(distanceM(current.lat, current.lng, spot.lat, spot.lng));
+  const factor = distanceFactor(distance);
+  const base = CALM_RECOMMENDED;
+  const computed = Math.round(base * factor);
+
+  const stats = document.createElement('dl');
+  stats.className = 'stats';
+  for (const [term, value] of [
+    ['最大除霊量', String(computed)],
+    ['基本', String(base)],
+    ['距離', formatDistance(distance)],
+  ]) {
+    const item = document.createElement('div');
+    const dt = document.createElement('dt');
+    dt.textContent = term;
+    const dd = document.createElement('dd');
+    dd.textContent = value;
+    item.append(dt, dd);
+    stats.appendChild(item);
+  }
+
+  const note = document.createElement('p');
+  note.className = 'field-note';
+  note.textContent = factor === 0
+    ? '2km以上離れているため、この地点では鎮められません。'
+    : `距離減衰 ${Math.round(factor * 100)}%。ぬいを選ぶと実際の除霊量が確定します。`;
+
+  const box = document.createElement('div');
+  box.append(stats, note);
+  return box;
+}
+
 function cardFor(spot, index) {
   const li = document.createElement('li');
   li.className = 'spot-card';
@@ -255,7 +320,9 @@ function cardFor(spot, index) {
   record.addEventListener('click', () => selectPlace(spot, spot.lat, spot.lng));
   actions.append(more, record);
 
-  li.append(head, facts, actions);
+  const calm = calmStatsFor(spot);
+
+  li.append(head, facts, calm, actions);
   return li;
 }
 
