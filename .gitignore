@@ -5,3 +5,6 @@ backend/*.db
 __pycache__/
 .venv/
 .pytest_cache/
+
+# API キーなどの秘密情報（backend/.env.example はひな形なので git に入れる）
+backend/.env

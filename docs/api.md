@@ -96,8 +96,9 @@
 | `name` | 必須 | ぬいの名前 |
 | `last_outing_date` | 必須 | 最後に連れ出した日（`YYYY-MM-DD`） |
 | `photo` | 任意 | ぬいの写真 |
+| `stylize` | 任意（既定 `true`） | `true` なら、写真を Gemini でキャラクター化してから保存する（`photo_url` がそのイラストになる）。`false` なら写真をそのまま保存する。`GEMINI_API_KEY` がないときは、`true` でも元の写真のまま保存する |
 
-登録したぬいを、Nui の形で返します（状態コード 201）。
+登録したぬいを、Nui の形で返します（状態コード 201）。`photo_url` は、`stylize` が効いていればキャラクター化した画像の URL です。
 
 ## GET /recommend
 

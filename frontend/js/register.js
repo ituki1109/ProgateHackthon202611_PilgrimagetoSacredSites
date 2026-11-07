@@ -7,16 +7,28 @@ import { nuiFace } from './ui.js';
 // 登録フォームの HTML です。入力欄の名前は docs/api.md の POST /nuis に合わせています。
 const FORM_HTML = `
   <form class="form register-form" novalidate>
-    <label class="avatar-pick">
-      <input type="file" name="photo" accept="image/*" class="visually-hidden">
-      <span class="avatar-pick-circle">
-        <img class="avatar-pick-preview" alt="選んだ写真" hidden>
-        <span class="avatar-pick-badge" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M3.5 8.5h3.5l2-3h6l2 3h3.5v11h-17z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
+    <div class="avatar-pick-wrap">
+      <label class="avatar-pick">
+        <input type="file" name="photo" accept="image/*" capture="environment" class="visually-hidden">
+        <span class="avatar-pick-circle">
+          <img class="avatar-pick-preview" alt="選んだ写真" hidden>
+          <span class="avatar-pick-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3.5 8.5h3.5l2-3h6l2 3h3.5v11h-17z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
+          </span>
         </span>
-      </span>
-      <span class="avatar-pick-label">写真を選ぶ <span class="optional">任意</span></span>
-    </label>
+        <span class="avatar-pick-label">写真を選ぶ <span class="optional">任意</span></span>
+      </label>
+      <button type="button" class="button is-small avatar-pick-camera">
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16"><path d="M3.5 8.5h3.5l2-3h6l2 3h3.5v11h-17z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="13.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        Webカメラで撮る
+      </button>
+
+      <label class="field-toggle">
+        <input type="checkbox" class="stylize-toggle visually-hidden" checked>
+        <span class="toggle-switch" aria-hidden="true"></span>
+        <span class="field-toggle-text">AIでキャラクター化する <span class="field-note">写真をイラストに描き直します</span></span>
+      </label>
+    </div>
 
     <label class="field">
       <span class="field-label">名前 <span class="required">必須</span></span>
@@ -31,6 +43,19 @@ const FORM_HTML = `
     <p class="form-error error" role="alert" hidden></p>
     <button type="submit" class="button is-primary is-block">登録する</button>
   </form>
+`;
+
+// Webカメラの撮影ダイアログ。フォームの外（register-wrap の中）に1つだけ置きます。
+const CAMERA_DIALOG_HTML = `
+  <dialog class="camera-dialog">
+    <video class="camera-video" autoplay playsinline muted></video>
+    <canvas class="camera-canvas" hidden></canvas>
+    <p class="camera-error error" role="alert" hidden></p>
+    <div class="camera-actions">
+      <button type="button" class="button is-primary is-block camera-shutter">撮影する</button>
+      <button type="button" class="button is-block camera-cancel">やめる</button>
+    </div>
+  </dialog>
 `;
 
 // 「ここはフロントB の担当です」という案内を隠します。
@@ -64,6 +89,71 @@ function showPreview(form) {
   if (face) face.classList.toggle('hidden', Boolean(file));
 }
 
+// --- Webカメラでの撮影 ---
+// getUserMedia は HTTPS か localhost でないと使えません（スマホを LAN 経由の
+// http:// で開いたときは動きません。その場合は「写真を選ぶ」側を使ってください）。
+
+let cameraStream = null; // 開いている間のカメラの映像
+
+// カメラを閉じて、映像を止めます（撮影したときも、やめたときも呼ぶ）。
+function stopCamera() {
+  if (cameraStream) {
+    for (const track of cameraStream.getTracks()) track.stop();
+    cameraStream = null;
+  }
+}
+
+// 「Webカメラで撮る」を押したときの処理です。
+async function openCamera(dialog) {
+  const video = dialog.querySelector('.camera-video');
+  const errorBox = dialog.querySelector('.camera-error');
+  errorBox.hidden = true;
+
+  dialog.showModal();
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    errorBox.textContent = 'この環境では Web カメラが使えません（https か localhost が必要です）。';
+    errorBox.hidden = false;
+    return;
+  }
+
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' },
+      audio: false,
+    });
+    video.srcObject = cameraStream;
+  } catch (error) {
+    console.warn('[register] カメラを開けませんでした:', error);
+    errorBox.textContent = `カメラを開けませんでした（${error.message}）。権限を許可しているか確認してください。`;
+    errorBox.hidden = false;
+  }
+}
+
+// 「撮影する」を押したときの処理です。映像の今の1コマを写真にして、
+// 既存の <input type="file"> に入れます（送信のしくみは変えずに使うため）。
+function capturePhoto(dialog, form) {
+  const video = dialog.querySelector('.camera-video');
+  if (!video.videoWidth) return; // 映像がまだ始まっていない
+
+  const canvas = dialog.querySelector('.camera-canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+
+  canvas.toBlob((blob) => {
+    if (!blob) return;
+    const file = new File([blob], `camera_${Date.now()}.jpg`, { type: 'image/jpeg' });
+
+    const data = new DataTransfer();
+    data.items.add(file);
+    form.photo.files = data.files;
+    form.photo.dispatchEvent(new Event('change', { bubbles: true }));
+
+    dialog.close();
+  }, 'image/jpeg', 0.92);
+}
+
 // 「登録する」を押したときの処理です。
 async function submitForm(event, form) {
   event.preventDefault(); // ブラウザーがページを再読み込みするのを止める
@@ -87,6 +177,11 @@ async function submitForm(event, form) {
   if (!(photo instanceof File) || photo.size === 0) {
     formData.delete('photo');
   }
+
+  // AIでキャラクター化するかどうか。チェックボックスは name を付けていないので、
+  // ここで明示的に文字列にして送ります（写真がないときは API 側で無視されます）。
+  const stylizeToggle = form.querySelector('.stylize-toggle');
+  formData.set('stylize', stylizeToggle.checked ? 'true' : 'false');
 
   const button = form.querySelector('button[type="submit"]');
   const buttonText = button.textContent;
@@ -124,15 +219,22 @@ export function showRegister() {
   if (!container) {
     container = document.createElement('div');
     container.className = 'register-wrap';
-    container.innerHTML = FORM_HTML;
+    container.innerHTML = FORM_HTML + CAMERA_DIALOG_HTML;
     (section.querySelector('.page') || section).appendChild(container);
 
     const form = container.querySelector('form');
+    const dialog = container.querySelector('.camera-dialog');
     form.addEventListener('submit', (event) => submitForm(event, form));
 
     // 写真を選ぶまでは、丸の中にぬいの顔の絵を出しておきます。
     form.querySelector('.avatar-pick-circle').prepend(nuiFace('weak', 'avatar-pick-face'));
     form.photo.addEventListener('change', () => showPreview(form));
+
+    // Webカメラでの撮影。どう閉じても（撮影、やめる、Esc）カメラは必ず止める。
+    form.querySelector('.avatar-pick-camera').addEventListener('click', () => openCamera(dialog));
+    dialog.querySelector('.camera-shutter').addEventListener('click', () => capturePhoto(dialog, form));
+    dialog.querySelector('.camera-cancel').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('close', stopCamera);
 
     // 最後に連れ出した日は、今日より後を選べないようにします。
     const today = new Date();
