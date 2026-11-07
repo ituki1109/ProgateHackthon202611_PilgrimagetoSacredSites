@@ -20,7 +20,7 @@ from fastapi.staticfiles import StaticFiles
 
 from . import db
 from .env import load_env
-from .grudge import calc_grudge
+from .grudge import calc_grudge, calc_next_calm
 from .stylize import stylize_photo
 
 load_env()  # backend/.env があれば読み込む（GEMINI_API_KEY など）
@@ -106,7 +106,10 @@ def _save_photo(
 def _grudge_of(nui: Any) -> int:
     visits = [dict(row) for row in db.list_visits_for_grudge(nui["id"])]
     return calc_grudge(
-        date.fromisoformat(nui["last_outing_date"]), visits, date.today()
+        date.fromisoformat(nui["last_outing_date"]),
+        visits,
+        date.today(),
+        SPOTS_BY_ID,
     )
 
 
@@ -121,6 +124,7 @@ def _nui_to_dict(nui: Any) -> dict[str, Any]:
             date.fromisoformat(nui["last_outing_date"]),
             [dict(row) for row in visits],
             date.today(),
+            SPOTS_BY_ID,
         ),
         "visit_count": len(visits),
     }
@@ -204,20 +208,11 @@ def get_recommend(lat: float, lng: float):
     return _fallback_recommend(lat, lng, limit=5)
 
 
-@app.post("/visits", status_code=201)
-def create_visit(
-    nui_id: int = Form(...),
-    spot_id: str | None = Form(None),
-    spot_name: str | None = Form(None),
-    lat: float = Form(...),
-    lng: float = Form(...),
-    photo: UploadFile | None = File(None),
-):
-    """訪問を記録し、記録の前後の怨念を返す。"""
-    nui = db.get_nui(nui_id)
-    if nui is None:
-        raise HTTPException(status_code=404, detail="nui not found")
-
+def _visit_target(
+    spot_id: str | None,
+    spot_name: str | None,
+) -> tuple[str | None, str, bool]:
+    """spot_id か spot_name から、保存用の (spot_id, spot_name, recommended) を返す。"""
     spot_id = (spot_id or "").strip() or None
     spot_name = (spot_name or "").strip() or None
 
@@ -234,7 +229,77 @@ def create_visit(
             detail="spot_name is required when spot_id is not given",
         )
 
+    return spot_id, spot_name, recommended
+
+
+@app.get("/visits/preview")
+def preview_visit(
+    nui_id: int,
+    lat: float,
+    lng: float,
+    spot_id: str | None = None,
+    spot_name: str | None = None,
+):
+    """記録する前の除霊量を返す。保存はしない。"""
+    nui = db.get_nui(nui_id)
+    if nui is None:
+        raise HTTPException(status_code=404, detail="nui not found")
+
+    spot_id, spot_name, recommended = _visit_target(spot_id, spot_name)
+
+    visits = [dict(row) for row in db.list_visits_for_grudge(nui_id)]
+    visit = {
+        "spot_id": spot_id,
+        "spot_name": spot_name,
+        "lat": lat,
+        "lng": lng,
+        "recommended": recommended,
+    }
+
+    return calc_next_calm(
+        date.fromisoformat(nui["last_outing_date"]),
+        visits,
+        visit,
+        date.today(),
+        SPOTS_BY_ID,
+    )
+
+
+@app.post("/visits", status_code=201)
+def create_visit(
+    nui_id: int = Form(...),
+    spot_id: str | None = Form(None),
+    spot_name: str | None = Form(None),
+    lat: float = Form(...),
+    lng: float = Form(...),
+    photo: UploadFile | None = File(None),
+):
+    """訪問を記録し、記録の前後の怨念と除霊量を返す。"""
+    nui = db.get_nui(nui_id)
+    if nui is None:
+        raise HTTPException(status_code=404, detail="nui not found")
+
+    spot_id, spot_name, recommended = _visit_target(spot_id, spot_name)
+
     grudge_before = _grudge_of(nui)
+
+    # まだ保存していないけれど、この記録の除霊量を計算しておく。
+    visits = [dict(row) for row in db.list_visits_for_grudge(nui_id)]
+    visit_preview = {
+        "spot_id": spot_id,
+        "spot_name": spot_name,
+        "lat": lat,
+        "lng": lng,
+        "recommended": recommended,
+    }
+    calm_preview = calc_next_calm(
+        date.fromisoformat(nui["last_outing_date"]),
+        visits,
+        visit_preview,
+        date.today(),
+        SPOTS_BY_ID,
+    )["calm"]
+
     photo_url = _save_photo(photo, "visit")
     visit = db.create_visit(
         nui_id=nui_id,
@@ -247,10 +312,15 @@ def create_visit(
     )
     grudge_after = _grudge_of(nui)
 
+    calm = calm_preview
+    calm["amount"] = grudge_before - grudge_after
+    calm["capped"] = calm["amount"] < calm["computed"]
+
     return {
         "visit": _visit_to_dict(visit),
         "grudge_before": grudge_before,
         "grudge_after": grudge_after,
+        "calm": calm,
     }
 
 

@@ -38,24 +38,13 @@ async function errorMessage(res) {
 
 // GET /nuis — ぬいの一覧（登録した順）
 export async function getNuis() {
-  if (USE_MOCK) return getJson(mockUrl('nuis.json'));
+  if (USE_MOCK) return getMockNuis();
   return getJson(`${API_BASE}/nuis`);
 }
 
 // POST /nuis — ぬいの登録。formData は name、last_outing_date、photo（任意）。
 export async function createNui(formData) {
-  if (USE_MOCK) {
-    // モックでは、送った値をそのまま返すだけ。
-    // 怨念は API（backend/app/grudge.py）が出すので、画面では計算しない。
-    return {
-      id: Date.now(),
-      name: formData.get('name') || '',
-      photo_url: null,
-      last_outing_date: formData.get('last_outing_date') || '',
-      grudge: 0,
-      visit_count: 0,
-    };
-  }
+  if (USE_MOCK) return createMockNui(formData);
   return postForm('/nuis', formData);
 }
 
@@ -76,42 +65,320 @@ export async function createVisit(formData) {
 
 // GET /nuis/{id}/visits — そのぬいの思い出（新しい順）
 export async function getVisits(nuiId) {
-  if (USE_MOCK) {
-    const all = await getJson(mockUrl('visits.json'));
-    return all
-      .filter((v) => v.nui_id === Number(nuiId))
-      .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
-  }
+  if (USE_MOCK) return getMockVisits(nuiId);
   return getJson(`${API_BASE}/nuis/${nuiId}/visits`);
+}
+
+// GET /visits/preview — 記録する前の除霊量（保存しない）
+// 戻り値は { grudge_before, grudge_after, calm }。
+export async function getCalmPreview({ nuiId, spotId, spotName, lat, lng }) {
+  if (USE_MOCK) return getMockCalmPreview({ nuiId, spotId, spotName, lat, lng });
+  const query = new URLSearchParams({
+    nui_id: String(nuiId),
+    lat: String(lat),
+    lng: String(lng),
+  });
+  if (spotId) query.set('spot_id', spotId);
+  else if (spotName != null) query.set('spot_name', spotName);
+  return getJson(`${API_BASE}/visits/preview?${query}`);
 }
 
 // --- ここから下はモック用 ---
 
-// POST /visits の返りの形だけを合わせた、仮の値を作る。
-// 怨念の本当の計算は API が持つ。ここの引き算はモックを動かすためだけのもの。
-async function mockVisit(formData) {
-  const nuiId = Number(formData.get('nui_id'));
-  const spotId = formData.get('spot_id') || null;
-  const nuis = await getJson(mockUrl('nuis.json'));
-  const nui = nuis.find((n) => n.id === nuiId);
+// backend/app/grudge.py と同じ値。変えるときは両方そろえる。
+const MOCK_GRUDGE = {
+  perDay: 2,            // GRUDGE_PER_DAY
+  calmRecommended: 50,  // CALM_RECOMMENDED
+  calmOther: 10,        // CALM_OTHER
+  repeatDecay: 10,      // REPEAT_DECAY
+  calmMin: 10,          // CALM_MIN
+  distanceFullM: 100,   // DISTANCE_FULL_M
+  distanceZeroM: 2000,  // DISTANCE_ZERO_M
+};
 
-  const before = nui ? nui.grudge : 50;
-  const after = Math.max(0, before - (spotId ? 30 : 10));
+// モックの JSON は1回だけ読み、そのあとは同じ配列を使い回す。
+// 記録した訪問を足せるので、同じ場所の連続除霊もモックで確かめられる。
+let mockDataPromise = null;
+
+async function loadMockData() {
+  if (!mockDataPromise) {
+    mockDataPromise = Promise.all([
+      getJson(mockUrl('nuis.json')),
+      getJson(mockUrl('visits.json')),
+      getJson(mockUrl('recommend.json')),
+    ]).then(([nuis, visits, spots]) => ({
+      nuis,
+      visits,
+      spotsById: new Map(spots.map((spot) => [spot.id, spot])),
+    }));
+  }
+  return mockDataPromise;
+}
+
+// 'YYYY-MM-DD' を、その日の0時の Date にする。
+function parseDate(value) {
+  const [year, month, day] = String(value || '').split('-').map(Number);
+  if (!year || !month || !day) return null;
+  return new Date(year, month - 1, day);
+}
+
+function todayStart() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+function daysBetween(lastOutingDate) {
+  const last = parseDate(lastOutingDate);
+  if (!last) return 0;
+  return Math.max(0, Math.floor((todayStart() - last) / 86400000));
+}
+
+function distanceM(lat1, lng1, lat2, lng2) {
+  const radius = 6371000;
+  const toRad = (value) => (Number(value) * Math.PI) / 180;
+  const p1 = toRad(lat1);
+  const p2 = toRad(lat2);
+  const dp = p2 - p1;
+  const dl = toRad(Number(lng2) - Number(lng1));
+  const h = Math.sin(dp / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) ** 2;
+  return 2 * radius * Math.asin(Math.sqrt(h));
+}
+
+// 推薦地点までの距離（m、表示用の整数）と距離係数（0〜1）を返す。
+function distanceDetail(visit, spotsById) {
+  if (!visit.spot_id) return { distance_m: null, distance_factor: 1 };
+  const spot = spotsById.get(visit.spot_id);
+  if (!spot) return { distance_m: null, distance_factor: 0 };
+
+  const distance = distanceM(visit.lat, visit.lng, spot.lat, spot.lng);
+  if (!Number.isFinite(distance)) return { distance_m: null, distance_factor: 1 };
+  const distance_m = Math.round(distance);
+  if (distance <= MOCK_GRUDGE.distanceFullM) {
+    return { distance_m, distance_factor: 1 };
+  }
+  if (distance >= MOCK_GRUDGE.distanceZeroM) {
+    return { distance_m, distance_factor: 0 };
+  }
+  const distance_factor = 1 - (distance - MOCK_GRUDGE.distanceFullM)
+    / (MOCK_GRUDGE.distanceZeroM - MOCK_GRUDGE.distanceFullM);
+  return { distance_m, distance_factor };
+}
+
+// 同じ場所かどうか。推薦地点は spot_id、それ以外は地点名で見る。
+function placeKey(visit) {
+  if (visit.spot_id) return `spot:${visit.spot_id}`;
+  return `other:${String(visit.spot_name || '').trim()}`;
+}
+
+function visitOrder(a, b) {
+  return String(a.created_at || '').localeCompare(String(b.created_at || ''))
+    || (a.id || 0) - (b.id || 0);
+}
+
+function _lastPlace(visits) {
+  let previousKey = null;
+  let streak = 0;
+  for (const visit of [...visits].sort(visitOrder)) {
+    const key = placeKey(visit);
+    streak = key === previousKey ? streak + 1 : 0;
+    previousKey = key;
+  }
+  return { previousKey, streak };
+}
+
+function _calmOf(visit, previousKey, streak, spotsById) {
+  const repeat_count = placeKey(visit) === previousKey ? streak + 1 : 0;
+  const base = visit.recommended ? MOCK_GRUDGE.calmRecommended : MOCK_GRUDGE.calmOther;
+  const repeat_penalty = MOCK_GRUDGE.repeatDecay * repeat_count;
+  const before_distance = Math.max(MOCK_GRUDGE.calmMin, base - repeat_penalty);
+  const { distance_m, distance_factor } = distanceDetail(visit, spotsById);
+  const computed = Math.round(before_distance * distance_factor);
+  return {
+    amount: computed,
+    computed,
+    base,
+    repeat_count,
+    repeat_penalty,
+    before_distance,
+    distance_m,
+    distance_factor,
+    capped: false,
+  };
+}
+
+// 怨念と、記録1件ごとの除霊量を返す。
+function _calcMock(lastOutingDate, visits, spotsById) {
+  let grudge = Math.min(100, daysBetween(lastOutingDate) * MOCK_GRUDGE.perDay);
+  const ordered = [...visits].sort(visitOrder);
+  const details = [];
+
+  let previousKey = null;
+  let streak = 0;
+  for (const visit of ordered) {
+    const calm = _calmOf(visit, previousKey, streak, spotsById);
+    const applied = Math.max(0, Math.min(grudge, calm.computed));
+    grudge -= applied;
+    calm.amount = applied;
+    calm.capped = applied < calm.computed;
+    details.push(calm);
+
+    const key = placeKey(visit);
+    streak = calm.repeat_count;
+    previousKey = key;
+  }
+
+  return { grudge: Math.max(0, grudge), details };
+}
+
+// backend/app/grudge.py の calc_grudge と同じ計算。
+function calcMockGrudge(lastOutingDate, visits, spotsById) {
+  return _calcMock(lastOutingDate, visits, spotsById).grudge;
+}
+
+// まだ保存していない記録1件の除霊量を返す。
+function calcNextMockCalm(lastOutingDate, visits, visit, spotsById) {
+  const before = calcMockGrudge(lastOutingDate, visits, spotsById);
+  const { previousKey, streak } = _lastPlace(visits);
+  const calm = _calmOf(visit, previousKey, streak, spotsById);
+  const applied = Math.max(0, Math.min(before, calm.computed));
+  calm.amount = applied;
+  calm.capped = applied < calm.computed;
+  return {
+    grudge_before: before,
+    grudge_after: before - applied,
+    calm,
+  };
+}
+
+function nowText() {
+  const now = new Date();
+  const pad = (value) => String(value).padStart(2, '0');
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
+    + `T${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+}
+
+async function getMockNuis() {
+  const { nuis, visits, spotsById } = await loadMockData();
+  return nuis.map((nui) => {
+    const nuiVisits = visits.filter((visit) => visit.nui_id === nui.id);
+    return {
+      ...nui,
+      // JSON の grudge ではなく、バックエンドと同じ式で毎回計算する。
+      grudge: calcMockGrudge(nui.last_outing_date, nuiVisits, spotsById),
+      visit_count: nuiVisits.length,
+    };
+  });
+}
+
+async function createMockNui(formData) {
+  const { nuis, spotsById } = await loadMockData();
+  const id = Math.max(0, ...nuis.map((nui) => nui.id)) + 1;
+  const nui = {
+    id,
+    name: String(formData.get('name') || ''),
+    photo_url: null,
+    last_outing_date: String(formData.get('last_outing_date') || ''),
+  };
+  nuis.push(nui);
 
   return {
-    visit: {
-      id: Date.now(),
-      nui_id: nuiId,
-      spot_id: spotId,
-      // 推薦地点の名前は API が spots.json から取る。モックでは分からないので null。
-      spot_name: formData.get('spot_name') || null,
-      lat: Number(formData.get('lat')),
-      lng: Number(formData.get('lng')),
-      photo_url: null,
-      recommended: Boolean(spotId),
-      created_at: new Date().toISOString().slice(0, 19),
-    },
+    ...nui,
+    grudge: calcMockGrudge(nui.last_outing_date, [], spotsById),
+    visit_count: 0,
+  };
+}
+
+async function getMockVisits(nuiId) {
+  const { visits } = await loadMockData();
+  return visits
+    .filter((visit) => visit.nui_id === Number(nuiId))
+    .sort((a, b) => (
+      String(b.created_at || '').localeCompare(String(a.created_at || ''))
+      || (b.id || 0) - (a.id || 0)
+    ));
+}
+
+// GET /visits/preview のモック。
+async function getMockCalmPreview({ nuiId, spotId, spotName, lat, lng }) {
+  const { nuis, visits, spotsById } = await loadMockData();
+  const nui = nuis.find((item) => item.id === Number(nuiId));
+  const nuiVisits = visits.filter((visit) => visit.nui_id === Number(nuiId));
+  const spot = spotId ? spotsById.get(spotId) : null;
+
+  const visit = {
+    spot_id: spotId || null,
+    spot_name: spot ? spot.name : String(spotName || '').trim(),
+    lat: Number(lat),
+    lng: Number(lng),
+    recommended: Boolean(spotId),
+  };
+
+  const lastOutingDate = nui ? nui.last_outing_date : '2026-01-01';
+  return calcNextMockCalm(lastOutingDate, nuiVisits, visit, spotsById);
+}
+
+// POST /visits の返りの形を合わせた、仮の値を作る。
+// 除霊の計算はバックエンドと同じ式（同じ場所の連続減衰・距離減衰）にする。
+async function mockVisit(formData) {
+  const { nuis, visits, spotsById } = await loadMockData();
+  const nuiId = Number(formData.get('nui_id'));
+  const nui = nuis.find((item) => item.id === nuiId);
+  const spotId = formData.get('spot_id') || null;
+  const spot = spotId ? spotsById.get(spotId) : null;
+  const lat = Number(formData.get('lat'));
+  const lng = Number(formData.get('lng'));
+  const spotName = spot ? spot.name : String(formData.get('spot_name') || '');
+  const recommended = Boolean(spotId);
+
+  const nuiVisits = visits.filter((visit) => visit.nui_id === nuiId);
+  const before = nui
+    ? calcMockGrudge(nui.last_outing_date, nuiVisits, spotsById)
+    : 50;
+
+  const previewVisit = {
+    spot_id: spotId,
+    spot_name: spotName,
+    lat,
+    lng,
+    recommended,
+  };
+  const lastOutingDate = nui ? nui.last_outing_date : '2026-01-01';
+  const calmPreview = calcNextMockCalm(
+    lastOutingDate,
+    nuiVisits,
+    previewVisit,
+    spotsById,
+  ).calm;
+
+  const visit = {
+    id: Math.max(0, ...visits.map((item) => item.id || 0)) + 1,
+    nui_id: nuiId,
+    spot_id: spotId,
+    spot_name: spotName,
+    lat,
+    lng,
+    photo_url: null,
+    recommended,
+    created_at: nowText(),
+  };
+  visits.push(visit);
+
+  const after = nui
+    ? calcMockGrudge(
+      nui.last_outing_date,
+      visits.filter((item) => item.nui_id === nuiId),
+      spotsById,
+    )
+    : Math.max(0, before - (recommended ? MOCK_GRUDGE.calmRecommended : MOCK_GRUDGE.calmOther));
+
+  const calm = { ...calmPreview };
+  calm.amount = before - after;
+  calm.capped = calm.amount < calm.computed;
+
+  return {
+    visit,
     grudge_before: before,
     grudge_after: after,
+    calm,
   };
 }
