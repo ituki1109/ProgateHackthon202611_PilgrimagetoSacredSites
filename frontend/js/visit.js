@@ -60,7 +60,7 @@ function renderPlace() {
 
     const note = document.createElement('p');
     note.className = 'place-note';
-    note.textContent = 'ここで記録すると、怨念が多く鎮まります。';
+    note.textContent = 'ここで記録すると、怨念が多く鎮まります。同じ場所に続けて記録すると鎮まる量は減り、地点から離れているとさらに減ります。';
 
     box.append(badge, name, reasonList(place.spot.reason, 'place-facts'), note);
     return;
@@ -260,8 +260,10 @@ function renderResult(result, nui, placeName) {
 
   const diff = document.createElement('p');
   diff.className = 'result-diff';
-  if (after >= before) {
-    diff.textContent = 'これ以上は鎮まりません。';
+  if (before === 0) {
+    diff.textContent = '怨念はすでに鎮まっています。';
+  } else if (after >= before) {
+    diff.textContent = 'この場所では怨念を鎮められませんでした。地点に近づくか、別の場所で記録してください。';
   } else if (after === 0) {
     diff.textContent = `${before - after} 鎮まり、怨念がすっかり消えました。`;
   } else {

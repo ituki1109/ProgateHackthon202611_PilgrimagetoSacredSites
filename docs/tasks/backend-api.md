@@ -45,14 +45,23 @@
 
 ```python
 GRUDGE_PER_DAY = 2
-CALM_RECOMMENDED = 30
+CALM_RECOMMENDED = 50
 CALM_OTHER = 10
+REPEAT_DECAY = 10
+CALM_MIN = 10
+DISTANCE_FULL_M = 300
+DISTANCE_ZERO_M = 3000
 
-def calc_grudge(last_outing_date: date, visits: list[dict], today: date) -> int:
+def calc_grudge(
+    last_outing_date: date,
+    visits: list[dict],
+    today: date,
+    spots_by_id: dict | None = None,
+) -> int:
     ...
 ```
 
-`today` を引数で受けると、日付を変えて確かめやすくなります。
+`today` を引数で受けると、日付を変えて確かめやすくなります。`spots_by_id` を渡すと、記録した位置と推薦地点の距離で除霊量を減らせます。同じ場所に続けて記録したときの減衰と、距離による減衰の式は [design.md](../design.md) の「怨念の計算」にあります。
 
 ### 6. デモ用のデータ
 

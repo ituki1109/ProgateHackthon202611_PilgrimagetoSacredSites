@@ -354,9 +354,11 @@ function buddyText(title, sub, grudge) {
 
 // 記録する場所を決めて、訪問の記録の画面に進む。
 // spot が null のときは、推薦地点ではない場所での記録。
+// 推薦地点でも、送る位置は現在地にする。地点までの距離で除霊量が変わるため。
 function selectPlace(spot, lat, lng) {
+  const here = spot ? current : { lat, lng };
   document.dispatchEvent(new CustomEvent('nuituki:place-selected', {
-    detail: { spot, lat, lng },
+    detail: { spot, lat: here.lat, lng: here.lng },
   }));
   location.hash = '#visit';
 }

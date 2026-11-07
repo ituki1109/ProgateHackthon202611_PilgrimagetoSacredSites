@@ -7,6 +7,7 @@ backend で `python scripts/seed.py` を実行する。
 
 from __future__ import annotations
 
+import json
 import shutil
 import sys
 from datetime import date, datetime, timedelta
@@ -22,6 +23,15 @@ from app.grudge import calc_grudge  # noqa: E402
 DEMO_PHOTOS = Path(__file__).resolve().parent / "demo_photos"
 
 
+def load_spots_by_id() -> dict:
+    """推薦地点の位置を読む。距離による除霊量の減衰に使う。"""
+    if not db.SPOTS_PATH.exists():
+        return {}
+    with db.SPOTS_PATH.open(encoding="utf-8") as f:
+        spots = json.load(f)
+    return {spot["id"]: spot for spot in spots if "id" in spot}
+
+
 def demo_photo(filename: str) -> str:
     """demo_photos/ の画像を uploads/ に写し、/uploads/... の URL を返す。"""
     db.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -32,13 +42,15 @@ def demo_photo(filename: str) -> str:
 def main() -> None:
     today = date.today()
     db.reset_db()
+    spots_by_id = load_spots_by_id()
 
     # (名前, 最後に連れ出した日は何日前か, 写真)
     # 怨念が「強い」「中くらい」「弱い」に分かれるようにする。
+    # CALM_RECOMMENDED=50 に合わせ、デモの開始時は 100 / 40 / 10 になる。
     nui_specs = [
-        ("もちもち", 45, "nui_mochimochi.svg"),
+        ("もちもち", 55, "nui_mochimochi.svg"),
         ("ふわまる", 60, "nui_fuwamaru.svg"),
-        ("こんぺいとう", 20, "nui_konpeito.svg"),
+        ("こんぺいとう", 30, "nui_konpeito.svg"),
     ]
 
     nuis = []
@@ -84,7 +96,10 @@ def main() -> None:
     for nui in db.list_nuis():
         visits = [dict(row) for row in db.list_visits_for_grudge(nui["id"])]
         grudge = calc_grudge(
-            date.fromisoformat(nui["last_outing_date"]), visits, today
+            date.fromisoformat(nui["last_outing_date"]),
+            visits,
+            today,
+            spots_by_id,
         )
         print(
             f"  id={nui['id']} {nui['name']} "

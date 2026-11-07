@@ -89,7 +89,10 @@ def _save_photo(photo: UploadFile | None, prefix: str) -> str | None:
 def _grudge_of(nui: Any) -> int:
     visits = [dict(row) for row in db.list_visits_for_grudge(nui["id"])]
     return calc_grudge(
-        date.fromisoformat(nui["last_outing_date"]), visits, date.today()
+        date.fromisoformat(nui["last_outing_date"]),
+        visits,
+        date.today(),
+        SPOTS_BY_ID,
     )
 
 
@@ -104,6 +107,7 @@ def _nui_to_dict(nui: Any) -> dict[str, Any]:
             date.fromisoformat(nui["last_outing_date"]),
             [dict(row) for row in visits],
             date.today(),
+            SPOTS_BY_ID,
         ),
         "visit_count": len(visits),
     }
