@@ -1333,11 +1333,11 @@ input[type="date"]:focus {
 
 .neglect-button { justify-self: center; }
 
-/* BGMの消音ボタン。デモ中すぐに音を止められるよう、左上に小さく置く */
+/* BGMの消音ボタン。デモ中すぐに音を止められるよう、右上に小さく置く */
 .bgm-mute {
   position: fixed;
   top: calc(12px + env(safe-area-inset-top));
-  left: 12px;
+  right: 12px;
   z-index: 1300;
   display: grid;
   place-items: center;
