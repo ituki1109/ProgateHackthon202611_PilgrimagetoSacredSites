@@ -910,26 +910,22 @@ input[type="date"]:focus {
 
 .nui-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 
-/* 怨念が100を超えたぬいがいるとき、一覧の画面をそのぬいで埋め尽くす演出。
-   操作の邪魔をしないよう、クリックできない背景として敷く（z-index は上の
-   .nui-hero/.nui-grid より下）。 */
+/* 怨念が100を超えたぬいがいるとき、一覧の画面を「許さない」で埋め尽くす演出。
+   haunt-jack-wall と同じ作り（文字を並べて敷くだけ）。操作の邪魔をしないよう、
+   クリックできない背景として敷く（z-index は上の .nui-hero/.nui-grid より下）。 */
 .nui-overrun {
   position: fixed;
-  inset: 0;
+  inset: -10%;
   z-index: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
-  gap: 2px;
+  color: var(--stage-possessed, #7E1020);
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.5;
+  opacity: 0.22;
   overflow: hidden;
-  opacity: 0.2;
   pointer-events: none;
-  animation: haunt-wall 16s linear infinite;
-}
-.nui-overrun-avatar {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 0;
-  box-shadow: none;
+  transform: rotate(-4deg);
+  animation: haunt-wall 20s linear infinite;
 }
 
 .nui-tile {
