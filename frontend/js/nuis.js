@@ -139,6 +139,20 @@ function createNuiTile(nui) {
   return tile;
 }
 
+// 暴走しているぬいがいるとき、一覧の背景をそのぬいで埋め尽くす演出。
+// 操作の邪魔をしないよう、クリックは無効（aria-hidden、pointer-events: none）。
+const OVERRUN_COUNT = 40;
+
+function createOverrunBackdrop(nui) {
+  const backdrop = document.createElement('div');
+  backdrop.className = 'nui-overrun';
+  backdrop.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < OVERRUN_COUNT; i += 1) {
+    backdrop.appendChild(nuiAvatar(nui, 'nui-overrun-avatar'));
+  }
+  return backdrop;
+}
+
 // 一覧の最後に置く、登録の画面へのタイル
 function createAddTile() {
   const tile = document.createElement('a');
@@ -175,6 +189,9 @@ export async function showNuis() {
     }
 
     const top = [...list].sort((a, b) => b.grudge - a.grudge)[0];
+    if (isOverflow(clampGrudge(top.grudge))) {
+      container.appendChild(createOverrunBackdrop(top));
+    }
     container.appendChild(createHero(top));
 
     // 取ってきた順番（登録した順）にタイルを並べます。

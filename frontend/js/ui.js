@@ -113,9 +113,15 @@ export function reasonList(reason, className) {
   return list;
 }
 
-// ゲージの長さ。怨念が 100 を超えたら振り切れたままにします。
+// ゲージの長さ。怨念が 100 までは、そのままの割合（0〜100%）。
+// 100 を超えた分は、枠を突き抜けて伸びる長さとして別スケールで足します
+// （100〜200 を 100%〜140% に）。css 側は .is-possessed のときだけ
+// overflow を見せるので、100 以下のときは今まで通り枠の中に収まります。
 export function gaugeWidth(grudge) {
-  return `${Math.min(GRUDGE_OVERFLOW, Math.max(0, Number(grudge) || 0))}%`;
+  const value = Math.max(0, Number(grudge) || 0);
+  if (value <= GRUDGE_OVERFLOW) return `${value}%`;
+  const overflowPortion = Math.min(GRUDGE_MAX, value) - GRUDGE_OVERFLOW; // 0〜100
+  return `${GRUDGE_OVERFLOW + overflowPortion * 0.4}%`;
 }
 
 // 怨念のゲージ。before を渡すと、鎮まった分を薄く残して見せます。

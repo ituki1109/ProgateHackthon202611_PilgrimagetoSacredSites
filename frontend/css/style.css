@@ -884,6 +884,10 @@ input[type="date"]:focus {
 
 .nui-list { display: grid; gap: 20px; margin-top: 12px; }
 
+/* .nui-overrun（埋め尽くす演出）の上に、通常の中身を重ねて出す */
+.nui-hero,
+.nui-grid { position: relative; z-index: 1; }
+
 .nui-hero {
   display: grid;
   gap: 16px;
@@ -905,6 +909,28 @@ input[type="date"]:focus {
 .nui-hero .grudge-gauge { background: rgba(255, 255, 255, 0.75); }
 
 .nui-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+
+/* 怨念が100を超えたぬいがいるとき、一覧の画面をそのぬいで埋め尽くす演出。
+   操作の邪魔をしないよう、クリックできない背景として敷く（z-index は上の
+   .nui-hero/.nui-grid より下）。 */
+.nui-overrun {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 2px;
+  overflow: hidden;
+  opacity: 0.2;
+  pointer-events: none;
+  animation: haunt-wall 16s linear infinite;
+}
+.nui-overrun-avatar {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 0;
+  box-shadow: none;
+}
 
 .nui-tile {
   display: grid;
@@ -1297,7 +1323,14 @@ input[type="date"]:focus {
 
 .avatar.is-possessed { --ring: var(--stage-possessed); background-color: var(--tint-possessed); }
 .stage-chip.is-possessed { background: var(--stage-possessed); color: #fff; }
-.grudge-gauge.is-possessed .grudge-gauge-fill { background: var(--stage-possessed); }
+.grudge-gauge.is-possessed { overflow: visible; }
+.grudge-gauge.is-possessed .grudge-gauge-fill {
+  background: var(--stage-possessed);
+  /* 右端を矢じり状に尖らせ、枠から突き抜けているように見せる */
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+  filter: drop-shadow(0 0 6px var(--stage-possessed)) drop-shadow(0 0 14px var(--stage-possessed));
+  animation: gauge-burst 1.1s ease-in-out infinite;
+}
 .nui-hero.is-possessed { background: var(--tint-possessed); }
 .buddy.is-possessed { background: var(--tint-possessed); }
 .face-glint { fill: #FF2B3C; }
@@ -1424,6 +1457,12 @@ input[type="date"]:focus {
   to { translate: 0 -8%; }
 }
 
+/* ゲージが枠を突き抜けて、脈打つように光る（怨念が100を超えたとき） */
+@keyframes gauge-burst {
+  0%, 100% { filter: drop-shadow(0 0 6px var(--stage-possessed)) drop-shadow(0 0 14px var(--stage-possessed)); }
+  50% { filter: drop-shadow(0 0 10px var(--stage-possessed)) drop-shadow(0 0 22px var(--stage-possessed)); }
+}
+
 /* セリフを読ませてから、ボタンを出す */
 @keyframes haunt-appear {
   0%, 60% { opacity: 0; transform: translateY(8px); }
@@ -1435,8 +1474,13 @@ input[type="date"]:focus {
   .haunt-jack-wall,
   .haunt-jack-avatar { animation: none; }
   .haunt-jack-actions { animation: none; }
+  .grudge-gauge.is-possessed .grudge-gauge-fill { animation: none; }
+  .nui-overrun { animation: none; }
 }
 
 @media (min-width: 900px) {
-  .haunt-voice { bottom: 24px; right: 24px; }
+  /* 900px 以上だと .navbar が下から16px浮いたピル（高さ var(--nav-h)）になる。
+     bottom: 24px のままだとピルの範囲（16px〜80px）に収まってしまい重なるため、
+     ピルの上端（16px + var(--nav-h)）より上に余白を取って置く。 */
+  .haunt-voice { bottom: calc(16px + var(--nav-h) + 16px); right: 24px; }
 }
