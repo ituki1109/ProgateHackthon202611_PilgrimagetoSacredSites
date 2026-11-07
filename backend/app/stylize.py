@@ -1,4 +1,4 @@
-"""ぬいの登録写真を、Gemini でアイコン向けのキャラクターのイラストに変えます。
+"""ぬいの登録写真を、Gemini で証明写真風に撮り直します。
 
 should の機能です。GEMINI_API_KEY が設定されていない、または呼び出しに
 失敗したときは None を返します。呼び出す側（main.py）は、None なら
@@ -10,6 +10,7 @@ from __future__ import annotations
 import base64
 import json
 import os
+import time
 import urllib.error
 import urllib.request
 
@@ -17,6 +18,11 @@ API_URL = (
     "https://generativelanguage.googleapis.com/v1beta/models/"
     "gemini-2.5-flash-image:generateContent"
 )
+
+# DNS が一時的に引けないことがあり、数秒待つと直ることが多いので、
+# 通信そのものが失敗したときだけ少し待って入れ直す。
+MAX_ATTEMPTS = 3
+RETRY_WAIT_SECONDS = 2
 
 PROMPT = (
     "この写真に写っているぬいぐるみを、証明写真のように正面から撮り直した"
@@ -71,11 +77,21 @@ def stylize_photo(image_bytes: bytes, mime_type: str) -> bytes | None:
         },
     )
 
-    try:
-        with urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS) as res:
-            data = json.load(res)
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
-        print(f"[stylize] Gemini の呼び出しに失敗しました: {exc}")
+    data = None
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS) as res:
+                data = json.load(res)
+            break
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+            print(
+                f"[stylize] Gemini の呼び出しに失敗しました"
+                f"（{attempt}/{MAX_ATTEMPTS}回目）: {exc}"
+            )
+            if attempt < MAX_ATTEMPTS:
+                time.sleep(RETRY_WAIT_SECONDS)
+
+    if data is None:
         return None
 
     try:
