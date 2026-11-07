@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import json
 import math
-import shutil
 import uuid
 from contextlib import asynccontextmanager
 from datetime import date
@@ -20,7 +19,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from . import db
+from .env import load_env
 from .grudge import calc_grudge
+from .stylize import stylize_photo
+
+load_env()  # backend/.env があれば読み込む（GEMINI_API_KEY など）
 
 try:
     # バックエンドA が作る推薦の処理。まだない間は仮の処理を使う。
@@ -70,8 +73,15 @@ app.add_middleware(
 )
 
 
-def _save_photo(photo: UploadFile | None, prefix: str) -> str | None:
-    """写真を backend/uploads/ に保存し、/uploads/... の URL を返す。"""
+def _save_photo(
+    photo: UploadFile | None, prefix: str, *, stylize: bool = False
+) -> str | None:
+    """写真を backend/uploads/ に保存し、/uploads/... の URL を返す。
+
+    stylize=True のときは、保存する前に Gemini でキャラクター化を試す
+    （should の機能）。GEMINI_API_KEY がない、または失敗したときは、
+    元の写真をそのまま保存する（登録自体は必ず成功させる）。
+    """
     if photo is None or not photo.filename:
         return None
 
@@ -79,10 +89,17 @@ def _save_photo(photo: UploadFile | None, prefix: str) -> str | None:
     if not suffix[1:].isalnum() or len(suffix) > 10:
         suffix = ".jpg"
 
+    data = photo.file.read()
+
+    if stylize:
+        stylized = stylize_photo(data, photo.content_type or "image/jpeg")
+        if stylized is not None:
+            data = stylized
+            suffix = ".png"  # Gemini が返す画像は PNG
+
     filename = f"{prefix}_{uuid.uuid4().hex}{suffix}"
     db.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    with (db.UPLOAD_DIR / filename).open("wb") as out:
-        shutil.copyfileobj(photo.file, out)
+    (db.UPLOAD_DIR / filename).write_bytes(data)
     return f"/uploads/{filename}"
 
 
@@ -161,13 +178,18 @@ def create_nui(
     name: str = Form(...),
     last_outing_date: date = Form(...),
     photo: UploadFile | None = File(None),
+    stylize: bool = Form(True),
 ):
-    """ぬいを登録する。写真は任意。"""
+    """ぬいを登録する。写真は任意。
+
+    stylize（任意、既定は true）: 写真を Gemini でキャラクター化するかどうか。
+    画面側のチェックボックスで選べる（docs/api.md 未記載の追加項目。should の機能）。
+    """
     name = name.strip()
     if not name:
         raise HTTPException(status_code=422, detail="name is required")
 
-    photo_url = _save_photo(photo, "nui")
+    photo_url = _save_photo(photo, "nui", stylize=stylize)
     nui = db.create_nui(name, last_outing_date.isoformat(), photo_url)
     return _nui_to_dict(nui)
 
