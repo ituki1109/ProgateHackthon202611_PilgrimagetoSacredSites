@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { MindARThree } from 'mindar-image-three';
 import { getNuis } from '../js/api.js';
-import { clampGrudge, grudgeGauge, grudgeStage, nuiAvatar, stageChip } from '../js/ui.js';
+import { clampGrudge, grudgeGauge, grudgeStage, isOverflow, nuiAvatar, stageChip } from '../js/ui.js';
 import { compileMarker, loadImage } from './marker.js';
 import { createHauntEffect, hauntLook } from './effects.js';
 import { createPuppet } from './puppet.js';
@@ -50,6 +50,8 @@ let customMarker = null;
 let session = null;
 
 document.getElementById('ar-title').textContent = grudge > 0 ? '憑依を見る' : '鎮まった様子を見る';
+// 暴走しているときは、開始画面をアプリと同じ暗い赤にし、カメラの映像も赤く染める（style.css）
+document.documentElement.classList.toggle('is-possessed', isOverflow(grudge));
 const nuiLine = document.getElementById('nui-line');
 nuiLine.textContent = grudgeStage(grudge).line;
 const avatar = nuiAvatar({ name: nuiName, grudge }, 'profile-avatar');
