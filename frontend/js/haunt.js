@@ -4,6 +4,7 @@
 import { getNuis } from './api.js';
 import { arLink, clampGrudge, isOverflow, nuiAvatar } from './ui.js';
 import { mountBgmButton, updateBgm } from './bgm.js';
+import { speakLine } from './tts.js';
 
 mountBgmButton();
 
@@ -66,8 +67,10 @@ function startVoice(nui) {
 }
 
 function speak() {
-  voice.textContent = `${voice.dataset.name}「${VOICES[voiceIndex % VOICES.length]}」`;
+  const line = VOICES[voiceIndex % VOICES.length];
+  voice.textContent = `${voice.dataset.name}「${line}」`;
   voiceIndex += 1;
+  speakLine(line);
 }
 
 function stopVoice() {
@@ -95,6 +98,7 @@ function showJack(nui) {
   line.id = 'haunt-jack-line';
   line.className = 'haunt-jack-line';
   line.textContent = 'もう、逃がさない';
+  speakLine(line.textContent);
 
   const name = document.createElement('p');
   name.className = 'haunt-jack-name';
