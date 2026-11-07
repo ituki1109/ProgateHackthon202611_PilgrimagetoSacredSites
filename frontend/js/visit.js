@@ -1,6 +1,6 @@
 // 訪問の記録。ぬいと写真を送り、怨念がどれだけ鎮まったかを出す。
 
-import { getNuis, createVisit } from './api.js';
+import { getNuis, createVisit, getCalmPreview } from './api.js';
 import { getCurrentLocation } from './map.js';
 import { arLink, grudgeGauge, grudgeStage, nuiAvatar, reasonList, seal } from './ui.js';
 
@@ -12,6 +12,7 @@ let place = null;
 let formReady = false;
 let nuisById = new Map(); // 選べるぬい。結果の画面で写真と名前を使う
 let previewUrl = null;    // 選んだ写真の仮の URL（使い終わったら消す）
+let calmPreview = null;   // 記録前の除霊量のキャッシュ
 
 document.addEventListener('nuituki:place-selected', (e) => {
   place = e.detail;
@@ -40,6 +41,7 @@ export async function showVisit() {
   hideError();
   renderPlace();
   await renderNuiOptions();
+  refreshCalmPreview();
 }
 
 // どこで記録するかを出す。推薦地点でなければ、地点の名前を入力してもらう。
@@ -60,7 +62,7 @@ function renderPlace() {
 
     const note = document.createElement('p');
     note.className = 'place-note';
-    note.textContent = 'ここで記録すると、怨念が多く鎮まります。';
+    note.textContent = 'ここで記録すると、怨念が多く鎮まります。同じ場所に続けて記録すると鎮まる量は減り、地点から離れているとさらに減ります。';
 
     box.append(badge, name, reasonList(place.spot.reason, 'place-facts'), note);
     return;
@@ -78,6 +80,7 @@ function renderPlace() {
   input.id = 'visit-spot-name';
   input.placeholder = '例: 近所のカフェ';
   input.required = true;
+  input.addEventListener('input', refreshCalmPreview);
 
   const where = document.createElement('p');
   where.className = 'field-note';
@@ -124,7 +127,10 @@ async function renderNuiOptions() {
     });
 
     markSelected();
-    group.onchange = markSelected;
+    group.onchange = () => {
+      markSelected();
+      refreshCalmPreview();
+    };
 
     if (sorted.length === 0) {
       showError('ぬいがまだ登録されていません。先に「登録」から追加してください。');
@@ -140,6 +146,120 @@ function markSelected() {
   for (const option of document.querySelectorAll('#visit-nui .nui-option')) {
     option.classList.toggle('is-selected', option.querySelector('input').checked);
   }
+}
+
+// 距離を人が読みやすい単位にする。
+function distanceText(meters) {
+  if (meters == null) return '—';
+  return meters < 1000 ? `${meters}m` : `${(meters / 1000).toFixed(1)}km`;
+}
+
+// 除霊量の内訳文。記録前のプレビューと結果画面の両方で使う。
+function calmBreakdownText(calm) {
+  if (calm.distance_m != null && calm.distance_factor === 0) {
+    return `距離 ${distanceText(calm.distance_m)} のため、鎮まりません。`;
+  }
+
+  const parts = [];
+  if (calm.repeat_count > 0) {
+    parts.push(
+      `基本 ${calm.base} − 同じ場所 ${calm.repeat_count + 1}回目 ${calm.repeat_penalty} = ${calm.before_distance}`,
+    );
+  } else {
+    parts.push(`基本 ${calm.base}`);
+  }
+
+  if (calm.distance_m != null) {
+    const pct = Math.round(calm.distance_factor * 100);
+    parts.push(`距離 ${distanceText(calm.distance_m)}（${pct}%）`);
+    if (calm.computed !== calm.before_distance) {
+      parts.push(`${calm.before_distance} × ${pct}% = ${calm.computed}`);
+    }
+  }
+
+  if (calm.capped) {
+    parts.push(`怨念が残り${calm.amount}のため、${calm.amount}鎮まりました`);
+  }
+
+  if (calm.distance_m == null) {
+    parts.push('推薦地点以外は距離の減衰なし');
+  }
+
+  return parts.join(' / ');
+}
+
+// 記録前の除霊量を出す場所。#visit-calm は動的に作る。
+function calmBox() {
+  let box = document.getElementById('visit-calm');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'visit-calm';
+    box.setAttribute('aria-live', 'polite');
+    const picker = document.getElementById('visit-nui');
+    if (picker) picker.closest('fieldset').appendChild(box);
+  }
+  return box;
+}
+
+async function refreshCalmPreview() {
+  const box = calmBox();
+  const checked = document.querySelector('#visit-nui input[name="nui_id"]:checked');
+  if (!checked || !place) {
+    box.replaceChildren();
+    return;
+  }
+
+  const nameInput = document.getElementById('visit-spot-name');
+  if (!place.spot && (!nameInput || !nameInput.value.trim())) {
+    box.replaceChildren();
+    const note = document.createElement('p');
+    note.className = 'field-note';
+    note.textContent = '地点の名前を入れると除霊量が出ます。';
+    box.appendChild(note);
+    return;
+  }
+
+  box.textContent = '除霊量を計算しています…';
+  try {
+    const data = await getCalmPreview({
+      nuiId: checked.value,
+      spotId: place.spot ? place.spot.id : null,
+      spotName: place.spot ? null : nameInput.value.trim(),
+      lat: place.lat,
+      lng: place.lng,
+    });
+    renderCalmPreview(box, data);
+  } catch (err) {
+    console.error('[visit] 除霊量を取れませんでした:', err);
+    box.replaceChildren();
+  }
+}
+
+function renderCalmPreview(box, data) {
+  const { calm } = data;
+  calmPreview = data;
+
+  const stats = document.createElement('dl');
+  stats.className = 'stats';
+  for (const [term, value] of [
+    ['除霊量', String(calm.amount)],
+    ['基本', String(calm.base)],
+    ['距離', calm.distance_m == null ? '—' : distanceText(calm.distance_m)],
+  ]) {
+    const item = document.createElement('div');
+    const dt = document.createElement('dt');
+    dt.textContent = term;
+    const dd = document.createElement('dd');
+    dd.textContent = value;
+    item.append(dt, dd);
+    stats.appendChild(item);
+  }
+
+  const note = document.createElement('p');
+  note.className = 'field-note';
+  note.textContent = calmBreakdownText(calm);
+
+  box.replaceChildren(stats, note);
 }
 
 // 選んだ写真を、その場で見せる
@@ -216,6 +336,7 @@ function renderResult(result, nui, placeName) {
   const before = result.grudge_before;
   const after = result.grudge_after;
   const recommended = Boolean(result.visit.recommended);
+  const calm = result.calm || null;
   const box = document.getElementById('visit-result');
   box.replaceChildren();
 
@@ -258,14 +379,36 @@ function renderResult(result, nui, placeName) {
 
   const gauge = grudgeGauge(before, `${nui.name}の怨念`, before);
 
+  const calmAmount = calm ? calm.amount : Math.max(0, before - after);
+
+  const calmRow = document.createElement('p');
+  calmRow.className = 'result-grudge';
+  const calmLabel = document.createElement('span');
+  calmLabel.className = 'result-label';
+  calmLabel.textContent = '除霊量';
+  const calmValue = document.createElement('span');
+  calmValue.className = 'result-to';
+  calmValue.textContent = String(calmAmount);
+  calmRow.append(calmLabel, calmValue);
+
   const diff = document.createElement('p');
   diff.className = 'result-diff';
-  if (after >= before) {
-    diff.textContent = 'これ以上は鎮まりません。';
+  if (before === 0) {
+    diff.textContent = '怨念はすでに鎮まっています。';
+  } else if (after >= before) {
+    diff.textContent = 'この場所では怨念を鎮められませんでした。地点に近づくか、別の場所で記録してください。';
   } else if (after === 0) {
-    diff.textContent = `${before - after} 鎮まり、怨念がすっかり消えました。`;
+    diff.textContent = `${calmAmount} 鎮まり、怨念がすっかり消えました。`;
   } else {
-    diff.textContent = `${before - after} 鎮まりました。いまの怨念は「${grudgeStage(after).label}」です。`;
+    diff.textContent = `${calmAmount} 鎮まりました。いまの怨念は「${grudgeStage(after).label}」です。`;
+  }
+
+  const breakdown = document.createElement('p');
+  breakdown.className = 'result-diff';
+  if (calm) {
+    breakdown.textContent = calmBreakdownText(calm);
+  } else if (after < before) {
+    breakdown.textContent = '基本の除霊量で鎮まりました。';
   }
 
   const links = document.createElement('div');
@@ -281,7 +424,7 @@ function renderResult(result, nui, placeName) {
   toMap.textContent = '地図に戻る';
   links.append(toAr, toMemories, toMap);
 
-  box.append(hero, title, where, grudge, gauge, diff, links);
+  box.append(hero, title, where, grudge, gauge, calmRow, diff, breakdown, links);
   box.classList.remove('hidden');
   document.getElementById('visit-form').classList.add('hidden');
   document.getElementById('visit-place').classList.add('hidden');
@@ -291,6 +434,7 @@ function renderResult(result, nui, placeName) {
 
   // 同じ場所で続けて記録しないよう、選んだ場所を忘れる
   place = null;
+  calmPreview = null;
 }
 
 // 朱印が押されたあとで、数字とゲージを after まで下げ、顔を今の怨念に合わせる
