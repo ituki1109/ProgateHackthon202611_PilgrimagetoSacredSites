@@ -133,7 +133,8 @@ export function openSpotDetail(spot, onRecord) {
     const host = details.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
     info.appendChild(infoRow('url', '公式サイト', link(details.url, host, true)));
   }
-  if (attrs.nearest_station) {
+  // 空き家の駅は、地点そのものが駅なので距離は出さない
+  if (attrs.nearest_station && attrs.station_distance_m > 0) {
     const passengers = attrs.station_passengers
       ? `駅の1日の乗降客数 ${attrs.station_passengers.toLocaleString('ja-JP')}人`
       : '';

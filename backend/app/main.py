@@ -10,7 +10,7 @@ import json
 import math
 import uuid
 from contextlib import asynccontextmanager
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -20,7 +20,8 @@ from fastapi.staticfiles import StaticFiles
 
 from . import db
 from .env import load_env
-from .grudge import calc_grudge, calc_next_calm
+from .grudge import calc_grudge, calc_next_calm, is_overflow
+from .recommend import recommend_haunted
 from .stylize import stylize_photo
 
 load_env()  # backend/.env があれば読み込む（GEMINI_API_KEY など）
@@ -33,31 +34,41 @@ except ImportError:
 
 FRONTEND_DIR = db.BASE_DIR.parent / "frontend"
 
-# 起動時に spots.json から読み込む。
+# デモの「放置する」で増やす日数。50日放置のぬいは 110日になり、怨念が上限まで増える。
+NEGLECT_DAYS = 60
+
+# 起動時に spots.json と haunted_spots.json から読み込む。
 SPOTS: list[dict[str, Any]] = []
+HAUNTED_SPOTS: list[dict[str, Any]] = []  # 怨念が 100 を超えたときの地点
+HAUNTED_IDS: set[str] = set()
 SPOTS_BY_ID: dict[str, dict[str, Any]] = {}
 
 
-def load_spots() -> list[dict[str, Any]]:
-    """backend/data/spots.json を読む。まだなければ空の一覧にする。"""
-    if not db.SPOTS_PATH.exists():
+def load_spots(path: Path | None = None) -> list[dict[str, Any]]:
+    """地点の JSON を読む（既定は spots.json）。まだなければ空の一覧にする。"""
+    path = path or db.SPOTS_PATH
+    if not path.exists():
         return []
     try:
-        with db.SPOTS_PATH.open(encoding="utf-8") as f:
+        with path.open(encoding="utf-8") as f:
             data = json.load(f)
     except (OSError, json.JSONDecodeError) as exc:
-        print(f"spots.json を読めませんでした: {exc}")
+        print(f"{path.name} を読めませんでした: {exc}")
         return []
     return data if isinstance(data, list) else []
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global SPOTS, SPOTS_BY_ID
+    global SPOTS, HAUNTED_SPOTS, HAUNTED_IDS, SPOTS_BY_ID
     db.init_db()
     SPOTS = load_spots()
+    HAUNTED_SPOTS = load_spots(db.HAUNTED_SPOTS_PATH)
+    HAUNTED_IDS = {spot["id"] for spot in HAUNTED_SPOTS}
     SPOTS_BY_ID = {
-        spot["id"]: spot for spot in SPOTS if isinstance(spot, dict) and "id" in spot
+        spot["id"]: spot
+        for spot in SPOTS + HAUNTED_SPOTS
+        if isinstance(spot, dict) and "id" in spot
     }
     yield
 
@@ -198,9 +209,32 @@ def create_nui(
     return _nui_to_dict(nui)
 
 
+@app.post("/nuis/{nui_id}/neglect")
+def neglect_nui(nui_id: int, days: int = Form(NEGLECT_DAYS, ge=1, le=365)):
+    """デモ用。最後に連れ出した日を days 日前にずらして、放置した状態を作る。"""
+    nui = db.get_nui(nui_id)
+    if nui is None:
+        raise HTTPException(status_code=404, detail="nui not found")
+
+    moved = date.fromisoformat(nui["last_outing_date"]) - timedelta(days=days)
+    visits = [dict(row) for row in db.list_visits_for_grudge(nui_id)]
+    # 放置の点の上限より除霊の合計が多いと、いくら放置しても 100 を超えない
+    if not is_overflow(calc_grudge(moved, visits, date.today(), SPOTS_BY_ID)):
+        raise HTTPException(
+            status_code=409,
+            detail="除霊の記録が多く、放置しても怨念が100を超えません",
+        )
+    return _nui_to_dict(db.update_last_outing(nui_id, moved.isoformat()))
+
+
 @app.get("/recommend")
 def get_recommend(lat: float, lng: float):
-    """現在地に合わせた推薦地点を、点数の高い順に5件返す。"""
+    """現在地に合わせた推薦地点を、点数の高い順に5件返す。
+
+    怨念が 100 を超えたぬいがいるときは、事故地点と空き家の駅を返す。
+    """
+    if HAUNTED_SPOTS and any(is_overflow(_grudge_of(nui)) for nui in db.list_nuis()):
+        return recommend_haunted(HAUNTED_SPOTS, lat, lng, limit=5)
     if not SPOTS:
         return []
     if recommend_spots is not None:
@@ -232,6 +266,15 @@ def _visit_target(
     return spot_id, spot_name, recommended
 
 
+def _check_overflow_place(nui: Any, spot_id: str | None) -> None:
+    """怨念が 100 を超えたぬいは、事故地点と空き家の駅でしか記録できない。"""
+    if is_overflow(_grudge_of(nui)) and spot_id not in HAUNTED_IDS:
+        raise HTTPException(
+            status_code=403,
+            detail="怨念が100を超えたぬいは、事故地点か空き家の駅でしか記録できません",
+        )
+
+
 @app.get("/visits/preview")
 def preview_visit(
     nui_id: int,
@@ -246,6 +289,7 @@ def preview_visit(
         raise HTTPException(status_code=404, detail="nui not found")
 
     spot_id, spot_name, recommended = _visit_target(spot_id, spot_name)
+    _check_overflow_place(nui, spot_id)
 
     visits = [dict(row) for row in db.list_visits_for_grudge(nui_id)]
     visit = {
@@ -280,6 +324,7 @@ def create_visit(
         raise HTTPException(status_code=404, detail="nui not found")
 
     spot_id, spot_name, recommended = _visit_target(spot_id, spot_name)
+    _check_overflow_place(nui, spot_id)
 
     grudge_before = _grudge_of(nui)
 

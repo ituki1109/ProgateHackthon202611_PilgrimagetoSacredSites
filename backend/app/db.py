@@ -16,6 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DB_PATH = BASE_DIR / "nuitsuki.db"
 UPLOAD_DIR = BASE_DIR / "uploads"
 SPOTS_PATH = BASE_DIR / "data" / "spots.json"
+HAUNTED_SPOTS_PATH = BASE_DIR / "data" / "haunted_spots.json"
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS nuis (
@@ -101,6 +102,18 @@ def create_nui(
         )
         return conn.execute(
             "SELECT * FROM nuis WHERE id = ?", (cur.lastrowid,)
+        ).fetchone()
+
+
+def update_last_outing(nui_id: int, last_outing_date: str) -> sqlite3.Row:
+    """最後に連れ出した日を変える。デモで放置した日数を増やすときに使う。"""
+    with connect() as conn:
+        conn.execute(
+            "UPDATE nuis SET last_outing_date = ? WHERE id = ?",
+            (last_outing_date, nui_id),
+        )
+        return conn.execute(
+            "SELECT * FROM nuis WHERE id = ?", (nui_id,)
         ).fetchone()
 
 

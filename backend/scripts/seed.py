@@ -2,7 +2,7 @@
 
 backend で `python scripts/seed.py` を実行する。
 毎回データベースを空にしてから、ぬい3体と訪問の記録を入れる。
-写真は scripts/demo_photos/ の仮のイラストを backend/uploads/ に写して使う。
+写真は scripts/demo_photos/ の画像を backend/uploads/ に写して使う。
 """
 
 from __future__ import annotations
@@ -25,10 +25,11 @@ DEMO_PHOTOS = Path(__file__).resolve().parent / "demo_photos"
 
 def load_spots_by_id() -> dict:
     """推薦地点の位置を読む。距離による除霊量の減衰に使う。"""
-    if not db.SPOTS_PATH.exists():
-        return {}
-    with db.SPOTS_PATH.open(encoding="utf-8") as f:
-        spots = json.load(f)
+    spots = []
+    for path in (db.SPOTS_PATH, db.HAUNTED_SPOTS_PATH):
+        if path.exists():
+            with path.open(encoding="utf-8") as f:
+                spots += json.load(f)
     return {spot["id"]: spot for spot in spots if "id" in spot}
 
 
@@ -46,10 +47,11 @@ def main() -> None:
 
     # (名前, 最後に連れ出した日は何日前か, 写真)
     # 怨念が「強い」「中くらい」「弱い」に分かれるようにする。
-    # CALM_RECOMMENDED=50 に合わせ、デモの開始時は 100 / 40 / 10 になる。
+    # CALM_RECOMMENDED=50 に合わせ、デモの開始時は 40 / 100 / 10 になる。
+    # 怨念 100 を超えるのは、デモの中で「放置する」を押したあと。
     nui_specs = [
-        ("もちもち", 55, "nui_mochimochi.svg"),
-        ("ふわまる", 60, "nui_fuwamaru.svg"),
+        ("もちもち", 50, "nui_mochimochi.svg"),
+        ("ひろぬい", 50, "nui_fuwamaru.jpg"),
         ("こんぺいとう", 30, "nui_konpeito.svg"),
     ]
 

@@ -4,7 +4,7 @@
 
 import { getNuis, getRecommend } from './api.js';
 import { openSpotDetail } from './spot-detail.js';
-import { clampGrudge, grudgeGauge, grudgeStage, nuiAvatar, reasonList, stageChip } from './ui.js';
+import { clampGrudge, grudgeGauge, grudgeStage, isHauntedSpot, isOverflow, nuiAvatar, reasonList, stageChip } from './ui.js';
 
 // 対象地域は神奈川県川崎市（docs/tasks/frontend-main.md）。
 // 最初の現在地は川崎駅にする。ブラウザーの位置情報は、ボタンを押したときだけ取る
@@ -42,7 +42,9 @@ export function getCurrentLocation() {
 
 // #map を表示するたびに呼ばれる（main.js から）
 export function showMap() {
+  // 怨念が 100 を超えると推薦地点が変わるので、2回目からは表示のたびに取り直す
   if (!map) initMap();
+  else loadRecommend(current.lat, current.lng);
   // 隠れている間に地図を作ると大きさがずれるので、表示のたびに直す
   map.invalidateSize();
   // 記録のあとで怨念が変わるので、表示のたびに取り直す
@@ -179,6 +181,11 @@ function drawSpots(spots) {
   list.replaceChildren();
   list.scrollTo({ left: 0, top: 0 });
 
+  // 怨念が 100 を超えると、事故地点と空き家の駅でしか記録できない（API が決める）
+  const haunted = spots.some(isHauntedSpot);
+  document.getElementById('map-title').textContent = haunted ? '除霊できる地点' : '近くの推薦地点';
+  document.getElementById('map-record-here').classList.toggle('hidden', haunted);
+
   if (spots.length === 0) {
     list.appendChild(emptyCard('3km 以内に推薦地点がありません。地図を押して、川崎市の中を現在地にしてください。'));
     map.panTo([current.lat, current.lng]);
@@ -202,8 +209,10 @@ function drawSpots(spots) {
     list.appendChild(cardFor(spot, i));
   });
 
-  // 現在地と推薦地点がすべて、シートに隠れずに見えるように寄せる
-  const bounds = L.latLngBounds(spots.map((spot) => [spot.lat, spot.lng]));
+  // 現在地と推薦地点がすべて、シートに隠れずに見えるように寄せる。
+  // 遠征先は遠いので含めない（カードを選ぶと、そこへ動く）
+  const nearby = spots.filter((spot) => spot.category !== '空き家の駅');
+  const bounds = L.latLngBounds((nearby.length > 0 ? nearby : spots).map((spot) => [spot.lat, spot.lng]));
   bounds.extend([current.lat, current.lng]);
   // 最初はタイルがまだないので、動かさずに寄せる
   map.fitBounds(bounds, { ...mapPadding(), maxZoom: 16, animate: map.hasLayer(tiles) });
@@ -392,9 +401,10 @@ async function renderBuddy() {
     box.href = `#nui/${top.id}`;
     box.className = `buddy is-${grudgeStage(grudge).key}`;
 
-    const text = grudge > 0
-      ? buddyText(top.name, `いちばん怨んでいます。怨念 ${grudge}`, grudge)
-      : buddyText(top.name, 'どのぬいも鎮まっています', grudge);
+    let note = 'どのぬいも鎮まっています';
+    if (isOverflow(grudge)) note = `暴走しています。怨念 ${grudge}`;
+    else if (grudge > 0) note = `いちばん怨んでいます。怨念 ${grudge}`;
+    const text = buddyText(top.name, note, grudge);
     box.replaceChildren(nuiAvatar(top, 'buddy-avatar'), text);
   } catch (err) {
     console.warn('[map] ぬいの一覧が取れませんでした:', err.message);
