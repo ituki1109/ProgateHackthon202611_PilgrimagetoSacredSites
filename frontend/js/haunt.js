@@ -3,6 +3,9 @@
 
 import { getNuis } from './api.js';
 import { arLink, clampGrudge, isOverflow, nuiAvatar } from './ui.js';
+import { mountBgmButton, updateBgm } from './bgm.js';
+
+mountBgmButton();
 
 const NORMAL_TITLE = document.title;
 const VOICE_INTERVAL_MS = 5000;
@@ -36,6 +39,7 @@ export async function checkHaunt() {
 
   document.documentElement.classList.toggle('is-possessed', possessed);
   document.title = possessed ? `${top.name}が見ています` : NORMAL_TITLE;
+  updateBgm(possessed);
   if (possessed) startVoice(top);
   else stopVoice();
 
