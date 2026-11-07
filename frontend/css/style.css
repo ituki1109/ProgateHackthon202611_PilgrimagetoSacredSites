@@ -1175,6 +1175,333 @@ input[type="date"]:focus {
   .page { padding-bottom: 120px; }
 }
 
+/* ============================================================
+   #nuis（ぬい一覧）だけの「夜参り」テーマ
+   ------------------------------------------------------------
+   main.js は画面を切り替えるとき、body に data-route を付けます。
+   ここでは data-route="nuis" のときだけ色を上書きするので、
+   地図・訪問の記録・登録の画面は今の明るい見た目のままです。
+   ============================================================ */
+
+body[data-route="nuis"] {
+  /* 夜の色。変数だけ差し替えると、下の部品にもまとめて効きます。 */
+  --bg: #0B0910;          /* 画面の底。墨色 */
+  --surface: #17111C;     /* カードの地。漆黒 */
+  --surface-2: #241B2B;   /* 一段明るい地 */
+  --ink: #EFE6D7;         /* 文字。骨白 */
+  --ink-soft: #B7AA9B;    /* 補足の文字 */
+  --ink-faint: #8C7F73;   /* さらに薄い文字 */
+  --line: #352B3A;
+  --line-strong: #55435A;
+
+  --primary: #B73327;     /* 朱 */
+  --primary-deep: #6E1410;
+  --primary-pale: #35171A;
+  --shu: #C53A2C;
+  --shu-deep: #6E1410;
+  --shu-pale: #2A1113;
+
+  --stage-calm: #7FB8A1;  /* 鎮まった：青磁 */
+  --stage-weak: #A493D4;  /* 弱い：藤 */
+  --stage-medium: #D05A47; /* 中くらい：朱 */
+  --stage-strong: #F04B3A; /* 強い：血朱 */
+  --tint-calm: #13231F;
+  --tint-weak: #1D1A2A;
+  --tint-medium: #2A1718;
+  --tint-strong: #331313;
+
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-float: 0 10px 30px rgba(0, 0, 0, 0.55);
+
+  color: var(--ink);
+  color-scheme: dark;
+
+  /* 墨色の地に、赤い月・ビネット・和紙の繊維を重ねる */
+  background-color: #0B0910;
+  background-image:
+    radial-gradient(90% 55% at 50% -10%, rgba(197, 58, 44, 0.16), transparent 60%),
+    radial-gradient(120% 90% at 50% 50%, transparent 45%, rgba(0, 0, 0, 0.55) 100%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(25deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 7px);
+}
+
+/* 文字を選んだときも、朱色に染める */
+body[data-route="nuis"] ::selection {
+  background: rgba(197, 58, 44, 0.45);
+  color: #FFF6E8;
+}
+
+/* ---------- 見出し ---------- */
+
+/* 「ぬい」を明朝体にして、左に朱の縦線を入れる */
+body[data-route="nuis"] #nuis .large-title {
+  padding-left: 14px;
+  border-left: 3px solid var(--shu);
+  font-family: "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 24px rgba(197, 58, 44, 0.22);
+  animation: nuis-lantern 7s ease-in-out infinite;
+}
+
+/* 見出しの横に、小さな朱印のような四角を添える */
+body[data-route="nuis"] #nuis .large-title::after {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 12px;
+  border: 2px solid #2A1012;
+  background: var(--shu);
+  opacity: 0.75;
+  transform: rotate(-8deg);
+  vertical-align: 0.1em;
+}
+
+/* ---------- カードの共通の質感 ---------- */
+
+/* ヒーローとタイルの上辺を、怨念の段階色にする */
+body[data-route="nuis"] .nui-hero,
+body[data-route="nuis"] .nui-tile {
+  --stage-color: var(--stage-weak);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--stage-color);
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 45%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 6px);
+  box-shadow: var(--shadow-card);
+}
+
+/* 段階ごとの線の色 */
+body[data-route="nuis"] .nui-hero.is-calm,
+body[data-route="nuis"] .nui-tile.is-calm { --stage-color: var(--stage-calm); }
+body[data-route="nuis"] .nui-hero.is-weak,
+body[data-route="nuis"] .nui-tile.is-weak { --stage-color: var(--stage-weak); }
+body[data-route="nuis"] .nui-hero.is-medium,
+body[data-route="nuis"] .nui-tile.is-medium { --stage-color: var(--stage-medium); }
+body[data-route="nuis"] .nui-hero.is-strong,
+body[data-route="nuis"] .nui-tile.is-strong { --stage-color: var(--stage-strong); }
+
+/* ヒーローには、右上に赤い月の光を入れる */
+body[data-route="nuis"] .nui-hero {
+  position: relative;
+  border-color: var(--line-strong);
+  border-top-color: var(--stage-color);
+  background-image:
+    radial-gradient(circle at 88% 4%, rgba(197, 58, 44, 0.18), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 45%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 6px);
+}
+
+body[data-route="nuis"] .hero-kicker {
+  color: #E08A7C;
+  letter-spacing: 0.08em;
+}
+
+body[data-route="nuis"] .hero-name {
+  font-family: "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 20px rgba(197, 58, 44, 0.18);
+}
+
+body[data-route="nuis"] .hero-meta {
+  letter-spacing: 0.04em;
+}
+
+/* ---------- 怨念の段階の札 ---------- */
+
+body[data-route="nuis"] .stage-chip {
+  border: 1px solid currentColor;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+body[data-route="nuis"] .stage-chip.is-calm {
+  background: #12241F;
+  color: #8FD1B8;
+}
+body[data-route="nuis"] .stage-chip.is-weak {
+  background: #1D1A2A;
+  color: #C4B6E8;
+}
+body[data-route="nuis"] .stage-chip.is-medium {
+  background: #2A1718;
+  color: #F08A7C;
+}
+body[data-route="nuis"] .stage-chip.is-strong {
+  background: #6E1410;
+  color: #FFD9D2;
+}
+
+/* ---------- 怨念のゲージ ---------- */
+
+/* ぬいの写真の有無に関係なく、溝を黒く沈める */
+body[data-route="nuis"] #nuis .grudge-gauge {
+  background: #08060B;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 0 1px var(--line);
+}
+
+/* 鎮まった分は、骨白の斜線で薄く残す */
+body[data-route="nuis"] .grudge-gauge-ghost {
+  background: repeating-linear-gradient(-45deg, rgba(239, 230, 215, 0.18) 0 3px, transparent 3px 7px);
+}
+
+/* 段階色のグラデーションで、血の濃さを表す */
+body[data-route="nuis"] .grudge-gauge.is-calm .grudge-gauge-fill {
+  background: linear-gradient(90deg, #3E7866, var(--stage-calm));
+}
+body[data-route="nuis"] .grudge-gauge.is-weak .grudge-gauge-fill {
+  background: linear-gradient(90deg, #5B4B86, var(--stage-weak));
+}
+body[data-route="nuis"] .grudge-gauge.is-medium .grudge-gauge-fill {
+  background: linear-gradient(90deg, #7E2A1F, var(--stage-medium));
+}
+body[data-route="nuis"] .grudge-gauge.is-strong .grudge-gauge-fill {
+  background: linear-gradient(90deg, #8F1D14, var(--stage-strong));
+  box-shadow: 0 0 10px rgba(240, 75, 58, 0.55);
+}
+
+/* ---------- ぬいのタイル ---------- */
+
+body[data-route="nuis"] .nui-tile {
+  background-color: var(--surface);
+}
+
+body[data-route="nuis"] .nui-tile:hover {
+  box-shadow: 0 0 0 1px var(--stage-color), 0 10px 28px rgba(0, 0, 0, 0.55);
+}
+
+body[data-route="nuis"] .nui-tile-name {
+  font-family: "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+body[data-route="nuis"] .nui-tile-visits {
+  color: var(--ink-faint);
+}
+
+/* 登録タイルは、暗い中に朱色の点線で置く */
+body[data-route="nuis"] .nui-tile.is-add {
+  border: 2px dashed var(--line-strong);
+  background: rgba(197, 58, 44, 0.04);
+  color: #E08A7C;
+}
+body[data-route="nuis"] .nui-tile.is-add:hover {
+  border-color: var(--shu);
+  box-shadow: 0 0 0 1px rgba(197, 58, 44, 0.35), var(--shadow-card);
+}
+
+/* ---------- ボタン ---------- */
+
+/* 主要ボタンは、朱色の漆塗り。文字は骨白にして読みやすくする */
+body[data-route="nuis"] .button.is-primary {
+  background: linear-gradient(180deg, #B73327, #8F1D14);
+  color: #FFF6E8;
+  box-shadow: 0 4px 0 #5E0F0A, 0 0 18px rgba(197, 58, 44, 0.18);
+}
+body[data-route="nuis"] .button.is-primary:active {
+  box-shadow: 0 2px 0 #5E0F0A;
+}
+
+/* キーボードで選んだときは、金茶色の輪で見やすくする */
+body[data-route="nuis"] :focus-visible {
+  outline-color: #D8B36A;
+}
+
+/* ---------- 空のとき・エラーのとき ---------- */
+
+body[data-route="nuis"] #nuis .empty {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+body[data-route="nuis"] #nuis .empty-face {
+  filter: drop-shadow(0 0 18px rgba(197, 58, 44, 0.22));
+}
+
+body[data-route="nuis"] #nuis .error {
+  border: 1px solid #6E1F22;
+  background: #2A1113;
+  color: #F2B3A8;
+}
+
+/* ---------- ぬいの顔 ---------- */
+
+/* 顔は骨色のまま。目・口・輪郭だけ墨色に戻す。
+   文字色（--ink）を明るくしたので、ここを戻さないと目が見えなくなる。 */
+body[data-route="nuis"] .face-head,
+body[data-route="nuis"] .face-ear,
+body[data-route="nuis"] .face-line {
+  stroke: #1A1218;
+}
+body[data-route="nuis"] .face-fill {
+  fill: #1A1218;
+}
+body[data-route="nuis"] .face-gloom {
+  stroke: var(--stage-strong);
+}
+
+/* ---------- 下のメニュー ---------- */
+
+body[data-route="nuis"] .navbar {
+  border-top-color: #3A2430;
+  background: #100C14;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.55);
+}
+
+body[data-route="nuis"] .navbar a {
+  position: relative;
+  color: var(--ink-faint);
+}
+
+body[data-route="nuis"] .navbar a.is-current {
+  color: var(--ink);
+}
+
+body[data-route="nuis"] .navbar a.is-current svg {
+  background: rgba(197, 58, 44, 0.16);
+  box-shadow: 0 0 16px rgba(197, 58, 44, 0.15);
+}
+
+/* 選択中のタブの上に、小さな朱色の光を置く */
+body[data-route="nuis"] .navbar a.is-current::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 28px;
+  height: 2px;
+  margin-left: -14px;
+  background: var(--shu);
+  box-shadow: 0 0 12px var(--shu);
+}
+
+/* ---------- 動き ---------- */
+
+/* ろうそくの光が、ゆっくり揺れる */
+@keyframes nuis-lantern {
+  0%, 100% { opacity: 0.94; }
+  48% { opacity: 1; }
+  72% { opacity: 0.97; }
+}
+
+/* 強い怨念のカードだけ、赤い光が脈打つ */
+@keyframes nuis-breathe {
+  0%, 100% { box-shadow: var(--shadow-card); }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(240, 75, 58, 0.35),
+      0 18px 40px rgba(0, 0, 0, 0.5),
+      0 0 30px rgba(240, 75, 58, 0.12);
+  }
+}
+
+body[data-route="nuis"] .nui-hero.is-strong {
+  animation: nuis-breathe 4.5s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
