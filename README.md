@@ -40,6 +40,8 @@ uvicorn app.main:app --port 8000
 設計と分担は [docs/](docs/) にまとめています。AI に実装を頼むときは、[AGENTS.md](AGENTS.md) の手順で文書を読ませてください。
 
 - [技術と機能のまとめ](docs/overview.md)
+- [コードの読み方](docs/code-guide.md)
+- [担当別のコード説明書](docs/role-guides/README.md)
 - [全体設計](docs/design.md)
 - [API 仕様](docs/api.md)
 - 担当ごとの作業：[バックエンドA](docs/tasks/backend-data.md)、[バックエンドB](docs/tasks/backend-api.md)、[フロントA](docs/tasks/frontend-main.md)、[フロントB](docs/tasks/frontend-nui.md)

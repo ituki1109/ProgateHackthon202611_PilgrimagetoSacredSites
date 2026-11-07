@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { MindARThree } from 'mindar-image-three';
-import { clampGrudge, grudgeStage } from '../js/ui.js';
+import { getNuis } from '../js/api.js';
+import { clampGrudge, grudgeGauge, grudgeStage, nuiAvatar, stageChip } from '../js/ui.js';
 import { compileMarker, loadImage } from './marker.js';
 import { createHauntEffect, hauntLook } from './effects.js';
 import { createPuppet } from './puppet.js';
@@ -48,12 +49,33 @@ const container = document.getElementById('ar');
 let customMarker = null;
 let session = null;
 
-document.getElementById('nui-line').textContent = grudgeStage(grudge).line;
+document.getElementById('ar-title').textContent = grudge > 0 ? '憑依を見る' : '鎮まった様子を見る';
+const nuiLine = document.getElementById('nui-line');
+nuiLine.textContent = grudgeStage(grudge).line;
+const avatar = nuiAvatar({ name: nuiName, grudge }, 'profile-avatar');
+nuiLine.after(avatar);
 if (nuiName) {
   document.getElementById('nui-name').textContent = nuiName;
-  document.getElementById('nui-grudge').textContent = `怨念 ${grudge}`;
+  const meta = document.getElementById('nui-grudge');
+  meta.append(`怨念 ${grudge}`, stageChip(grudge));
+  meta.after(grudgeGauge(grudge, `${nuiName}の怨念`));
+  meta.hidden = false;
 }
-if (/^\d+$/.test(nuiId ?? '')) document.getElementById('back-link').href = `../#nui/${nuiId}`;
+if (/^\d+$/.test(nuiId ?? '')) {
+  document.getElementById('back-link').href = `../#nui/${nuiId}`;
+  showNuiPhoto();
+}
+
+// 写真は URL で渡されないので、ぬいの一覧から探す。取れないときは段階の顔のままにする
+async function showNuiPhoto() {
+  try {
+    const nuis = await getNuis();
+    const photoUrl = nuis.find((nui) => String(nui.id) === nuiId)?.photo_url;
+    if (photoUrl) avatar.replaceWith(nuiAvatar({ name: nuiName, grudge, photo_url: photoUrl }, 'profile-avatar'));
+  } catch (err) {
+    console.warn('[ar] ぬいの写真が取れませんでした:', err.message);
+  }
+}
 
 markerInput.addEventListener('change', async () => {
   const file = markerInput.files[0];
