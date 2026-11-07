@@ -1,49 +1,38 @@
-// ぬいのセリフを、VOICEVOX（ローカルで起動しておくアプリ）で読み上げます。
+// ぬいのセリフの読み上げ。
 //
-// 本番前に VOICEVOX アプリを起動しておいてください（エンジンが
-// http://localhost:50021 で待ち受けます）。docs/design.md の「構成」には
-// ないツールなので、使う前にチームに一声かけてください。
+// セリフは決まった定型文（haunt.js の VOICES、ui.js の grudgeStage().line）
+// なので、本番中に VOICEVOX を呼ぶのではなく、あらかじめ VOICEVOX
+// （ずんだもん・ノーマル）で作っておいた音声ファイルを再生するだけにしてある。
+// こうすると、本番で VOICEVOX アプリを起動しておく必要がなくなる。
 //
-// 起動していない・失敗したときは、コンソールに警告を出すだけで黙って
-// 諦めます（読み上げがなくても、アプリ自体は今まで通り動きます）。
+// セリフの文面を変えたときは、audio/voice/ の該当ファイルも作り直すこと
+// （VOICEVOXアプリを起動した状態で、/audio_query → /synthesis を呼んで作る）。
 
-const ENGINE_URL = 'http://localhost:50021';
-const SPEAKER_ID = 3; // ずんだもん・ノーマル
+const VOICE_FILES = {
+  'どこ見てるの': 'audio/voice/look_away.wav',
+  'こっちを見て': 'audio/voice/come_here.wav',
+  'ずっと待ってたのに': 'audio/voice/waited.wav',
+  'そこじゃない': 'audio/voice/not_there.wav',
+  '連れて行ってくれるよね': 'audio/voice/take_me.wav',
+  'ねえ、聞いてる？': 'audio/voice/listening.wav',
+  'もう、逃がさない': 'audio/voice/wont_let_go.wav',
+  'また連れてってね': 'audio/voice/calm.wav',
+  '…許してあげてもいいよ': 'audio/voice/weak.wav',
+  '最近ずっと置いていくよね': 'audio/voice/medium.wav',
+  '放置してゆるさない…': 'audio/voice/strong.wav',
+};
 
 let currentAudio = null;
 
-// セリフ（text）を読み上げます。前のセリフが鳴っている途中なら止めてから読みます。
-export async function speakLine(text) {
-  if (!text) return;
+// セリフ（text）を読み上げます。用意していない文のときは、何もしません。
+export function speakLine(text) {
+  const src = VOICE_FILES[text];
+  if (!src) return;
 
-  try {
-    const query = await fetchJson(
-      `${ENGINE_URL}/audio_query?speaker=${SPEAKER_ID}&text=${encodeURIComponent(text)}`,
-      { method: 'POST' },
-    );
-
-    const synthRes = await fetch(`${ENGINE_URL}/synthesis?speaker=${SPEAKER_ID}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(query),
-    });
-    if (!synthRes.ok) throw new Error(`synthesis に失敗しました（${synthRes.status}）`);
-    const blob = await synthRes.blob();
-
-    if (currentAudio) {
-      currentAudio.pause();
-      URL.revokeObjectURL(currentAudio.src);
-    }
-    currentAudio = new Audio(URL.createObjectURL(blob));
-    await currentAudio.play();
-  } catch (err) {
-    // VOICEVOX が起動していないときによく起きる（fetch 自体が失敗する）。
-    console.warn('[tts] 読み上げに失敗しました（VOICEVOXアプリが起動していないかも）:', err.message);
-  }
-}
-
-async function fetchJson(url, options) {
-  const res = await fetch(url, options);
-  if (!res.ok) throw new Error(`${url} に失敗しました（${res.status}）`);
-  return res.json();
+  if (currentAudio) currentAudio.pause();
+  currentAudio = new Audio(src);
+  currentAudio.play().catch((err) => {
+    // ブラウザーの自動再生ブロックなどで起きる。最初の操作のあとは鳴る。
+    console.warn('[tts] 読み上げを再生できませんでした:', err.message);
+  });
 }
