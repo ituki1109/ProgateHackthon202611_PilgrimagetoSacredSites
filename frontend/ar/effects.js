@@ -8,9 +8,14 @@ import { NUI_HEIGHT, NUI_CENTER_Y } from './config.js';
 // 演出の各部品は、高さ 1.5 くらいのぬいを想定した寸法で作ってあるので、実物に合わせて拡大する
 const EFFECT_SCALE = NUI_HEIGHT / 1.5;
 
-// 怨念の段階ごとの見せ方。aura と wisp は光の色、wisps は人魂の数、shake は震えの強さ、deform はぬいの動きの大きさ
+// 怨念の段階ごとの見せ方。aura と wisp は光の色、wisps は人魂の数、shake は震えの強さ、deform はぬいの動きの大きさ。
+// 暴走（possessed）だけ、オーラを大きく（auraSize）して光を足し合わせ（glow）、吹き出しの地（bubble）を黒くする。
+// 暴走中は画面全体を赤く染める（style.css）ので、白い文字は赤くなり、黒い地の上で読める
 const LOOKS = {
-  possessed: { aura: 'rgba(255, 20, 30, 1)', wisp: 'rgba(255, 60, 40, 1)', wisps: 5, shake: 1.6, deform: 1.3 },
+  possessed: {
+    aura: 'rgba(255, 0, 20, 1)', wisp: 'rgba(255, 30, 30, 1)', wisps: 7, shake: 1.6, deform: 1.3,
+    auraSize: 1.35, glow: true, bubble: 'rgba(25, 0, 5, 0.92)',
+  },
   strong: { aura: 'rgba(225, 40, 70, 1)', wisp: 'rgba(255, 130, 90, 1)', wisps: 2.5, shake: 1, deform: 1 },
   medium: { aura: 'rgba(160, 60, 255, 1)', wisp: 'rgba(110, 200, 255, 1)', wisps: 3, shake: 0.6, deform: 0.75 },
   weak: { aura: 'rgba(90, 140, 255, 1)', wisp: 'rgba(110, 200, 255, 1)', wisps: 2, shake: 0.3, deform: 0.5 },
@@ -71,7 +76,7 @@ function keepOnScreen(sprite, camera) {
   sprite.position.set(BUBBLE_POSITION.x + dx, BUBBLE_POSITION.y + dy, BUBBLE_POSITION.z);
 }
 
-function createBubble() {
+function createBubble(background = 'rgba(20, 20, 20, 0.82)') {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 160;
@@ -82,7 +87,7 @@ function createBubble() {
   const draw = (text) => {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'rgba(20, 20, 20, 0.82)';
+    ctx.fillStyle = background;
     ctx.beginPath();
     ctx.roundRect(8, 8, 496, 120, 40);
     ctx.fill();
@@ -108,6 +113,8 @@ function createBubble() {
 
 export function createHauntEffect(grudge) {
   const look = hauntLook(grudge);
+  const blending = look.glow ? THREE.AdditiveBlending : THREE.NormalBlending;
+  const auraSize = look.auraSize ?? 1;
   // root はぬいの体の中心に置き、body を揺らす
   const root = new THREE.Group();
   root.position.set(0, NUI_CENTER_Y, 0.05);
@@ -121,6 +128,7 @@ export function createHauntEffect(grudge) {
       map: ringTexture(look.aura),
       transparent: true,
       depthWrite: false,
+      blending,
     }),
   );
   body.add(aura);
@@ -129,7 +137,7 @@ export function createHauntEffect(grudge) {
   const wispTexture = glowTexture(look.wisp);
   const wisps = Array.from({ length: look.wisps }, (_, i) => {
     const sprite = new THREE.Sprite(
-      new THREE.SpriteMaterial({ map: wispTexture, transparent: true, depthWrite: false }),
+      new THREE.SpriteMaterial({ map: wispTexture, transparent: true, depthWrite: false, blending }),
     );
     sprite.scale.setScalar(0.2);
     sprite.userData.phase = (i / look.wisps) * Math.PI * 2;
@@ -137,7 +145,7 @@ export function createHauntEffect(grudge) {
     return sprite;
   });
 
-  const bubble = createBubble();
+  const bubble = createBubble(look.bubble);
   bubble.sprite.position.copy(BUBBLE_POSITION);
   body.add(bubble.sprite);
   bubble.draw(grudgeStage(grudge).line);
@@ -173,7 +181,7 @@ export function createHauntEffect(grudge) {
       body.position.y = Math.sin(time * 2) * 0.05 * EFFECT_SCALE;
       body.rotation.z = Math.sin(time * 9) * 0.035 * look.shake;
       // ぬいは縦に長いので、輪も少し縦長にする
-      const pulse = 1 + Math.sin(time * 3) * 0.04;
+      const pulse = (1 + Math.sin(time * 3) * 0.04) * auraSize;
       aura.scale.set(pulse * 0.86, pulse, 1);
 
       wisps.forEach((w) => {

@@ -148,3 +148,18 @@ h1 {
   font-weight: 700;
   text-align: center;
 }
+
+/* 暴走しているとき（main.js が :root に is-possessed を付ける）。
+   カメラが動いているあいだ（#ar に映像がある）だけ、画面全体を赤く染め、端を暗い赤で縁取る。
+   動くぬいも同じ映像から作るので、演出ごとまとめて染める。下にある物の操作は邪魔しない */
+:root.is-possessed #ar:not(:empty)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background:
+    radial-gradient(ellipse at center, transparent 45%, rgba(90, 0, 10, 0.75) 100%),
+    rgba(255, 70, 70, 1);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
