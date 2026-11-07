@@ -139,6 +139,20 @@ function createNuiTile(nui) {
   return tile;
 }
 
+// 暴走しているぬいがいるとき、一覧の背景を「許さない」で埋め尽くす演出。
+// haunt.js の haunt-jack-wall と同じ作り（文字を並べて敷くだけ）。
+// 操作の邪魔をしないよう、クリックは無効（aria-hidden、pointer-events: none）。
+const OVERRUN_LINE = '許さない　';
+const OVERRUN_REPEAT = 90;
+
+function createOverrunBackdrop() {
+  const backdrop = document.createElement('div');
+  backdrop.className = 'nui-overrun';
+  backdrop.setAttribute('aria-hidden', 'true');
+  backdrop.textContent = OVERRUN_LINE.repeat(OVERRUN_REPEAT);
+  return backdrop;
+}
+
 // 一覧の最後に置く、登録の画面へのタイル
 function createAddTile() {
   const tile = document.createElement('a');
@@ -175,13 +189,19 @@ export async function showNuis() {
     }
 
     const top = [...list].sort((a, b) => b.grudge - a.grudge)[0];
+    const overflowing = isOverflow(clampGrudge(top.grudge));
+    if (overflowing) {
+      container.appendChild(createOverrunBackdrop());
+    }
     container.appendChild(createHero(top));
 
     // 取ってきた順番（登録した順）にタイルを並べます。
+    // 誰かが暴走しているときは、ほかのぬいのタイルも全部そのぬいに
+    // なってしまう（一覧が乗っ取られたように見せる）。
     const grid = document.createElement('div');
     grid.className = 'nui-grid';
     for (const nui of list) {
-      grid.appendChild(createNuiTile(nui));
+      grid.appendChild(createNuiTile(overflowing ? top : nui));
     }
     grid.appendChild(createAddTile());
     container.appendChild(grid);
