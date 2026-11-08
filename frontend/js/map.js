@@ -312,8 +312,12 @@ function cardFor(spot, index) {
   head.append(rank, name);
   head.addEventListener('click', showDetail);
 
-  // 現在地からの距離は推薦理由（API）に入っている
+  // カードには、推薦理由（API）のうち現在地からの距離だけを出す。
+  // 種類や駅からの距離などは、「詳しく見る」の画面で読める
   const facts = reasonList(spot.reason, 'spot-facts');
+  for (const item of [...facts.children]) {
+    if (!item.textContent.startsWith('現在地から')) item.remove();
+  }
 
   const actions = document.createElement('div');
   actions.className = 'spot-actions';
