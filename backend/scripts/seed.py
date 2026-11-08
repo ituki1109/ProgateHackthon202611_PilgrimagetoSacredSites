@@ -50,9 +50,9 @@ def main() -> None:
     # CALM_RECOMMENDED=50 に合わせ、デモの開始時は 40 / 100 / 10 になる。
     # 怨念 100 を超えるのは、デモの中で「放置する」を押したあと。
     nui_specs = [
-        ("もちもち", 50, "nui_mochimochi.svg"),
+        ("アブソル", 50, "abu.png"),
         ("ひろぬい", 50, "nui_fuwamaru.jpg"),
-        ("こんぺいとう", 30, "nui_konpeito.svg"),
+        ("コラプス", 30, "kora.png"),
     ]
 
     nuis = []
@@ -62,8 +62,8 @@ def main() -> None:
 
     # (ぬいの番号, spot_id, 地点名, 緯度, 経度, 推薦地点か, 何日前か, 時, 分, 写真)
     visit_specs = [
-        (0, "park_0798", "富士見公園", 35.529843, 139.710875, True, 7, 10, 40, "visit_fujimi.svg"),
-        (0, None, "近所のカフェ", 35.5325, 139.699, False, 3, 16, 5, "visit_cafe.svg"),
+        (0, "park_0798", "富士見公園", 35.529843, 139.710875, True, 7, 10, 40, "abu.png"),
+        (0, None, "近所のカフェ", 35.5325, 139.699, False, 3, 16, 5, "abu.png"),
         (
             2,
             "facility_141305000015",
@@ -74,7 +74,7 @@ def main() -> None:
             2,
             15,
             20,
-            "visit_muza.svg",
+            "kora.png",
         ),
     ]
 
