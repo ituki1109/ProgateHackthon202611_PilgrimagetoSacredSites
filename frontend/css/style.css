@@ -1261,7 +1261,7 @@ input[type="date"]:focus {
   position: relative;
   gap: 22px;
   margin-top: 12px;
-  padding: 52px 22px 26px;
+  padding: 52px 22px 26px 36px;
   border-radius: 2px;
   background: var(--surface);
   box-shadow: inset 0 0 0 6px var(--surface), inset 0 0 0 7px var(--line-strong), inset 0 0 0 10px var(--surface), inset 0 0 0 11px var(--line-strong), var(--shadow-card);
@@ -1278,6 +1278,24 @@ input[type="date"]:focus {
   text-indent: 0.6em;
 }
 .register-form .field-label { font-family: var(--mincho); }
+
+/* 履歴書風：証明写真を左、記入欄を右に並べる */
+.register-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 22px;
+  align-items: start;
+}
+@media (max-width: 359px) {
+  .register-head { grid-template-columns: 1fr; }
+}
+
+.register-fields {
+  display: grid;
+  gap: 22px;
+  align-content: start;
+}
+
 .register-form input[type="text"],
 .register-form input[type="date"] {
   min-height: 44px;
@@ -1290,7 +1308,7 @@ input[type="date"]:focus {
 .register-form input[type="text"]:focus,
 .register-form input[type="date"]:focus { border-color: var(--shu); box-shadow: 0 2px 0 var(--shu); }
 
-/* 登録のボタンは血判を押す形にする。押し方はふつうのボタンと同じ */
+/* 登録のボタンは血判を押す形にする。長押しで指紋が浮かび上がり、登録される */
 .register-form button[type="submit"]::before {
   content: "";
   flex: none;
@@ -1303,7 +1321,88 @@ input[type="date"]:focus {
 .register-form button[type="submit"] { background: var(--shu-deep); box-shadow: 0 4px 0 #5E0A17; }
 .register-form button[type="submit"]:active { box-shadow: 0 2px 0 #5E0A17; }
 
+.register-seal {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+.register-seal-text {
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.12s, transform 0.12s;
+}
+.register-seal-print {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: opacity 0.15s, transform 0.55s ease-out, color 0.15s;
+  pointer-events: none;
+}
+.register-seal-print svg { width: 72px; height: 72px; color: rgba(255, 255, 255, 0.35); }
+
+/* 長押し中：ボタンが沈み、指紋が現れる */
+.register-seal.is-pressing {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #5E0A17;
+}
+.register-seal.is-pressing .register-seal-print {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 血判が確定した瞬間：文字を消して、ボタンを押し込み、指紋を押す */
+@keyframes seal-press {
+  0% { transform: translateY(3px) scale(1); }
+  45% { transform: translateY(7px) scale(0.88); }
+  100% { transform: translateY(5px) scale(0.93); }
+}
+
+.register-seal.is-sealed {
+  animation: seal-press 0.28s ease-in forwards;
+  box-shadow: 0 0 0 4px rgba(179, 18, 46, 0.35);
+}
+.register-seal.is-sealed .register-seal-text {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.register-seal.is-sealed .register-seal-print {
+  opacity: 0.9;
+  transform: scale(0.78);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 押印時の衝撃波 */
+.register-seal::after {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, transparent 65%);
+  opacity: 0;
+  transform: scale(0.2);
+  transition: opacity 0.1s, transform 0.45s ease-out;
+  pointer-events: none;
+}
+.register-seal.is-sealed::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.register-seal-hint {
+  margin: -14px 0 0;
+  color: var(--ink-faint);
+  font-size: 13px;
+  text-align: center;
+}
+
 .avatar-pick { display: grid; justify-items: center; gap: 10px; cursor: pointer; }
+.register-head .avatar-pick { justify-items: start; }
 .avatar-pick-circle {
   position: relative;
   display: grid;
@@ -1333,8 +1432,10 @@ input[type="date"]:focus {
 }
 .avatar-pick-badge svg { width: 20px; height: 20px; }
 .avatar-pick-label { color: var(--primary-deep); font-size: 14px; font-weight: 700; }
+.register-head .avatar-pick-label { text-align: left; }
 
 .avatar-pick-wrap { display: grid; justify-items: center; gap: 10px; }
+.register-head .avatar-pick-wrap { justify-items: start; }
 .avatar-pick-camera { gap: 6px; }
 
 .field-toggle {
@@ -1664,6 +1765,19 @@ input[type="date"]:focus {
   font-size: 18px;
   line-height: 1;
   cursor: pointer;
+}
+
+/* マップ画面では、現在地取得アイコンと被らないよう左にずらす */
+[data-route="map"] .bgm-mute {
+  right: 74px;
+  top: calc(17px + env(safe-area-inset-top));
+}
+
+@media (min-width: 900px) {
+  [data-route="map"] .bgm-mute {
+    right: 78px;
+    top: 21px;
+  }
 }
 
 /* ぬいの声。どの画面でも右下から話しかける。下にある物の操作は邪魔しない */
