@@ -333,11 +333,12 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 }
 .map-canvas .leaflet-control-attribution a { color: inherit; }
 
+/* 右上には、どの画面でも BGM の消音ボタン（.bgm-mute、幅40px）が出るので、その分を空ける */
 .map-top {
   position: absolute;
   top: calc(12px + env(safe-area-inset-top));
   left: 12px;
-  right: 12px;
+  right: 60px;
   z-index: 10;
   display: flex;
   gap: 10px;
@@ -488,28 +489,135 @@ svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; 
 
 .sheet.is-collapsed .spot-list { display: none; }
 
-/* いちばん怨念の強いぬい。スマホではシートの上に浮かせる（ポケモン GO の相棒の位置） */
+/* 連れて行くぬい。スマホではシートの上に浮かせ、横に送って選ぶ。
+   地図を動かす操作を邪魔しないよう、すき間は押せないようにする */
 .buddy {
   position: absolute;
-  left: 12px;
-  bottom: calc(100% + 12px);
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 8px);
+  display: grid;
+  gap: 6px;
+  pointer-events: none;
+}
+.buddy > * { pointer-events: auto; }
+.buddy.is-loading { height: 44px; }
+
+/* つまみ。押すとぬいの列を開け閉めする。閉じている間は、セリフと列を隠す */
+.buddy-tab {
+  order: 2; /* スマホでは、つまみをシートのすぐ上に置いたまま、列をその上に開く */
+  justify-self: start;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   max-width: calc(100% - 24px);
-  padding: 7px 16px 7px 7px;
+  min-height: 44px;
+  margin: 0 12px;
+  padding: 4px 14px 4px 5px;
+  border: 0;
   border-radius: 999px;
   background: var(--surface);
   box-shadow: var(--shadow-float);
-  color: inherit;
+  color: var(--ink);
+  font: 700 13.5px/1.3 var(--font);
+  cursor: pointer;
+}
+.buddy-tab-ring { width: 34px; height: 34px; padding: 3px; }
+.buddy-tab-label { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.buddy-tab-arrow {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-left: 2px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(-135deg); /* 閉じているときは上向き（列が上に開く） */
+  transition: transform 0.15s;
+}
+.buddy.is-open .buddy-tab-arrow { transform: translateY(2px) rotate(45deg); }
+.buddy:not(.is-open) .buddy-say,
+.buddy:not(.is-open) .buddy-list { display: none; }
+
+/* 選んだぬいのセリフ */
+.buddy-say {
+  justify-self: start;
+  max-width: calc(100% - 24px);
+  margin: 0 12px;
+  padding: 5px 14px;
+  border-radius: 14px 14px 14px 3px;
+  background: var(--surface);
+  box-shadow: var(--shadow-float);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
   text-decoration: none;
 }
-.buddy.is-loading { width: 210px; height: 58px; }
-.buddy-avatar { width: 44px; height: 44px; }
-.buddy-body { display: grid; gap: 2px; min-width: 0; }
-.buddy-name { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 900; line-height: 1.35; }
-.buddy-note { color: var(--ink-soft); font-size: 11.5px; line-height: 1.4; }
-.buddy .grudge-gauge { width: 140px; height: 6px; margin-top: 2px; }
+.buddy-say strong { margin-right: 2px; font-family: var(--mincho); font-weight: 900; }
+.buddy-say.is-strong,
+.buddy-say.is-possessed { color: var(--shu); }
+
+.buddy-list {
+  display: flex;
+  gap: 8px;
+  padding: 2px 12px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.buddy-list::-webkit-scrollbar { display: none; }
+
+.buddy-option {
+  display: grid;
+  flex: none;
+  justify-items: center;
+  gap: 1px;
+  width: 76px;
+  padding: 8px 4px 6px;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.buddy-option.is-selected { border-color: var(--primary); transform: translateY(-2px); }
+.buddy-ring { width: 52px; height: 52px; margin-bottom: 4px; }
+.buddy-option-name {
+  width: 100%;
+  overflow: hidden;
+  font-size: 12.5px;
+  font-weight: 900;
+  line-height: 1.35;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.buddy-option-grudge { color: var(--ink-soft); font-size: 11px; font-weight: 700; line-height: 1.3; }
+
+/* 怨念の輪。上から時計回りに、怨念の割合だけ色が付く（--p は 0〜100。js/ui.js の grudgeRing） */
+.grudge-ring {
+  --ring-color: var(--stage-weak);
+  display: grid;
+  flex: none;
+  padding: 4px;
+  border-radius: 50%;
+  background: conic-gradient(var(--ring-color) calc(var(--p, 0) * 1%), var(--line) 0);
+}
+.grudge-ring.is-calm { --ring-color: var(--stage-calm); }
+.grudge-ring.is-medium { --ring-color: var(--stage-medium); }
+.grudge-ring.is-strong { --ring-color: var(--stage-strong); }
+.grudge-ring.is-possessed {
+  --ring-color: var(--stage-possessed);
+  box-shadow: 0 0 10px var(--stage-possessed);
+  animation: ring-burst 1.1s ease-in-out infinite;
+}
+.grudge-ring-avatar { width: 100%; height: 100%; box-shadow: 0 0 0 2px var(--surface); }
+@keyframes ring-burst {
+  0%, 100% { box-shadow: 0 0 6px var(--stage-possessed); }
+  50% { box-shadow: 0 0 16px 2px var(--stage-possessed); }
+}
 
 /* 推薦地点のカード。スマホでは横に送る */
 .spot-list {
@@ -731,8 +839,7 @@ body[data-route="visit"] .navbar { display: none; }
 .optional { background: var(--surface-2); color: var(--ink-soft); }
 
 input[type="text"],
-input[type="date"],
-select {
+input[type="date"] {
   width: 100%;
   min-height: 52px;
   padding: 0 16px;
@@ -744,69 +851,28 @@ select {
   -webkit-appearance: none;
   appearance: none;
 }
-select {
-  padding-right: 40px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%235E5650' stroke-width='2' d='M5 9l7 7 7-7'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 18px;
-}
 input[type="text"]:focus,
-input[type="date"]:focus,
-select:focus {
+input[type="date"]:focus {
   border-color: var(--primary);
   outline: none;
   box-shadow: 0 0 0 4px var(--primary-pale);
 }
 
-/* 連れて行くぬいを、顔のボタンから選ぶ */
-.nui-picker {
+/* 連れてきたぬい。地図で選んだぬいを出すだけで、ここでは選ばない */
+.visit-nui {
   display: flex;
-  gap: 10px;
-  margin: 0 -16px;
-  padding: 6px 16px 10px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.nui-picker::-webkit-scrollbar { display: none; }
-
-.nui-option {
-  position: relative;
-  display: grid;
-  flex: 0 0 auto;
-  justify-items: center;
-  gap: 4px;
-  width: 104px;
-  padding: 14px 8px 12px;
-  border: 2px solid transparent;
-  border-radius: 20px;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 18px;
   background: var(--surface);
   box-shadow: var(--shadow-card);
-  text-align: center;
-  cursor: pointer;
 }
-.nui-option.is-selected { border-color: var(--primary); background: var(--primary-pale); }
-.nui-option.is-selected::after {
-  content: "";
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 14px no-repeat;
-}
-.nui-option:focus-within { outline: 3px solid var(--primary); outline-offset: 2px; }
-.nui-option-avatar { width: 58px; height: 58px; margin-bottom: 6px; }
-.nui-option-name {
-  width: 100%;
-  overflow: hidden;
-  font-size: 14px;
-  font-weight: 900;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.nui-option-grudge { color: var(--ink-soft); font-size: 12px; }
+.visit-nui-ring { width: 64px; height: 64px; }
+.visit-nui-body { display: grid; gap: 2px; min-width: 0; }
+.visit-nui-name { font-family: var(--mincho); font-size: 18px; font-weight: 900; line-height: 1.35; }
+.visit-nui-grudge { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); font-size: 13px; font-weight: 700; }
+.visit-nui-change { color: var(--ink-faint); font-size: 12px; }
 
 /* 写真を選ぶ枠。選ぶと、その写真が入る */
 .photo-drop {
@@ -1407,7 +1473,7 @@ select:focus {
 
 /* この幅は map.js の WIDE と同じにする */
 @media (min-width: 900px) {
-  .map-top { top: 16px; left: 16px; right: 16px; }
+  .map-top { top: 16px; left: 16px; right: 64px; }
   .map-search { flex: 0 1 380px; }
   .map-top .fab { margin-left: auto; }
 
@@ -1423,21 +1489,17 @@ select:focus {
     box-shadow: var(--shadow-float);
   }
   .sheet-handle { display: none; }
+  /* PC ではシートの中に置き、列はシートの幅で横に送る */
   .buddy {
     position: static;
-    max-width: none;
-    margin: 0 16px 14px;
-    padding: 10px 14px 10px 10px;
-    border-radius: 20px;
-    background: var(--tint-weak);
-    box-shadow: none;
+    margin: 0 0 12px;
   }
-  .buddy.is-loading { width: auto; background: var(--surface-2); }
-  .buddy.is-calm { background: var(--tint-calm); }
-  .buddy.is-medium { background: var(--tint-medium); }
-  .buddy.is-strong { background: var(--tint-strong); }
-  .buddy-body { flex: 1; }
-  .buddy .grudge-gauge { width: auto; background: rgba(255, 255, 255, 0.75); }
+  .buddy-say { box-shadow: none; background: var(--surface-2); }
+  .buddy-tab { order: 0; margin: 0 16px; box-shadow: inset 0 0 0 1px var(--line); }
+  /* PC では列が下に開く */
+  .buddy-tab-arrow { transform: translateY(2px) rotate(45deg); }
+  .buddy.is-open .buddy-tab-arrow { transform: translateY(-2px) rotate(-135deg); }
+  .buddy-option { box-shadow: inset 0 0 0 1px var(--line); }
   .spot-list {
     flex: 1;
     flex-direction: column;
@@ -1580,7 +1642,6 @@ select:focus {
   animation: gauge-burst 1.1s ease-in-out infinite;
 }
 .nui-hero.is-possessed { background: var(--tint-possessed); }
-.buddy.is-possessed { background: var(--tint-possessed); }
 .face-glint { fill: #FF2B3C; }
 
 .neglect-button { justify-self: center; }
@@ -1746,6 +1807,7 @@ select:focus {
   .grudge-gauge.is-possessed .grudge-gauge-fill { animation: none; }
   .fingerprint { animation: none !important; }
   .nui-overrun { animation: none; }
+  .grudge-ring.is-possessed { animation: none; }
 }
 
 @media (min-width: 900px) {

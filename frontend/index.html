@@ -57,7 +57,7 @@
       <button type="button" id="map-sheet-toggle" class="sheet-handle" aria-expanded="true" aria-controls="spot-list" aria-label="推薦地点の一覧をたたむ"></button>
 
       <!-- 読み込む前から場所を取っておき、シートの高さが変わらないようにする -->
-      <a id="map-buddy" class="buddy is-loading" href="#nuis" aria-busy="true"></a>
+      <div id="map-buddy" class="buddy is-loading" aria-busy="true"></div>
 
       <div class="sheet-head">
         <h2 id="map-title" class="sheet-title">近くの推薦地点</h2>
@@ -86,11 +86,11 @@
       <div id="visit-place" class="place-card"></div>
 
       <form id="visit-form" class="form">
-        <fieldset class="field">
-          <legend class="field-label">連れてきたぬい</legend>
-          <div id="visit-nui" class="nui-picker"></div>
-          <p class="field-note">怨念の強い順に並んでいます。</p>
-        </fieldset>
+        <!-- 連れてきたぬいは、地図の上の列で選んだぬい（js/map.js の getSelectedNuiId） -->
+        <div class="field">
+          <span class="field-label">連れてきたぬい</span>
+          <div id="visit-nui" class="visit-nui"></div>
+        </div>
 
         <div class="field">
           <span class="field-label">ぬいと撮った写真 <span class="optional">任意</span></span>
@@ -103,17 +103,6 @@
             <img class="photo-drop-preview hidden" alt="選んだ写真">
           </label>
         </div>
-
-        <label class="field">
-          <span class="field-label">天気 <span class="optional">任意</span></span>
-          <select id="visit-weather" name="weather">
-            <option value="">選ばない</option>
-            <option value="sunny">晴れ</option>
-            <option value="cloudy">くもり</option>
-            <option value="rainy">雨</option>
-            <option value="snowy">雪</option>
-          </select>
-        </label>
 
         <p id="visit-error" role="alert" class="error hidden"></p>
         <div class="bottom-cta">

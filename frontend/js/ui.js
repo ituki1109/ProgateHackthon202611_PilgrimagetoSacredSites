@@ -91,6 +91,16 @@ export function nuiAvatar(nui, className) {
   return photo;
 }
 
+// ぬいの顔を、怨念の割合の輪で囲む。輪は 100 で一周し、それを超えると光る（css の .grudge-ring）。
+export function grudgeRing(nui, className) {
+  const grudge = clampGrudge(nui.grudge);
+  const ring = document.createElement('span');
+  ring.className = `grudge-ring ${className} is-${grudgeStage(grudge).key}`;
+  ring.style.setProperty('--p', String(Math.min(grudge, GRUDGE_OVERFLOW)));
+  ring.appendChild(nuiAvatar(nui, 'grudge-ring-avatar'));
+  return ring;
+}
+
 // 怨念の段階を表す小さな札（「強い」など）。
 export function stageChip(grudge) {
   const stage = grudgeStage(clampGrudge(grudge));

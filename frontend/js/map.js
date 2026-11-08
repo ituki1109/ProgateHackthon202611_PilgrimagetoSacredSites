@@ -5,7 +5,7 @@
 import { getNuis, getRecommend } from './api.js';
 import { openCamera } from './camera.js';
 import { openSpotDetail } from './spot-detail.js';
-import { clampGrudge, grudgeGauge, grudgeStage, isHauntedSpot, isOverflow, nuiAvatar, reasonList, stageChip } from './ui.js';
+import { clampGrudge, grudgeRing, grudgeStage, isHauntedSpot, isOverflow, reasonList } from './ui.js';
 
 // 対象地域は神奈川県川崎市（docs/tasks/frontend-main.md）。
 // 最初の現在地は川崎駅にする。ブラウザーの位置情報は、ボタンを押したときだけ取る
@@ -39,6 +39,32 @@ let ignoreScrollUntil = 0; // ピンを押してカードを送っている間�
 // ほかの JS（visit.js）が現在地を知るために使う
 export function getCurrentLocation() {
   return { ...current };
+}
+
+// 連れて行くぬい。地図の上の列で選び、記録の画面（visit.js）はこのぬいで記録する。
+// 読み込み直しても選んだままにするため、sessionStorage にも残す（使えない環境では残さない）。
+const SELECTED_KEY = 'nuituki:selected-nui';
+let selectedNuiId = readSelected();
+
+function readSelected() {
+  try {
+    return Number(sessionStorage.getItem(SELECTED_KEY)) || null;
+  } catch {
+    return null;
+  }
+}
+
+function saveSelected(id) {
+  selectedNuiId = id;
+  try {
+    sessionStorage.setItem(SELECTED_KEY, String(id));
+  } catch {
+    // 残せなくても、開いている間は selectedNuiId で覚えている
+  }
+}
+
+export function getSelectedNuiId() {
+  return selectedNuiId;
 }
 
 // #map を表示するたびに呼ばれる（main.js から）
@@ -285,7 +311,7 @@ function calmStatsFor(spot) {
   note.className = 'field-note';
   note.textContent = factor === 0
     ? '2km以上離れているため、この地点では鎮められません。'
-    : `距離減衰 ${Math.round(factor * 100)}%。ぬいを選ぶと実際の除霊量が確定します。`;
+    : `距離減衰 ${Math.round(factor * 100)}%。実際の除霊量は、選んだぬいに合わせて記録の画面で出ます。`;
 
   const box = document.createElement('div');
   box.append(stats, note);
@@ -387,51 +413,145 @@ function onListScroll() {
   }, 120);
 }
 
-// いちばん怨念の強いぬいを、シートの上に出す（連れ出す相手を思い出してもらう）
+// 連れて行くぬいを、シートの上に横に並べる。怨念の強い順で、顔のまわりの輪が怨念の割合。
+// 選んだぬいのセリフを列の上に出す。
+// ふだんは地図を広く見せるため、つまみ（選んだぬいの名前）だけを出し、押すと列を開く。
+let buddyNuis = [];
+const BUDDY_OPEN_KEY = 'nuituki:buddy-open';
+let buddyOpen = readBuddyOpen();
+
+function readBuddyOpen() {
+  try {
+    return sessionStorage.getItem(BUDDY_OPEN_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function setBuddyOpen(open) {
+  buddyOpen = open;
+  try {
+    sessionStorage.setItem(BUDDY_OPEN_KEY, open ? '1' : '0');
+  } catch {
+    // 残せなくても、開いている間は buddyOpen で覚えている
+  }
+  const box = document.getElementById('map-buddy');
+  box.classList.toggle('is-open', open);
+  box.querySelector('.buddy-tab')?.setAttribute('aria-expanded', String(open));
+  if (open) box.querySelector('.buddy-option.is-selected')?.scrollIntoView({ block: 'nearest', inline: 'center' });
+}
+
 async function renderBuddy() {
   const box = document.getElementById('map-buddy');
   try {
     const nuis = await getNuis();
+    box.removeAttribute('aria-busy');
+    box.classList.remove('is-loading');
     if (!Array.isArray(nuis) || nuis.length === 0) {
-      box.removeAttribute('aria-busy');
-      box.href = '#register';
-      box.className = 'buddy is-calm';
-      box.replaceChildren(buddyText('ぬいがまだいません', '登録して、一緒に出かけましょう'));
+      buddyNuis = [];
+      const empty = document.createElement('a');
+      empty.className = 'buddy-say';
+      empty.href = '#register';
+      empty.textContent = 'ぬいがまだいません。登録して、一緒に出かけましょう';
+      box.replaceChildren(empty);
       return;
     }
 
-    const top = [...nuis].sort((a, b) => b.grudge - a.grudge)[0];
-    const grudge = clampGrudge(top.grudge);
-    box.removeAttribute('aria-busy');
-    box.href = `#nui/${top.id}`;
-    box.className = `buddy is-${grudgeStage(grudge).key}`;
+    buddyNuis = [...nuis].sort((a, b) => b.grudge - a.grudge);
+    // 前に選んだぬいがいなければ、いちばん怨念の強いぬいを選ぶ。
+    // 暴走しているぬいがいるときは、そのぬいを連れて行く（除霊できる地点が出ているため）
+    const top = buddyNuis[0];
+    const kept = buddyNuis.find((nui) => nui.id === selectedNuiId);
+    if (!kept || (isOverflow(top.grudge) && !isOverflow(kept.grudge))) saveSelected(top.id);
 
-    let note = 'どのぬいも鎮まっています';
-    if (isOverflow(grudge)) note = `暴走しています。怨念 ${grudge}`;
-    else if (grudge > 0) note = `いちばん怨んでいます。怨念 ${grudge}`;
-    const text = buddyText(top.name, note, grudge);
-    box.replaceChildren(nuiAvatar(top, 'buddy-avatar'), text);
+    const say = document.createElement('p');
+    say.className = 'buddy-say';
+    say.setAttribute('aria-live', 'polite');
+
+    const list = document.createElement('div');
+    list.className = 'buddy-list';
+    list.setAttribute('role', 'radiogroup');
+    list.setAttribute('aria-label', '連れて行くぬい');
+    for (const nui of buddyNuis) list.appendChild(buddyOption(nui));
+    // PC のマウスのホイールは縦にしか回らないので、列の上では横に送る
+    list.addEventListener('wheel', (event) => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return; // 横に回せる操作はそのまま
+      if (list.scrollWidth <= list.clientWidth) return;
+      event.preventDefault();
+      list.scrollLeft += event.deltaY;
+    }, { passive: false });
+
+    const tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'buddy-tab';
+    list.id = 'buddy-list';
+    tab.setAttribute('aria-controls', list.id);
+    tab.addEventListener('click', () => setBuddyOpen(!buddyOpen));
+
+    box.replaceChildren(tab, say, list);
+    markBuddy({ scroll: false });
+    setBuddyOpen(buddyOpen);
   } catch (err) {
     console.warn('[map] ぬいの一覧が取れませんでした:', err.message);
     box.classList.add('hidden');
   }
 }
 
-function buddyText(title, sub, grudge) {
-  const body = document.createElement('span');
-  body.className = 'buddy-body';
-  const name = document.createElement('strong');
-  name.className = 'buddy-name';
-  name.textContent = title;
-  const note = document.createElement('span');
-  note.className = 'buddy-note';
-  note.textContent = sub;
-  body.append(name, note);
-  if (grudge !== undefined) {
-    name.appendChild(stageChip(grudge));
-    body.appendChild(grudgeGauge(grudge, `${title}の怨念`));
+// ぬい1体分のボタン。押すと、そのぬいを連れて行くぬいにする
+function buddyOption(nui) {
+  const grudge = clampGrudge(nui.grudge);
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = `buddy-option is-${grudgeStage(grudge).key}`;
+  button.setAttribute('role', 'radio');
+  button.dataset.id = String(nui.id);
+
+  const name = document.createElement('span');
+  name.className = 'buddy-option-name';
+  name.textContent = nui.name;
+  const value = document.createElement('span');
+  value.className = 'buddy-option-grudge';
+  value.textContent = `怨念 ${grudge}%`;
+
+  button.append(grudgeRing(nui, 'buddy-ring'), name, value);
+  button.addEventListener('click', () => {
+    saveSelected(nui.id);
+    markBuddy({ scroll: true });
+  });
+  return button;
+}
+
+// 選んだぬいに印を付け、そのぬいのセリフを出す
+function markBuddy({ scroll }) {
+  const box = document.getElementById('map-buddy');
+  const nui = buddyNuis.find((item) => item.id === selectedNuiId);
+  if (!nui) return;
+
+  for (const option of box.querySelectorAll('.buddy-option')) {
+    const on = Number(option.dataset.id) === nui.id;
+    option.classList.toggle('is-selected', on);
+    option.setAttribute('aria-checked', String(on));
+    if (on && scroll) {
+      option.scrollIntoView({ behavior: REDUCED_MOTION.matches ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
+    }
   }
-  return body;
+
+  const grudge = clampGrudge(nui.grudge);
+  // つまみには、選んでいるぬいの顔と名前を出す
+  const tab = box.querySelector('.buddy-tab');
+  const label = document.createElement('span');
+  label.className = 'buddy-tab-label';
+  label.textContent = `連れて行く：${nui.name}`;
+  const arrow = document.createElement('span');
+  arrow.className = 'buddy-tab-arrow';
+  arrow.setAttribute('aria-hidden', 'true');
+  tab.replaceChildren(grudgeRing(nui, 'buddy-tab-ring'), label, arrow);
+
+  const say = box.querySelector('.buddy-say');
+  say.className = `buddy-say is-${grudgeStage(grudge).key}`;
+  const who = document.createElement('strong');
+  who.textContent = nui.name;
+  say.replaceChildren(who, `「${grudgeStage(grudge).line}」`);
 }
 
 // 記録する場所を決めて、カメラを開いたあとで訪問の記録の画面に進む。
@@ -446,7 +566,7 @@ async function selectPlace(spot, lat, lng) {
   if (photo === undefined) return; // やめたので地図に留まる
 
   document.dispatchEvent(new CustomEvent('nuituki:place-selected', {
-    detail: { spot, lat: here.lat, lng: here.lng, photo },
+    detail: { spot, lat: here.lat, lng: here.lng, photo, nuiId: selectedNuiId },
   }));
   location.hash = '#visit';
 }
