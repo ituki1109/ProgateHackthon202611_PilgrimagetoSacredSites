@@ -230,6 +230,7 @@ function setupSealButton(form) {
   button.dataset.sealBound = 'true';
 
   let timer = null;
+  let sealDelayTimer = null;
   let sealed = false;
 
   const reset = () => {
@@ -240,6 +241,8 @@ function setupSealButton(form) {
 
   button.addEventListener('pointerdown', (event) => {
     if (event.button !== 0) return;
+    // すでに押印演出中なら新しい押し始めは無視
+    if (button.classList.contains('is-sealed')) return;
     event.preventDefault();
     button.classList.remove('is-sealed'); // 前回の押印演出をリセット
     button.classList.add('is-pressing');
@@ -247,7 +250,11 @@ function setupSealButton(form) {
       sealed = true;
       button.classList.add('is-sealed');
       if (navigator.vibrate) navigator.vibrate(40);
-      form.requestSubmit();
+      // 指紋を見せる猶予を置いてから送信（画面が隠れていれば送信しない）
+      sealDelayTimer = setTimeout(() => {
+        sealDelayTimer = null;
+        if (form.offsetParent !== null) form.requestSubmit();
+      }, 400);
     }, 800);
   });
 
