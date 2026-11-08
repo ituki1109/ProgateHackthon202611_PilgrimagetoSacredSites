@@ -27,6 +27,7 @@
 <!-- 地図の画面で使う JS を最初にまとめて読み、import をたどる往復を減らす -->
 <link rel="modulepreload" href="js/main.js">
 <link rel="modulepreload" href="js/map.js">
+<link rel="modulepreload" href="js/camera.js">
 <link rel="modulepreload" href="js/visit.js">
 <link rel="modulepreload" href="js/api.js">
 <link rel="modulepreload" href="js/ui.js">
@@ -102,6 +103,17 @@
             <img class="photo-drop-preview hidden" alt="選んだ写真">
           </label>
         </div>
+
+        <label class="field">
+          <span class="field-label">天気 <span class="optional">任意</span></span>
+          <select id="visit-weather" name="weather">
+            <option value="">選ばない</option>
+            <option value="sunny">晴れ</option>
+            <option value="cloudy">くもり</option>
+            <option value="rainy">雨</option>
+            <option value="snowy">雪</option>
+          </select>
+        </label>
 
         <p id="visit-error" role="alert" class="error hidden"></p>
         <div class="bottom-cta">

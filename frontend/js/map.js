@@ -3,6 +3,7 @@
 // ピンとカードは連動する（ピンを押すとカードが出て、カードを送るとピンが光る）。
 
 import { getNuis, getRecommend } from './api.js';
+import { openCamera } from './camera.js';
 import { openSpotDetail } from './spot-detail.js';
 import { clampGrudge, grudgeGauge, grudgeStage, isHauntedSpot, isOverflow, nuiAvatar, reasonList, stageChip } from './ui.js';
 
@@ -433,13 +434,19 @@ function buddyText(title, sub, grudge) {
   return body;
 }
 
-// 記録する場所を決めて、訪問の記録の画面に進む。
+// 記録する場所を決めて、カメラを開いたあとで訪問の記録の画面に進む。
 // spot が null のときは、推薦地点ではない場所での記録。
 // 推薦地点でも、送る位置は現在地にする。地点までの距離で除霊量が変わるため。
-function selectPlace(spot, lat, lng) {
+async function selectPlace(spot, lat, lng) {
   const here = spot ? current : { lat, lng };
+
+  // 「ここで記録する」を押した直後にカメラを起動する。
+  // 戻り値は File（撮影/選択した写真）、null（写真なしで進む）、undefined（やめる）。
+  const photo = await openCamera();
+  if (photo === undefined) return; // やめたので地図に留まる
+
   document.dispatchEvent(new CustomEvent('nuituki:place-selected', {
-    detail: { spot, lat: here.lat, lng: here.lng },
+    detail: { spot, lat: here.lat, lng: here.lng, photo },
   }));
   location.hash = '#visit';
 }

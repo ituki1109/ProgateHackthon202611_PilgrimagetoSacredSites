@@ -8,15 +8,17 @@ import { arLink, gaugeWidth, grudgeGauge, grudgeStage, isHauntedSpot, isOverflow
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // 記録する場所。map.js で「ここで記録する」を押すと入る。
-// { spot: 推薦地点か null, lat, lng }
+// { spot: 推薦地点か null, lat, lng, photo: map.js のカメラで撮った写真か null }
 let place = null;
 let formReady = false;
 let nuisById = new Map(); // 選べるぬい。結果の画面で写真と名前を使う
 let previewUrl = null;    // 選んだ写真の仮の URL（使い終わったら消す）
 let calmPreview = null;   // 記録前の除霊量のキャッシュ
+let pendingPhoto = null;  // map.js のカメラで撮った写真。次に表示する #visit で一度だけ使う
 
 document.addEventListener('nuituki:place-selected', (e) => {
   place = e.detail;
+  pendingPhoto = e.detail.photo || null;
 });
 
 // #visit を表示するたびに呼ばれる（main.js から）
@@ -35,6 +37,7 @@ export async function showVisit() {
   }
 
   form.reset();
+  applyPendingPhoto();
   showPreview();
   document.getElementById('visit-result').classList.add('hidden');
   document.getElementById('visit-place').classList.remove('hidden');
@@ -278,6 +281,15 @@ function renderCalmPreview(box, data) {
   box.replaceChildren(stats, note);
 }
 
+// map.js のカメラで撮った写真を、既存の <input type="file"> に入れる（form.reset() の直後に呼ぶ）。
+function applyPendingPhoto() {
+  if (!pendingPhoto) return;
+  const data = new DataTransfer();
+  data.items.add(pendingPhoto);
+  document.getElementById('visit-photo').files = data.files;
+  pendingPhoto = null;
+}
+
 // 選んだ写真を、その場で見せる
 function showPreview() {
   const input = document.getElementById('visit-photo');
@@ -329,6 +341,10 @@ async function submit(event) {
 
   const photo = document.getElementById('visit-photo').files[0];
   if (photo) formData.append('photo', photo);
+
+  // 天気（任意）。API はまだこの項目を保存しないが、画面の記録には残しておく。
+  const weather = document.getElementById('visit-weather')?.value;
+  if (weather) formData.append('weather', weather);
 
   const button = document.getElementById('visit-submit');
   button.disabled = true;
