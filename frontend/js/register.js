@@ -41,7 +41,7 @@ const FORM_HTML = `
     </label>
 
     <p class="form-error error" role="alert" hidden></p>
-    <button type="submit" class="button is-primary is-block">登録する</button>
+    <button type="submit" class="button is-primary is-block">血判を押して登録する</button>
   </form>
 `;
 

@@ -16,8 +16,8 @@ const DEFAULT_ROUTE = 'map';
 // 地図の画面ではタイルを読み終えてから読む。それまでは端末の文字で表示する。
 const FONT_STYLESHEETS = [
   'https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap',
-  // 朱印の「鎮」「記」の2文字だけ明朝で読み込む
-  'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&text=%E9%8E%AE%E8%A8%98&display=swap',
+  // 見出しと朱印の明朝。文字の範囲ごとに分かれているので、使う字の分だけ読まれる
+  'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700;900&display=swap',
 ];
 const FONT_WAIT_MS = 5000; // タイルが遅いときも、ここまで待ったらフォントを読む
 

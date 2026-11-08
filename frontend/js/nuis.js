@@ -3,7 +3,7 @@
 // 画面の切り替え（どの # を表示するか）は main.js が行います。
 
 import { getNuis, getVisits, neglectNui } from './api.js';
-import { arLink, clampGrudge, grudgeGauge, grudgeStage, isOverflow, nuiAvatar, nuiFace, openPhoto, seal, stageChip } from './ui.js';
+import { arLink, clampGrudge, fingerprint, grudgeGauge, grudgeStage, isOverflow, nuiAvatar, nuiFace, openPhoto, seal, stageChip } from './ui.js';
 
 // 画面の中に、中身を入れる箱を1つ用意します。
 // すでにあるときは中身だけ空にして、作り直せるようにします。
@@ -99,7 +99,7 @@ function createHero(nui) {
   name.textContent = nui.name;
   const meta = document.createElement('p');
   meta.className = 'hero-meta';
-  meta.append(`怨念 ${grudge}`, stageChip(grudge));
+  meta.append(`怨念 ${grudge}%`, stageChip(grudge));
   body.append(kicker, name, meta, grudgeGauge(grudge, `${nui.name}の怨念`));
 
   main.append(nuiAvatar(nui, 'hero-avatar'), body);
@@ -110,12 +110,17 @@ function createHero(nui) {
   if (isOverflow(grudge)) go.textContent = `${nui.name}を除霊しに行く`;
   else go.textContent = grudge > 0 ? `${nui.name}を連れ出す場所を探す` : '連れ出す場所を探す';
 
-  hero.append(main, go, arLink(nui, grudge, 'button is-block'));
+  const actions = document.createElement('div');
+  actions.className = 'hero-actions';
+  actions.append(go, arLink(nui, grudge, 'button is-block'));
+
+  hero.append(main, actions);
   if (!isOverflow(grudge)) hero.appendChild(createNeglectButton(nui));
   return hero;
 }
 
-// ぬい1体分のタイル。押すと #nui/1 のようになり、思い出の画面を開きます。
+// ぬい1体分のノート。表紙の色が怨念の段階で、表紙に貼った紙に写真と名前を書きます。
+// 押すと #nui/1 のようになり、思い出の画面を開きます。
 function createNuiTile(nui) {
   const grudge = clampGrudge(nui.grudge);
 
@@ -123,19 +128,23 @@ function createNuiTile(nui) {
   tile.className = `nui-tile is-${grudgeStage(grudge).key}`;
   tile.href = `#nui/${nui.id}`;
 
+  const page = document.createElement('div');
+  page.className = 'nui-tile-page';
   const name = document.createElement('h3');
   name.className = 'nui-tile-name';
   name.textContent = nui.name; // textContent なら名前に記号があっても安全
+  page.append(nuiAvatar(nui, 'nui-tile-avatar'), name);
 
+  // 色だけに頼らず、段階の札と数字も残す
   const meta = document.createElement('p');
   meta.className = 'nui-tile-meta';
-  meta.append(stageChip(grudge), `怨念 ${grudge}`);
+  meta.append(stageChip(grudge), `怨念 ${grudge}%`);
 
   const visits = document.createElement('p');
   visits.className = 'nui-tile-visits';
   visits.textContent = `訪問 ${nui.visit_count ?? 0}回`;
 
-  tile.append(nuiAvatar(nui, 'nui-tile-avatar'), name, meta, grudgeGauge(grudge, `${nui.name}の怨念`), visits);
+  tile.append(page, meta, grudgeGauge(grudge, `${nui.name}の怨念`), visits);
   return tile;
 }
 
@@ -188,19 +197,20 @@ export async function showNuis() {
       return;
     }
 
-    const top = [...list].sort((a, b) => b.grudge - a.grudge)[0];
+    const sorted = [...list].sort((a, b) => b.grudge - a.grudge);
+    const top = sorted[0];
     const overflowing = isOverflow(clampGrudge(top.grudge));
     if (overflowing) {
       container.appendChild(createOverrunBackdrop());
     }
     container.appendChild(createHero(top));
 
-    // 取ってきた順番（登録した順）にタイルを並べます。
+    // 怨念の強い順にノートを並べ、誰を連れ出すかをひと目で分かるようにします。
     // 誰かが暴走しているときは、ほかのぬいのタイルも全部そのぬいに
     // なってしまう（一覧が乗っ取られたように見せる）。
     const grid = document.createElement('div');
     grid.className = 'nui-grid';
-    for (const nui of list) {
+    for (const nui of sorted) {
       grid.appendChild(createNuiTile(overflowing ? top : nui));
     }
     grid.appendChild(createAddTile());
@@ -211,13 +221,16 @@ export async function showNuis() {
   }
 }
 
-// 思い出の画面の上に出す、そのぬいの写真、怨念、記録の数。
+// 思い出の画面の上に出す、そのぬいの台帳。写真を左、名前と記録の数を右に置き、
+// 写真の角に血判を押します。下に怨念のゲージと、押すボタンを並べます。
 function createProfile(nui, visits) {
   const grudge = clampGrudge(nui.grudge);
 
   const profile = document.createElement('div');
   profile.className = `profile is-${grudgeStage(grudge).key}`;
 
+  const portrait = document.createElement('div');
+  portrait.className = 'profile-portrait';
   const avatar = nuiAvatar(nui, 'profile-avatar');
   if (nui.photo_url) {
     // ぬいの写真も、押すと大きく見られるようにします。
@@ -227,26 +240,23 @@ function createProfile(nui, visits) {
     button.setAttribute('aria-label', `${nui.name}の写真を大きく見る`);
     button.appendChild(avatar);
     button.addEventListener('click', () => openPhoto(nui.photo_url, avatar.alt, { title: nui.name }));
-    profile.appendChild(button);
+    portrait.appendChild(button);
   } else {
-    profile.appendChild(avatar);
+    portrait.appendChild(avatar);
   }
+  portrait.appendChild(fingerprint('profile-fingerprint'));
 
   const name = document.createElement('h3');
   name.className = 'profile-name';
   name.textContent = nui.name;
 
-  const meta = document.createElement('p');
-  meta.className = 'profile-meta';
-  meta.append(`怨念 ${grudge}`, stageChip(grudge));
-
   const sealed = visits.filter((v) => v.recommended).length;
-  const stats = document.createElement('dl');
-  stats.className = 'stats';
+  const rows = document.createElement('dl');
+  rows.className = 'profile-rows';
   for (const [term, value] of [
+    ['最後に連れ出した日', formatDate(nui.last_outing_date)],
     ['思い出', `${visits.length}件`],
     ['朱印', `${sealed}個`],
-    ['最後に連れ出した日', formatDate(nui.last_outing_date)],
   ]) {
     const item = document.createElement('div');
     const dt = document.createElement('dt');
@@ -254,16 +264,40 @@ function createProfile(nui, visits) {
     const dd = document.createElement('dd');
     dd.textContent = value;
     item.append(dt, dd);
-    stats.appendChild(item);
+    rows.appendChild(item);
   }
+  if (sealed > 0) rows.lastChild.lastChild.prepend(seal('鎮', true), ' ');
+
+  const info = document.createElement('div');
+  info.className = 'profile-info';
+  info.append(name, rows);
+
+  const ledger = document.createElement('div');
+  ledger.className = 'profile-ledger';
+  ledger.append(portrait, info);
+
+  // 怨念は 100 を限界とした％で出す。暴走すると 100% を超える
+  const label = document.createElement('p');
+  label.className = 'profile-grudge-label';
+  const percent = document.createElement('strong');
+  percent.textContent = `${grudge}%`;
+  label.append(stageChip(grudge), '怨念', percent);
+
+  const meter = document.createElement('div');
+  meter.className = 'profile-grudge';
+  meter.append(grudgeGauge(grudge, `${nui.name}の怨念`), label);
 
   const go = document.createElement('a');
   go.className = 'button is-primary';
   go.href = '#map';
   go.textContent = isOverflow(grudge) ? '除霊しに行く' : '連れ出す場所を探す';
 
-  profile.append(name, meta, grudgeGauge(grudge, `${nui.name}の怨念`), stats, go);
-  if (!isOverflow(grudge)) profile.appendChild(createNeglectButton(nui));
+  const actions = document.createElement('div');
+  actions.className = 'profile-actions';
+  actions.append(go, arLink(nui, grudge, 'button'));
+  if (!isOverflow(grudge)) actions.appendChild(createNeglectButton(nui));
+
+  profile.append(ledger, meter, actions);
   return profile;
 }
 

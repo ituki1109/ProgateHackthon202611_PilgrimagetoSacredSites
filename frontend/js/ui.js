@@ -157,6 +157,20 @@ export function seal(text, recommended) {
   return mark;
 }
 
+// 血判（紅の指紋）。契約の印として、ぬいの写真の角に押します。
+export function fingerprint(className) {
+  const mark = document.createElement('span');
+  mark.className = `fingerprint ${className}`;
+  mark.setAttribute('aria-hidden', 'true');
+  mark.innerHTML = `
+    <svg viewBox="0 0 40 46">
+      <path d="M20 4C10 4 4 12 4 22c0 8 3 14 6 18M36 22C36 12 30 4 20 4M36 22c0 6-1 11-3 15"/>
+      <path d="M20 10c-7 0-11 6-11 12 0 7 2 12 5 16M31 22c0-7-4-12-11-12M31 22c0 7-2 12-4 16"/>
+      <path d="M20 16c-3.5 0-6 3-6 6 0 6 2 11 4 15M26 22c0-3.5-2.5-6-6-6M26 22c0 6-1 10-3 14M20 22v18"/>
+    </svg>`;
+  return mark;
+}
+
 // 写真を画面いっぱいに出します。どこかを押すか、Esc キーで閉じます。
 // caption は { title, sub, recommended }。
 export function openPhoto(src, alt, caption) {
