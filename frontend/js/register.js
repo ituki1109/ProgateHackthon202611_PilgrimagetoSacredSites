@@ -169,6 +169,10 @@ async function submitForm(event, form) {
   event.preventDefault(); // ブラウザーがページを再読み込みするのを止める
   setError(form, '');
 
+  const button = form.querySelector('button[type="submit"]');
+  const textSpan = button.querySelector('.register-seal-text');
+  const buttonText = textSpan ? textSpan.textContent : button.textContent;
+
   // 入力内容を FormData にまとめます（写真もここに入ります）。
   const formData = new FormData(form);
   const name = String(formData.get('name') || '').trim();
@@ -177,6 +181,7 @@ async function submitForm(event, form) {
   // 名前と日付が空なら、API に送らずに知らせます。
   if (!name || !date) {
     setError(form, '名前と「最後に連れ出した日」を入力してください。');
+    button.classList.remove('is-sealed');
     return;
   }
 
@@ -193,9 +198,6 @@ async function submitForm(event, form) {
   const stylizeToggle = form.querySelector('.stylize-toggle');
   formData.set('stylize', stylizeToggle.checked ? 'true' : 'false');
 
-  const button = form.querySelector('button[type="submit"]');
-  const textSpan = button.querySelector('.register-seal-text');
-  const buttonText = textSpan ? textSpan.textContent : button.textContent;
   button.disabled = true; // 二重に送らないようにする
   if (textSpan) textSpan.textContent = '登録中…';
   else button.textContent = '登録中…';
@@ -291,8 +293,10 @@ export function showRegister() {
     const takeSeal = setupSealButton(form);
     form.addEventListener('submit', (event) => {
       event.preventDefault();
+      const sealButton = form.querySelector('.register-seal');
       if (!takeSeal()) {
         setError(form, '血判を押すには、ボタンを長押ししてください。');
+        sealButton.classList.remove('is-sealed');
         return;
       }
       submitForm(event, form);
