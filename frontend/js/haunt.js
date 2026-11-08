@@ -102,7 +102,7 @@ function showJack(nui) {
 
   const name = document.createElement('p');
   name.className = 'haunt-jack-name';
-  name.textContent = `${nui.name}　怨念 ${grudge}`;
+  name.textContent = `${nui.name}　怨念 ${grudge}%`;
 
   const note = document.createElement('p');
   note.className = 'haunt-jack-note';

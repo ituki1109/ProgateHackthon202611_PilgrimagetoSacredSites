@@ -124,7 +124,7 @@ async function renderNuiOptions() {
       name.textContent = nui.name;
       const grudge = document.createElement('span');
       grudge.className = 'nui-option-grudge';
-      grudge.textContent = `怨念 ${nui.grudge}`;
+      grudge.textContent = `怨念 ${nui.grudge}%`;
 
       option.append(input, nuiAvatar(nui, 'nui-option-avatar'), name, grudge);
       group.appendChild(option);
