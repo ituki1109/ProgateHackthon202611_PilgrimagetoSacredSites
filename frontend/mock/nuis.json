@@ -1,5 +1,5 @@
 [
-  { "id": 1, "name": "もちもち", "photo_url": null, "last_outing_date": "2026-09-13", "grudge": 40, "visit_count": 2 },
+  { "id": 1, "name": "アブソル", "photo_url": "mock/abu.png", "last_outing_date": "2026-09-13", "grudge": 40, "visit_count": 2 },
   { "id": 2, "name": "ふわまる", "photo_url": null, "last_outing_date": "2026-09-08", "grudge": 100, "visit_count": 0 },
-  { "id": 3, "name": "こんぺいとう", "photo_url": null, "last_outing_date": "2026-10-08", "grudge": 10, "visit_count": 1 }
+  { "id": 3, "name": "コラプス", "photo_url": "mock/kora.png", "last_outing_date": "2026-10-08", "grudge": 10, "visit_count": 1 }
 ]
