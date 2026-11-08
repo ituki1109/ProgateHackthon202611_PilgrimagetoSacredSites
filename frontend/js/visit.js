@@ -2,16 +2,16 @@
 
 import { getNuis, createVisit, getCalmPreview } from './api.js';
 import { checkHaunt } from './haunt.js';
-import { getCurrentLocation } from './map.js';
-import { arLink, gaugeWidth, grudgeGauge, grudgeStage, isHauntedSpot, isOverflow, nuiAvatar, reasonList, seal } from './ui.js';
+import { getCurrentLocation, getSelectedNuiId } from './map.js';
+import { arLink, clampGrudge, gaugeWidth, grudgeGauge, grudgeRing, grudgeStage, isHauntedSpot, isOverflow, nuiAvatar, reasonList, seal, stageChip } from './ui.js';
 
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // 記録する場所。map.js で「ここで記録する」を押すと入る。
-// { spot: 推薦地点か null, lat, lng, photo: map.js のカメラで撮った写真か null }
+// { spot: 推薦地点か null, lat, lng, photo: map.js のカメラで撮った写真か null, nuiId: 地図で選んだぬい }
 let place = null;
 let formReady = false;
-let nuisById = new Map(); // 選べるぬい。結果の画面で写真と名前を使う
+let nui = null;            // 連れてきたぬい。地図の上の列で選んだぬい（map.js）
 let previewUrl = null;    // 選んだ写真の仮の URL（使い終わったら消す）
 let calmPreview = null;   // 記録前の除霊量のキャッシュ
 let pendingPhoto = null;  // map.js のカメラで撮った写真。次に表示する #visit で一度だけ使う
@@ -44,7 +44,7 @@ export async function showVisit() {
   form.classList.remove('hidden');
   hideError();
   renderPlace();
-  await renderNuiOptions();
+  await renderSelectedNui();
   refreshCalmPreview();
 }
 
@@ -99,59 +99,40 @@ function renderPlace() {
   box.append(badge, field);
 }
 
-// 連れて行くぬいを、怨念の強い順に、顔つきのボタンで並べる
-async function renderNuiOptions() {
-  const group = document.getElementById('visit-nui');
-  group.replaceChildren();
-  nuisById = new Map();
+// 連れてきたぬいを出す。選ぶのは地図の上の列で、ここでは選び直さない。
+// 地図を通らずに来たときや、選んだぬいが見つからないときは、いちばん怨念の強いぬいにする。
+async function renderSelectedNui() {
+  const box = document.getElementById('visit-nui');
+  box.replaceChildren();
+  nui = null;
 
   try {
     const nuis = await getNuis();
-    const sorted = [...nuis].sort((a, b) => b.grudge - a.grudge);
-
-    sorted.forEach((nui, i) => {
-      nuisById.set(String(nui.id), nui);
-
-      const option = document.createElement('label');
-      option.className = 'nui-option';
-
-      const input = document.createElement('input');
-      input.type = 'radio';
-      input.name = 'nui_id';
-      input.value = String(nui.id);
-      input.className = 'visually-hidden';
-      input.checked = i === 0; // いちばん怨念の強いぬいを、初めから選んでおく
-
-      const name = document.createElement('span');
-      name.className = 'nui-option-name';
-      name.textContent = nui.name;
-      const grudge = document.createElement('span');
-      grudge.className = 'nui-option-grudge';
-      grudge.textContent = `怨念 ${nui.grudge}%`;
-
-      option.append(input, nuiAvatar(nui, 'nui-option-avatar'), name, grudge);
-      group.appendChild(option);
-    });
-
-    markSelected();
-    group.onchange = () => {
-      markSelected();
-      refreshCalmPreview();
-    };
-
-    if (sorted.length === 0) {
+    if (!Array.isArray(nuis) || nuis.length === 0) {
       showError('ぬいがまだ登録されていません。先に「登録」から追加してください。');
+      return;
     }
+    const wanted = place?.nuiId ?? getSelectedNuiId();
+    nui = nuis.find((item) => item.id === wanted) || [...nuis].sort((a, b) => b.grudge - a.grudge)[0];
+
+    const grudge = clampGrudge(nui.grudge);
+    const name = document.createElement('strong');
+    name.className = 'visit-nui-name';
+    name.textContent = nui.name;
+    const value = document.createElement('span');
+    value.className = 'visit-nui-grudge';
+    value.append(`怨念 ${grudge}%`, stageChip(grudge));
+    const change = document.createElement('span');
+    change.className = 'visit-nui-change';
+    change.textContent = 'ほかのぬいにするときは、地図の上の列で選び直します。';
+
+    const body = document.createElement('span');
+    body.className = 'visit-nui-body';
+    body.append(name, value, change);
+    box.append(grudgeRing(nui, 'visit-nui-ring'), body);
   } catch (err) {
     console.error('[visit] ぬいの一覧が取れませんでした:', err);
     showError(`ぬいの一覧が取れませんでした（${err.message}）`);
-  }
-}
-
-// 選んでいるぬいのボタンに枠を付ける
-function markSelected() {
-  for (const option of document.querySelectorAll('#visit-nui .nui-option')) {
-    option.classList.toggle('is-selected', option.querySelector('input').checked);
   }
 }
 
@@ -203,23 +184,22 @@ function calmBox() {
     box.id = 'visit-calm';
     box.setAttribute('aria-live', 'polite');
     const picker = document.getElementById('visit-nui');
-    if (picker) picker.closest('fieldset').appendChild(box);
+    if (picker) picker.closest('.field').appendChild(box);
   }
   return box;
 }
 
 async function refreshCalmPreview() {
   const box = calmBox();
-  const checked = document.querySelector('#visit-nui input[name="nui_id"]:checked');
   const submitButton = document.getElementById('visit-submit');
   submitButton.disabled = false;
-  if (!checked || !place) {
+  if (!nui || !place) {
     box.replaceChildren();
     return;
   }
 
   // 暴走しているぬいは、事故地点と空き家の駅でしか記録できない（API も同じ決まりで断る）
-  if (isOverflow(nuisById.get(checked.value)?.grudge) && !isHauntedSpot(place.spot)) {
+  if (isOverflow(nui.grudge) && !isHauntedSpot(place.spot)) {
     submitButton.disabled = true;
     const note = document.createElement('p');
     note.className = 'error';
@@ -241,7 +221,7 @@ async function refreshCalmPreview() {
   box.textContent = '除霊量を計算しています…';
   try {
     const data = await getCalmPreview({
-      nuiId: checked.value,
+      nuiId: String(nui.id),
       spotId: place.spot ? place.spot.id : null,
       spotName: place.spot ? null : nameInput.value.trim(),
       lat: place.lat,
@@ -311,12 +291,10 @@ async function submit(event) {
   event.preventDefault();
   hideError();
 
-  const checked = document.querySelector('#visit-nui input[name="nui_id"]:checked');
-  if (!checked) {
-    showError('連れて行くぬいを選んでください。');
+  if (!nui) {
+    showError('連れて行くぬいを、地図の上の列で選んでください。');
     return;
   }
-  const nui = nuisById.get(checked.value);
 
   const nameInput = document.getElementById('visit-spot-name');
   if (!place.spot) {
@@ -329,7 +307,7 @@ async function submit(event) {
   }
 
   const formData = new FormData();
-  formData.append('nui_id', checked.value);
+  formData.append('nui_id', String(nui.id));
   formData.append('lat', String(place.lat));
   formData.append('lng', String(place.lng));
   if (place.spot) {
@@ -341,10 +319,6 @@ async function submit(event) {
 
   const photo = document.getElementById('visit-photo').files[0];
   if (photo) formData.append('photo', photo);
-
-  // 天気（任意）。API はまだこの項目を保存しないが、画面の記録には残しておく。
-  const weather = document.getElementById('visit-weather')?.value;
-  if (weather) formData.append('weather', weather);
 
   const button = document.getElementById('visit-submit');
   button.disabled = true;
